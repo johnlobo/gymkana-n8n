@@ -9,6 +9,7 @@ Documentación técnica completa (arquitectura, comandos, esquema de datos, cód
 ```
 .
 ├── docker-compose.yml              # Despliegue del contenedor n8n
+├── workflow.json                   # Export ACTUAL del workflow de n8n (estado en producción)
 ├── documentacion_gymkana.html      # Documentación técnica interactiva (autocontenida)
 ├── El_Linaje_Olvidado_Guia_Historica.pdf  # Guía histórica que el bot entrega al terminar la gymkana
 ├── test_n8n_api.sh                 # Script de prueba de la API REST de n8n
@@ -16,6 +17,16 @@ Documentación técnica completa (arquitectura, comandos, esquema de datos, cód
 ├── secrets/                        # Credenciales (NO versionado, ver .gitignore)
 ├── n8n_data/                       # Datos internos de n8n (NO versionado, ver .gitignore)
 └── .env                            # Variables de entorno (NO versionado, ver .gitignore)
+```
+
+### `workflow.json`
+
+Export completo y actual del workflow "Gymkana - 02 Bot principal El Linaje Olvidado" tal y como está desplegado en n8n ahora mismo (36 nodos): toda la lógica del bot (comandos, estados, entrega de mensajes/fotos/documentos). Para actualizarlo tras un cambio en el editor de n8n:
+
+```bash
+API_KEY="$(cat secrets/n8n_api_key)"
+CONTAINER_IP="$(docker inspect gymkana_n8n --format '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}')"
+curl -sS -H "X-N8N-API-KEY: $API_KEY" "http://${CONTAINER_IP}:5678/api/v1/workflows/spt1kZxCOE9LCBbz" -o workflow.json
 ```
 
 ### `backup/`
