@@ -1,6 +1,6 @@
 # El Linaje Olvidado — Gymkana en Telegram
 
-Bot de Telegram que guía una gymkana histórica por Santillana del Mar (Cantabria), construido como un workflow de [n8n](https://n8n.io/) con persistencia en Firestore. Los jugadores resuelven 8 acertijos repartidos por la villa, van reconstruyendo unas coordenadas fragmento a fragmento, y terminan en un enclave secreto (estación 9).
+Bot de Telegram que guía una gymkana histórica por Santillana del Mar (Cantabria), construido como un workflow de [n8n](https://n8n.io/) con persistencia en Firestore. Cada equipo empieza en un enclave aleatorio (1-8) para evitar que todos vayan en procesión; resuelven los 8 acertijos en su propio orden, van reconstruyendo unas coordenadas fragmento a fragmento (por paso, no por estación física), y todos terminan en el mismo enclave secreto (estación 9).
 
 Documentación técnica completa (arquitectura, comandos, esquema de datos, código de los nodos clave): ver [`documentacion_gymkana.html`](./documentacion_gymkana.html) — ábrelo en cualquier navegador, incluye un diagrama interactivo del workflow.
 
