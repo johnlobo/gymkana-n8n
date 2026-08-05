@@ -1,6 +1,8 @@
 # El Linaje Olvidado — Gymkana en Telegram
 
-Bot de Telegram que guía una gymkana histórica por Santillana del Mar (Cantabria), construido como un workflow de [n8n](https://n8n.io/) con persistencia en Firestore. Cada equipo empieza en un enclave distinto (1-8), repartido por turnos (round-robin: 1er equipo→enclave 1, 2º→enclave 2...) para evitar que todos vayan en procesión; resuelven los 8 acertijos en su propio orden, van reconstruyendo unas coordenadas fragmento a fragmento (por paso, no por estación física), y todos terminan en el mismo enclave secreto (estación 9).
+Bot de Telegram que guía una gymkana histórica por Santillana del Mar (Cantabria), construido como un workflow de [n8n](https://n8n.io/) con persistencia en Firestore. Cada equipo empieza en un enclave distinto, repartido por turnos (round-robin) para evitar que todos vayan en procesión; resuelven los acertijos en su propio orden, van reconstruyendo unas coordenadas fragmento a fragmento (por paso, no por estación física), y todos terminan en el mismo enclave secreto.
+
+Los datos de la gymkana viven bajo `gymkanas/linaje-olvidado/...` en Firestore (estaciones, equipos, contador de reparto), y los parámetros del juego (tolerancia GPS, penalizaciones, nº de pistas, nº de estaciones) son configuración en ese documento, no números fijos en el código — primer paso hacia poder montar gymkanas nuevas sin tocar el workflow.
 
 Documentación técnica completa (arquitectura, comandos, esquema de datos, código de los nodos clave): ver [`documentacion_gymkana.html`](./documentacion_gymkana.html) — ábrelo en cualquier navegador, incluye un diagrama interactivo del workflow.
 
@@ -21,7 +23,7 @@ Documentación técnica completa (arquitectura, comandos, esquema de datos, cód
 
 ### `workflow.json`
 
-Export completo y actual del workflow "Gymkana - 02 Bot principal El Linaje Olvidado" tal y como está desplegado en n8n ahora mismo (36 nodos): toda la lógica del bot (comandos, estados, entrega de mensajes/fotos/documentos). Para actualizarlo tras un cambio en el editor de n8n:
+Export completo y actual del workflow "Gymkana - 02 Bot principal El Linaje Olvidado" tal y como está desplegado en n8n ahora mismo (45 nodos): toda la lógica del bot (comandos, estados, entrega de mensajes/fotos/documentos). Para actualizarlo tras un cambio en el editor de n8n:
 
 ```bash
 API_KEY="$(cat secrets/n8n_api_key)"
@@ -44,7 +46,7 @@ Estos tres nunca deben subirse al repositorio.
 ## Infraestructura
 
 - Contenedor Docker `gymkana_n8n` (imagen oficial `n8nio/n8n`), definido en `docker-compose.yml`.
-- Proyecto Firebase `gymkana-linaje-olvidado` (Firestore nativo) para persistir equipos (`equipos`) y contenido del juego (`estaciones`).
+- Proyecto Firebase `gymkana-linaje-olvidado` (Firestore nativo). Estructura multi-tenant: todo vive bajo `gymkanas/linaje-olvidado/...` (subcolecciones `estaciones`, `equipos`, `updates_telegram`, `config`), pensada para poder añadir gymkanas nuevas como documentos hermanos en `gymkanas/` en el futuro, sin tocar la de esta.
 - Bot de Telegram como interfaz única para los jugadores (sin app propia).
 
 Detalles de arquitectura, flujos, comandos (públicos y de depuración) y esquema completo de los datos en Firestore: ver [`documentacion_gymkana.html`](./documentacion_gymkana.html).
