@@ -1,0 +1,33 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//etc/**)",
+      "Bash(find / -maxdepth 6 -iname \"*nginx*\" -type d)",
+      "Bash(docker exec *)",
+      "Bash(mkdir -p /tmp/claude-1000/-home-ubuntu-docker-gymkana-n8n/866722e3-e64e-418a-b74c-6e7eb5821de5/scratchpad)",
+      "Bash(echo \"n8n pid $!\")",
+      "Bash(echo \"bot access pid $!\")",
+      "Bash(echo \"bot error pid $!\")",
+      "Bash(echo \"n8n domain access pid $!\")",
+      "Bash(docker compose up *)",
+      "Bash(command -v sqlite3)",
+      "Bash(python3 *)",
+      "Bash(docker cp *)",
+      "Bash(cat)",
+      "Bash(pip3 list *)",
+      "Bash(curl -sS -m 5 -o /dev/null -w \"%{http_code}\\\\n\" https://firestore.googleapis.com/)",
+      "Bash(pip3 --version)",
+      "Bash(command -v node)",
+      "Bash(command -v nodejs)",
+      "Bash(curl -sS \"https://commons.wikimedia.org/w/api.php?action=query&titles=File:Santillana%20del%20Mar%20nucleo.jpg&prop=imageinfo&iiprop=url|size&format=json\" -A \"gymkana-check/1.0\")",
+      "Bash(curl -sSI -A \"Mozilla/5.0 gymkana-check/1.0\" \"https://upload.wikimedia.org/wikipedia/commons/d/df/Colegiata_de_Santa_Juliana%2C_Santillana_del_Mar_02.jpg\")",
+      "Bash(curl -sS -D - -o /dev/null -A \"Mozilla/5.0\" \"https://upload.wikimedia.org/wikipedia/commons/d/df/Colegiata_de_Santa_Juliana%2C_Santillana_del_Mar_02.jpg\")",
+      "Bash(curl -sS -o /dev/null -w \"%{http_code} %{content_type}\\\\n\" -A \"Mozilla/5.0\" \"https://upload.wikimedia.org/wikipedia/commons/d/d1/Los_Villa._Santillana_del_Mar.jpg\")",
+      "Bash(curl -sS -o /dev/null -w \"%{http_code} %{content_type}\\\\n\" -A \"Mozilla/5.0\" \"https://upload.wikimedia.org/wikipedia/commons/2/22/Calle_del_R%C3%ADo._Abrevadero.jpg\")",
+      "WebSearch",
+      "WebFetch(domain:santillanadelmarturismo.com)",
+      "WebFetch(domain:nominatim.openstreetmap.org)",
+      "Bash(pip3 install *)"
+    ]
+  }
+}

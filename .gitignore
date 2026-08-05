@@ -1,0 +1,9 @@
+# Secretos - nunca deben subirse
+secrets/
+.env
+
+# Datos internos de n8n (credenciales cifradas, ejecuciones, DB local)
+n8n_data/
+
+# Capturas de pantalla sueltas usadas durante el desarrollo
+Captura de pantalla*.png
