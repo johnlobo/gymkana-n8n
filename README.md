@@ -2,7 +2,9 @@
 
 Bot de Telegram que guía una gymkana histórica por Santillana del Mar (Cantabria), construido como un workflow de [n8n](https://n8n.io/) con persistencia en Firestore. Cada equipo empieza en un enclave distinto, repartido por turnos (round-robin) para evitar que todos vayan en procesión; resuelven los acertijos en su propio orden, van reconstruyendo unas coordenadas fragmento a fragmento (por paso, no por estación física), y todos terminan en el mismo enclave secreto.
 
-Los datos de la gymkana viven bajo `gymkanas/linaje-olvidado/...` en Firestore (estaciones, equipos, contador de reparto), y los parámetros del juego (tolerancia GPS, penalizaciones, nº de pistas, nº de estaciones) son configuración en ese documento, no números fijos en el código — primer paso hacia poder montar gymkanas nuevas sin tocar el workflow.
+Los datos de la gymkana viven bajo `gymkanas/linaje-olvidado/...` en Firestore (estaciones, equipos, contador de reparto), y los parámetros del juego (tolerancia GPS, pesos de penalización por pista/mapa/rescate, nº de pistas, nº de estaciones, e incluso la terminología — "Enclave" es configurable vía `termino_enclave`) son configuración en ese documento, no números fijos en el código — primer paso hacia poder montar gymkanas nuevas sin tocar el workflow.
+
+El organizador dispone de un comando oculto `/admin` (no aparece en `/ayuda`), restringido al chat_id configurado en `admin_chat_id`, que muestra un resumen en vivo de todos los equipos: progreso, tiempo, pistas/mapas/rescates usados y penalización.
 
 Documentación técnica completa (arquitectura, comandos, esquema de datos, código de los nodos clave): ver [`documentacion_gymkana.html`](./documentacion_gymkana.html) — ábrelo en cualquier navegador, incluye un diagrama interactivo del workflow.
 
