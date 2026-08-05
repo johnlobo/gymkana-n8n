@@ -311,6 +311,16 @@ div.vis-tooltip {
         </table>
         </div>
       </div>
+      <div>
+        <div class="section-title">Comando de organizador (oculto, NO listado en /ayuda)</div>
+        <div class="section-sub">Restringido por chat_id: solo responde si <span class="inline-code">msg.chat_id === gymkanaConfig.admin_chat_id</span>. Para cualquier otro chat, /admin se trata como texto normal (intento de respuesta fallido).</div>
+        <div class="table-wrap">
+        <table class="data-table">
+          <thead><tr><th>Comando</th><th>Dónde se procesa</th><th>Qué hace</th></tr></thead>
+          <tbody id="cmd-table-admin"></tbody>
+        </table>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -385,7 +395,7 @@ div.vis-tooltip {
       <div class="panel">
         <div class="code-panel-head">
           <div class="code-panel-title">Nodo n8n: <span class="node-name">Decidir acción</span> <span class="node-type">(Code, JavaScript)</span></div>
-          <span class="code-lines">199 líneas</span>
+          <span class="code-lines">211 líneas</span>
         </div>
         <pre class="code-block"><code>
 // Leemos el mensaje directamente desde Telegram Trigger para no depender
@@ -448,6 +458,11 @@ const existing =
 const now = new Date().toISOString();
 const gymkanaConfig = $('Cargar gymkana').first().json;
 
+// Terminología de esta gymkana (Fase 3): "Enclave" es el término por
+// defecto, pero cada gymkana puede llamarlo de otra forma (Parada,
+// Estación, Checkpoint...) vía gymkanas/{id}.termino_enclave.
+const T_ENCLAVE = gymkanaConfig.termino_enclave || 'Enclave';
+
 let team = existing ? {...existing} : null;
 let action = '';
 let response = '';
@@ -466,9 +481,14 @@ function ordenInicioAleatorio() {
 const isStart = msg.text === '/start' || msg.text.startsWith('/start ');
 const isAyuda = msg.text === 'ayuda' || msg.text === '/ayuda';
 const isReboot = msg.text === 'reboot' || msg.text === '/reboot';
+const isAdmin = (msg.text === 'admin' || msg.text === '/admin')
+  &amp;&amp; !!gymkanaConfig.admin_chat_id
+  &amp;&amp; msg.chat_id === String(gymkanaConfig.admin_chat_id);
 const moveMatch = msg.text.match(/^\/?move\s+(\d+)$/);
 
-if (isReboot) {
+if (isAdmin) {
+  action = 'admin_list';
+} else if (isReboot) {
   action = 'reboot';
   response = '🛠️ *DEBUG*: equipo borrado. Escribid /start para comenzar de nuevo desde cero.';
 } else if (moveMatch) {
@@ -502,15 +522,17 @@ if (isReboot) {
 } else if (isAyuda) {
   action = 'send_only';
   const maxPistas = Number(gymkanaConfig.max_pistas) || 3;
-  const penalizacionMin = Number(gymkanaConfig.penalizacion_minutos) || 3;
+  const pesoPista = Number(gymkanaConfig.peso_pista) || 1;
+  const pesoMapa = Number(gymkanaConfig.peso_mapa) || 3;
+  const pesoRescate = Number(gymkanaConfig.peso_rescate) || 5;
   response = `📖 COMANDOS DISPONIBLES
 
 /start — Comenzar la gymkana y registrar el nombre de vuestro equipo.
-/estado — Consultar el enclave en el que estáis y vuestras estadísticas (pistas, mapas, penalización).
-/pista — Pedir una pista del enclave actual (máximo ${maxPistas} pistas por enclave).
-/mapa — Pista visual de la ubicación del enclave actual (+${penalizacionMin} min de penalización).
-/rescate — Durante el juego: obtener la solución del enclave actual y avanzar (+${penalizacionMin} min de penalización).
-/repetir — Repetir el enunciado del enclave actual. Tras completar la gymkana: volver a ver el resumen de la ruta y el enclave secreto.
+/estado — Consultar el ${T_ENCLAVE.toLowerCase()} en el que estáis y vuestras estadísticas (pistas, mapas, rescates, penalización).
+/pista — Pedir una pista del ${T_ENCLAVE.toLowerCase()} actual (máximo ${maxPistas} pistas, +${pesoPista} min cada una).
+/mapa — Pista visual de la ubicación del ${T_ENCLAVE.toLowerCase()} actual (+${pesoMapa} min de penalización).
+/rescate — Durante el juego: obtener la solución del ${T_ENCLAVE.toLowerCase()} actual y avanzar (+${pesoRescate} min de penalización).
+/repetir — Repetir el enunciado del ${T_ENCLAVE.toLowerCase()} actual. Tras completar la gymkana: volver a ver el resumen de la ruta y el ${T_ENCLAVE.toLowerCase()} secreto.
 /destino — Comprobar, compartiendo tu ubicación, si estáis en el lugar correcto.
 /ayuda — Mostrar este mensaje.`;
 } else if (!team) {
@@ -536,7 +558,7 @@ if (isReboot) {
       actualizado_en: now
     };
     action = 'save_send';
-    response = '📜 Bienvenidos a El Linaje Olvidado.\n\nEscribid ahora el nombre de vuestro equipo.\n\nEn cualquier momento podéis escribir /ayuda para ver todos los comandos disponibles.';
+    response = `📜 Bienvenidos a ${gymkanaConfig.nombre || 'la gymkana'}.\n\nEscribid ahora el nombre de vuestro equipo.\n\nEn cualquier momento podéis escribir /ayuda para ver todos los comandos disponibles.`;
   } else {
     action = 'send_only';
     response = 'Para comenzar la gymkana, enviad /start.\n\nEscribid /ayuda si necesitáis ver todos los comandos disponibles.';
@@ -569,7 +591,7 @@ if (isReboot) {
     action = 'final_summary';
   } else {
     action = 'send_only';
-    response = '🏆 Este equipo ya ha finalizado la gymkana. Escribid REPETIR si queréis volver a ver el resumen y el enclave secreto.';
+    response = `🏆 Este equipo ya ha finalizado la gymkana. Escribid REPETIR si queréis volver a ver el resumen y el ${T_ENCLAVE.toLowerCase()} secreto.`;
   }
 } else if (isStart) {
   action = 'send_only';
@@ -591,7 +613,7 @@ return [{json:{msg,team,action,response,needsStation,imagen_url:imagenUrl,just_r
       <div class="panel">
         <div class="code-panel-head">
           <div class="code-panel-title">Nodo n8n: <span class="node-name">Procesar estación y comandos</span> <span class="node-type">(Code, JavaScript)</span></div>
-          <span class="code-lines">343 líneas</span>
+          <span class="code-lines">356 líneas</span>
         </div>
         <pre class="code-block"><code>
 const ctx = $('Decidir acción').first().json;
@@ -603,10 +625,17 @@ const now = new Date().toISOString();
 
 // Config de la gymkana (Fase 0/1: nada de esto va ya fijo en el código).
 const MAX_PISTAS = Number(gymkanaConfig.max_pistas) || 3;
-const PENALIZACION_MIN = Number(gymkanaConfig.penalizacion_minutos) || 3;
+const PESO_PISTA = Number(gymkanaConfig.peso_pista) || 1;
+const PESO_MAPA = Number(gymkanaConfig.peso_mapa) || 3;
+const PESO_RESCATE = Number(gymkanaConfig.peso_rescate) || 5;
 const TOLERANCIA_METROS = Number(gymkanaConfig.tolerancia_metros) || 50;
 const NUM_ESTACIONES_REGULARES = Number(gymkanaConfig.num_estaciones_regulares) || 8;
 const ESTACION_FINAL = NUM_ESTACIONES_REGULARES + 1;
+
+// Terminología de esta gymkana (Fase 3): "Enclave" es el término por
+// defecto, pero cada gymkana puede llamarlo de otra forma (Parada,
+// Estación, Checkpoint...) vía gymkanas/{id}.termino_enclave.
+const T_ENCLAVE = gymkanaConfig.termino_enclave || 'Enclave';
 
 function norm(s) {
   return String(s ?? '')
@@ -654,6 +683,14 @@ function estacionFisica(ordenInicio, paso) {
   return ((ordenInicio - 1 + paso - 1) % NUM_ESTACIONES_REGULARES) + 1;
 }
 
+// Penalización ponderada: no se acumula turno a turno, se calcula siempre
+// a partir de los contadores (pistas_usadas, mapas_usados, rescates_usados).
+function penalizacionDe(team) {
+  return Number(team.pistas_usadas || 0) * PESO_PISTA
+    + Number(team.mapas_usados || 0) * PESO_MAPA
+    + Number(team.rescates_usados || 0) * PESO_RESCATE;
+}
+
 function fragmentosHasta(station, n) {
   const partes = [];
   for (let i = 1; i &lt;= n; i++) {
@@ -664,7 +701,8 @@ function fragmentosHasta(station, n) {
 }
 
 function construirMensajeFinal(team, elapsedSeg) {
-  const penalizacionMin = Number(team.penalizacion_minutos || 0);
+  const penalizacionMin = penalizacionDe(team);
+  team.penalizacion_minutos = penalizacionMin;
   const tiempoOficialSeg = elapsedSeg + penalizacionMin * 60;
   const rango = calcularRango(Math.floor(tiempoOficialSeg / 60));
 
@@ -712,7 +750,7 @@ const moveMatch = msg.text.match(/^\/?move\s+(\d+)$/);
 if (moveMatch &amp;&amp; Number(moveMatch[1]) &gt;= 1 &amp;&amp; Number(moveMatch[1]) &lt;= ESTACION_FINAL) {
   team.acertijo_visto = true;
   imagenUrl = station.imagen_url || '';
-  response = `📍 *ENCLAVE ${station.orden} — ${station.nombre}*
+  response = `📍 *${T_ENCLAVE.toUpperCase()} ${station.orden} — ${station.nombre}*
 
 ${station.acertijo}
 
@@ -757,7 +795,7 @@ if (team.estado === 'esperando_inicio' &amp;&amp; (msg.text === 'rescate' || msg
 
 Bienvenidos, ${team.nombre}. El reloj empieza ahora.
 
-📍 *ENCLAVE ${station.orden} — ${station.nombre}*
+📍 *${T_ENCLAVE.toUpperCase()} ${station.orden} — ${station.nombre}*
 
 ${station.acertijo}
 
@@ -789,7 +827,7 @@ if (msg.location) {
 
 Bienvenidos, ${team.nombre}. El reloj empieza ahora.
 
-📍 *ENCLAVE ${station.orden} — ${station.nombre}*
+📍 *${T_ENCLAVE.toUpperCase()} ${station.orden} — ${station.nombre}*
 
 ${station.acertijo}
 
@@ -802,7 +840,7 @@ Podéis responder directamente o escribir PISTA, MAPA, REPETIR, ESTADO, DESTINO 
     if (!team.acertijo_visto) {
       team.acertijo_visto = true;
       imagenUrl = station.imagen_url || '';
-      response = `📍 *ENCLAVE ${station.orden} — ${station.nombre}*
+      response = `📍 *${T_ENCLAVE.toUpperCase()} ${station.orden} — ${station.nombre}*
 
 ${station.acertijo}
 
@@ -810,9 +848,9 @@ ${station.acertijo}
       team.actualizado_en = now;
       return [{ json: { ...team, response, chat_id: msg.chat_id, changed: true, imagen_url: imagenUrl } }];
     }
-    response = `✅ ¡Estáis en el lugar correcto! (a ${distancia} m del punto exacto)\n\n📸 Comparad con la foto del enclave para confirmar que sois exactamente en el sitio.`;
+    response = `✅ ¡Estáis en el lugar correcto! (a ${distancia} m del punto exacto)\n\n📸 Comparad con la foto del ${T_ENCLAVE.toLowerCase()} para confirmar que sois exactamente en el sitio.`;
   } else {
-    response = `📍 Aún no es el sitio correcto. Os faltan aproximadamente ${distancia} m.\n\n📸 Fijaos bien en la foto del enclave para localizar el punto exacto — el GPS puede no ser del todo preciso.`;
+    response = `📍 Aún no es el sitio correcto. Os faltan aproximadamente ${distancia} m.\n\n📸 Fijaos bien en la foto del ${T_ENCLAVE.toLowerCase()} para localizar el punto exacto — el GPS puede no ser del todo preciso.`;
   }
 
   team.actualizado_en = now;
@@ -822,12 +860,12 @@ ${station.acertijo}
 if (msg.text === 'pista' || msg.text === '/pista') {
   const current = Number(team.pista_actual || 0);
   if (current &gt;= MAX_PISTAS) {
-    response = `Ya habéis utilizado las ${MAX_PISTAS} pistas de este enclave. Escribid RESCATE si queréis la solución de este enclave y avanzar (+${PENALIZACION_MIN} min), o MAPA si solo queréis una pista visual (+${PENALIZACION_MIN} min).`;
+    response = `Ya habéis utilizado las ${MAX_PISTAS} pistas de este ${T_ENCLAVE.toLowerCase()}. Escribid RESCATE si queréis la solución de este ${T_ENCLAVE.toLowerCase()} y avanzar (+${PESO_RESCATE} min), o MAPA si solo queréis una pista visual (+${PESO_MAPA} min).`;
   } else {
     const next = current + 1;
-    response = `💡 Pista ${next}: ${station['pista'+next]}`;
+    response = `💡 Pista ${next} (+${PESO_PISTA} min): ${station['pista'+next]}`;
     if (next &gt;= MAX_PISTAS) {
-      response += `\n\n⚠️ Has agotado las ${MAX_PISTAS} pistas de este enclave. Si no lográis dar con la respuesta, podéis usar el comando /rescate para obtener la solución y avanzar (+${PENALIZACION_MIN} min de penalización).`;
+      response += `\n\n⚠️ Has agotado las ${MAX_PISTAS} pistas de este ${T_ENCLAVE.toLowerCase()}. Si no lográis dar con la respuesta, podéis usar el comando /rescate para obtener la solución y avanzar (+${PESO_RESCATE} min de penalización).`;
     }
     team.pista_actual = next;
     team.pistas_usadas = Number(team.pistas_usadas || 0) + 1;
@@ -840,28 +878,25 @@ if (msg.text === 'pista' || msg.text === '/pista') {
     used.push(key);
     team.mapa_estaciones = used.join(',');
     team.mapas_usados = Number(team.mapas_usados || 0) + 1;
-    team.penalizacion_minutos = Number(team.penalizacion_minutos || 0) + PENALIZACION_MIN;
     changed = true;
-    response = `📍 Pista de mapa (+${PENALIZACION_MIN} min): ${station.mapa_url}`;
+    response = `📍 Pista de mapa (+${PESO_MAPA} min): ${station.mapa_url}`;
   } else {
     response = `📍 Ya habíais solicitado este mapa: ${station.mapa_url}`;
   }
 } else if (msg.text === 'rescate' || msg.text === '/rescate') {
   if (!team.acertijo_visto) {
     team.acertijo_visto = true;
-    team.penalizacion_minutos = Number(team.penalizacion_minutos || 0) + PENALIZACION_MIN;
     team.rescates_usados = Number(team.rescates_usados || 0) + 1;
     changed = true;
     imagenUrl = station.imagen_url || '';
-    response = `🆘 Rescate (+${PENALIZACION_MIN} min): os guiamos hasta el enclave.
+    response = `🆘 Rescate (+${PESO_RESCATE} min): os guiamos hasta el ${T_ENCLAVE.toLowerCase()}.
 
-📍 *ENCLAVE ${station.orden} — ${station.nombre}*
+📍 *${T_ENCLAVE.toUpperCase()} ${station.orden} — ${station.nombre}*
 
 ${station.acertijo}
 
 📸 Fijaos bien en la foto para confirmar que estáis en el punto exacto — el GPS puede no ser del todo preciso.`;
   } else {
-    team.penalizacion_minutos = Number(team.penalizacion_minutos || 0) + PENALIZACION_MIN;
     team.rescates_usados = Number(team.rescates_usados || 0) + 1;
     changed = true;
 
@@ -884,7 +919,7 @@ ${station.acertijo}
       team.estacion_actual = estacionFisica(ordenInicio, nuevoPaso);
       team.pista_actual = 0;
       team.acertijo_visto = false;
-      capsulaMsg = `🆘 Rescate (+${PENALIZACION_MIN} min)\n\n✅ *La respuesta era:* ${respuestaCorrecta}\n\n${station.capsula}`;
+      capsulaMsg = `🆘 Rescate (+${PESO_RESCATE} min)\n\n✅ *La respuesta era:* ${respuestaCorrecta}\n\n${station.capsula}`;
       response = `Fragmentos del Códice: "${fragmentosHasta(station, paso)}"`;
       siguienteEstacionId = String(team.estacion_actual);
     }
@@ -894,13 +929,13 @@ ${station.acertijo}
   const elapsedSec = Number.isFinite(startMs) ? Math.floor((Date.now() - startMs) / 1000) : 0;
   const fmtEstado = s =&gt; `${Math.floor(s / 60)} min ${s % 60} s`;
   const pasoActual = Math.min(pasoDe(team), NUM_ESTACIONES_REGULARES);
-  response = `📜 ESTADO DEL EQUIPO\n\nEquipo: ${team.nombre}\nEnclave: ${pasoActual} de ${NUM_ESTACIONES_REGULARES}\n⏱ Tiempo transcurrido: ${fmtEstado(elapsedSec)}\nFragmentos del Códice: "${fragmentosHasta(station, pasoActual - 1)}"\nPistas: ${team.pistas_usadas}\nMapas: ${team.mapas_usados}\nPenalización: ${team.penalizacion_minutos} min`;
+  response = `📜 ESTADO DEL EQUIPO\n\nEquipo: ${team.nombre}\n${T_ENCLAVE}: ${pasoActual} de ${NUM_ESTACIONES_REGULARES}\n⏱ Tiempo transcurrido: ${fmtEstado(elapsedSec)}\nFragmentos del Códice: "${fragmentosHasta(station, pasoActual - 1)}"\nPistas: ${team.pistas_usadas || 0}\nMapas: ${team.mapas_usados || 0}\nRescates: ${team.rescates_usados || 0}\nPenalización: ${penalizacionDe(team)} min`;
 } else if (msg.text === 'repetir' || msg.text === '/repetir') {
   if (!team.acertijo_visto) {
     team.acertijo_visto = true;
     changed = true;
   }
-  response = `📍 Enclave ${station.orden}: ${station.nombre}\n\n🧩 ${station.acertijo}`;
+  response = `📍 ${T_ENCLAVE} ${station.orden}: ${station.nombre}\n\n🧩 ${station.acertijo}`;
   imagenUrl = station.imagen_url || '';
 } else {
   const accepted = String(station.respuestas || '').split('|').map(norm);
@@ -941,35 +976,92 @@ return [{json:{...team,response,chat_id:msg.chat_id,changed,imagen_url:imagenUrl
       <div class="panel">
         <div class="code-panel-head">
           <div class="code-panel-title">Nodo n8n: <span class="node-name">Construir mensaje siguiente</span> <span class="node-type">(Code, JavaScript)</span></div>
-          <span class="code-lines">27 líneas</span>
+          <span class="code-lines">13 líneas</span>
         </div>
         <pre class="code-block"><code>const prev = $('Procesar estación y comandos').first().json;
 const next = $json;
+const gymkanaConfig = $('Cargar gymkana').first().json;
+const T_ENCLAVE = gymkanaConfig.termino_enclave || 'Enclave';
 
 let siguienteTexto;
-
 if (String(next.id) === String(prev.estacion_final)) {
-  siguienteTexto = `🧩 *¡EL CÓDICE ESTÁ COMPLETO!*
-
-Al unir todos los fragmentos obtenemos unas coordenadas...
-👉 \`${next.coordenadas_finales}\`
-
-📍 Dirigíos hasta ese punto para realizar la última misión.
-
-🚶 *Última misión:*
-1️⃣ Dirigíos hacia el enclave secreto: *${next.nombre}*.
-2️⃣ 🗺️ Mapa: ${next.mapa_url}
-
-📍 Al llegar, escribid \`/destino\` para afrontar el desenlace.`;
+  siguienteTexto = `🧩 *¡EL CÓDICE ESTÁ COMPLETO!*\n\nAl unir todos los fragmentos obtenemos unas coordenadas...\n👉 \`${next.coordenadas_finales}\`\n\n📍 Dirigíos hasta ese punto para realizar la última misión.\n\n🚶 *Última misión:*\n1️⃣ Dirigíos hacia el ${T_ENCLAVE.toLowerCase()} secreto: *${next.nombre}*.\n2️⃣ 🗺️ Mapa: ${next.mapa_url}\n\n📍 Al llegar, escribid \`/destino\` para afrontar el desenlace.`;
 } else {
-  siguienteTexto = `➡️ *Próximo enclave:* ${next.nombre}
-🗺️ Mapa: ${next.mapa_url}
-
-📍 Al llegar, escribid \`/destino\`.`;
+  siguienteTexto = `➡️ *Próximo ${T_ENCLAVE.toLowerCase()}:* ${next.nombre}\n🗺️ Mapa: ${next.mapa_url}\n\n📍 Al llegar, escribid \`/destino\`.`;
 }
-
 const response = `${prev.response}\n\n${siguienteTexto}`;
 return [{ json: { ...prev, response } }];
+</code></pre>
+      </div>
+      <div class="panel">
+        <div class="code-panel-head">
+          <div class="code-panel-title">Nodo n8n: <span class="node-name">Formatear resumen admin</span> <span class="node-type">(Code, JavaScript — Fase 3, panel de organizador)</span></div>
+          <span class="code-lines">64 líneas</span>
+        </div>
+        <pre class="code-block"><code>const ctx = $('Decidir acción').first().json;
+const gymkanaConfig = $('Cargar gymkana').first().json;
+const teams = $input.all().map(item =&gt; item.json).filter(t =&gt; t &amp;&amp; t.id);
+
+const T_ENCLAVE = gymkanaConfig.termino_enclave || 'Enclave';
+const PESO_PISTA = Number(gymkanaConfig.peso_pista) || 1;
+const PESO_MAPA = Number(gymkanaConfig.peso_mapa) || 3;
+const PESO_RESCATE = Number(gymkanaConfig.peso_rescate) || 5;
+const NUM_ESTACIONES_REGULARES = Number(gymkanaConfig.num_estaciones_regulares) || 8;
+
+function penalizacionDe(t) {
+  return Number(t.pistas_usadas || 0) * PESO_PISTA
+    + Number(t.mapas_usados || 0) * PESO_MAPA
+    + Number(t.rescates_usados || 0) * PESO_RESCATE;
+}
+
+function fmtTiempo(totalSeg) {
+  const m = Math.floor(totalSeg / 60);
+  const s = totalSeg % 60;
+  const h = Math.floor(m / 60);
+  const mm = m % 60;
+  return h &gt; 0 ? `${h}h ${mm}m ${s}s` : `${mm}m ${s}s`;
+}
+
+function estadoEmoji(estado) {
+  if (estado === 'finalizado') return '🏁';
+  if (estado === 'en_juego') return '🎮';
+  if (estado === 'esperando_inicio') return '🚦';
+  return '📝';
+}
+
+const filas = teams
+  .filter(t =&gt; t.estado &amp;&amp; t.estado !== 'pendiente_nombre')
+  .sort((a, b) =&gt; {
+    const aFin = a.estado === 'finalizado';
+    const bFin = b.estado === 'finalizado';
+    if (aFin &amp;&amp; bFin) return Number(a.tiempo_oficial_segundos || 0) - Number(b.tiempo_oficial_segundos || 0);
+    if (aFin) return -1;
+    if (bFin) return 1;
+    return Number(b.paso || 0) - Number(a.paso || 0);
+  })
+  .map(t =&gt; {
+    const paso = Math.min(Number(t.paso || 1), NUM_ESTACIONES_REGULARES);
+    let tiempoTxt;
+    if (t.estado === 'finalizado') {
+      tiempoTxt = `⏱ ${fmtTiempo(Number(t.tiempo_oficial_segundos || 0))} (oficial)`;
+    } else if (t.inicio) {
+      const startMs = new Date(t.inicio).getTime();
+      const elapsed = Number.isFinite(startMs) ? Math.floor((Date.now() - startMs) / 1000) : 0;
+      tiempoTxt = `⏱ ${fmtTiempo(elapsed)} (en curso)`;
+    } else {
+      tiempoTxt = '⏱ sin empezar';
+    }
+    const penal = penalizacionDe(t);
+    return `${estadoEmoji(t.estado)} *${t.nombre || t.id}*\n` +
+      `   ${T_ENCLAVE} ${paso}/${NUM_ESTACIONES_REGULARES} · ${tiempoTxt}\n` +
+      `   💡${t.pistas_usadas || 0} 📍${t.mapas_usados || 0} 🆘${t.rescates_usados || 0} · ⏳ +${penal} min`;
+  });
+
+const response = filas.length
+  ? `🛠️ *PANEL ADMIN — ${gymkanaConfig.nombre || ''}*\n\n${filas.join('\n\n')}\n\n_Equipos: ${filas.length}_`
+  : '🛠️ *PANEL ADMIN*\n\nNo hay equipos registrados todavía.';
+
+return [{ json: { chat_id: ctx.msg.chat_id, response } }];
 </code></pre>
       </div>
     </div>
@@ -1106,7 +1198,7 @@ networks:
       "files": [
         "Nodo n8n: \"Cargar gymkana\" (googleFirebaseCloudFirestore, operación get, colección gymkanas, documentId fijo = \"linaje-olvidado\")"
       ],
-      "description": "Fase 0/1 (multi-tenencia): lee el documento raíz `gymkanas/linaje-olvidado`, que contiene la configuración de ESTA gymkana (tolerancia_metros, penalizacion_minutos, max_pistas, num_estaciones_regulares, nombre). Se ejecuta en TODO mensaje, antes de 'Cargar equipo', para que tanto 'Decidir acción' como 'Procesar estación y comandos' puedan leerlo vía referencia cruzada `$('Cargar gymkana')`. El id \"linaje-olvidado\" está fijo en este nodo porque cada gymkana tiene su propio workflow clonado (una gymkana nueva = un workflow nuevo con este id cambiado, no un único workflow compartido)."
+      "description": "Fase 0/1 (multi-tenencia): lee el documento raíz `gymkanas/linaje-olvidado`, que contiene la configuración de ESTA gymkana (tolerancia_metros, peso_pista, peso_mapa, peso_rescate, max_pistas, num_estaciones_regulares, nombre, admin_chat_id, termino_enclave). Se ejecuta en TODO mensaje, antes de 'Cargar equipo', para que 'Decidir acción', 'Procesar estación y comandos' y 'Construir mensaje siguiente' puedan leerlo vía referencia cruzada `$('Cargar gymkana')`. El id \"linaje-olvidado\" está fijo en este nodo porque cada gymkana tiene su propio workflow clonado (una gymkana nueva = un workflow nuevo con este id cambiado, no un único workflow compartido). Fase 3: `admin_chat_id` (panel de organizador) y `termino_enclave` (terminología parametrizada, p.ej. \"Enclave\" → \"Parada\") son configuración de esta gymkana, no literales fijos en el código."
     },
     {
       "id": "cargar_equipo",
@@ -1124,9 +1216,9 @@ networks:
       "type": "logic",
       "layer": "Lógica principal",
       "files": [
-        "Nodo n8n: \"Decidir acción\" (Code, ~204 líneas JavaScript)"
+        "Nodo n8n: \"Decidir acción\" (Code, ~211 líneas JavaScript)"
       ],
-      "description": "Máquina de estados principal del bot. Lee `gymkanaConfig` de 'Cargar gymkana' (Fase 0: max_pistas, penalizacion_minutos y num_estaciones_regulares ya no están fijos en el código, se usan p.ej. para redactar el texto de /ayuda). Reconstruye el mensaje directamente desde 'Telegram Trigger'. Según el estado del equipo y el texto recibido, decide una `action` (save_send | send_only | station | final_summary | reboot). El reparto del enclave de inicio (`orden_inicio`) ya NO se decide aquí (ver 'Calcular orden de inicio'); este nodo solo marca `just_registered`/`reminder_inicio` como señales transitorias para 'Procesar estación y comandos'. Aquí viven: /start, /ayuda, /reboot, /move (depuración, regex ya admite cualquier nº de dígitos) y las rutas de /estado y /destino."
+      "description": "Máquina de estados principal del bot. Lee `gymkanaConfig` de 'Cargar gymkana' (Fase 0: max_pistas, peso_pista/peso_mapa/peso_rescate y num_estaciones_regulares ya no están fijos en el código, se usan p.ej. para redactar el texto de /ayuda; Fase 3: `T_ENCLAVE = gymkanaConfig.termino_enclave || 'Enclave'` sustituye el literal \"Enclave\" en todos los mensajes de este nodo). Reconstruye el mensaje directamente desde 'Telegram Trigger'. Según el estado del equipo y el texto recibido, decide una `action` (save_send | send_only | station | final_summary | reboot | admin_list). El reparto del enclave de inicio (`orden_inicio`) ya NO se decide aquí (ver 'Calcular orden de inicio'); este nodo solo marca `just_registered`/`reminder_inicio` como señales transitorias para 'Procesar estación y comandos'. Aquí viven: /start, /ayuda, /reboot, /move (depuración, regex ya admite cualquier nº de dígitos), las rutas de /estado y /destino, y /admin (Fase 3: solo si `msg.chat_id === gymkanaConfig.admin_chat_id`; para cualquier otro chat, /admin cae en la rama de texto libre normal, sin dar ninguna pista de que el comando existe)."
     },
     {
       "id": "ruta",
@@ -1134,9 +1226,9 @@ networks:
       "type": "logic",
       "layer": "Lógica principal",
       "files": [
-        "Nodo n8n: \"Ruta de acción\" (Switch, typeVersion 3.2, 5 salidas)"
+        "Nodo n8n: \"Ruta de acción\" (Switch, typeVersion 3.2, 6 salidas)"
       ],
-      "description": "Switch con 5 ramas según el campo `action` calculado por 'Decidir acción': save_send → \"Guardar y enviar\"; send_only → \"Solo enviar\"; station → \"Procesar estación\"; final_summary → \"Cierre final\"; reboot → (rama sin nombre, añadida para /reboot). Tras el cambio de inicio aleatorio, save_send solo se usa ya para el /start inicial (creación del equipo); registrar el nombre y /move 0 pasan ahora por station."
+      "description": "Switch con 6 ramas según el campo `action` calculado por 'Decidir acción': save_send → \"Guardar y enviar\"; send_only → \"Solo enviar\"; station → \"Procesar estación\"; final_summary → \"Cierre final\"; reboot → \"Reiniciar equipo\"; admin_list → \"Panel admin\" (Fase 3, nueva). Tras el cambio de inicio aleatorio, save_send solo se usa ya para el /start inicial (creación del equipo); registrar el nombre y /move 0 pasan ahora por station."
     },
     {
       "id": "cargar_estacion",
@@ -1154,9 +1246,9 @@ networks:
       "type": "logic",
       "layer": "Lógica principal",
       "files": [
-        "Nodo n8n: \"Procesar estación y comandos\" (Code, ~345 líneas JavaScript)"
+        "Nodo n8n: \"Procesar estación y comandos\" (Code, ~356 líneas JavaScript)"
       ],
-      "description": "Motor del juego. Recibe `team`/`ctx` (de 'Decidir acción'), `station` (de 'Cargar estación') y `gymkanaConfig` (de 'Cargar gymkana'). De gymkanaConfig calcula al inicio MAX_PISTAS, PENALIZACION_MIN, TOLERANCIA_METROS, NUM_ESTACIONES_REGULARES y ESTACION_FINAL = NUM_ESTACIONES_REGULARES+1 — nada de esto está ya fijo en el código (Fase 0). Gestiona: bienvenida al enclave de inicio, /move, cronómetro, distancia Haversine, /pista, /mapa, /rescate, /estado, /repetir, comprobación de respuestas y el cierre final. Al avanzar de enclave, calcula el nuevo `paso` y la nueva `estacion_actual` con `estacionFisica(orden_inicio, paso)` (rotación módulo NUM_ESTACIONES_REGULARES), otorga el fragmento de ESE PASO y emite `siguiente_estacion_id` + `estacion_final` para los nodos siguientes."
+      "description": "Motor del juego. Recibe `team`/`ctx` (de 'Decidir acción'), `station` (de 'Cargar estación') y `gymkanaConfig` (de 'Cargar gymkana'). De gymkanaConfig calcula al inicio MAX_PISTAS, PESO_PISTA, PESO_MAPA, PESO_RESCATE, TOLERANCIA_METROS, NUM_ESTACIONES_REGULARES, ESTACION_FINAL = NUM_ESTACIONES_REGULARES+1 y T_ENCLAVE = gymkanaConfig.termino_enclave || 'Enclave' — nada de esto está ya fijo en el código (Fase 0/3). La función `penalizacionDe(team)` calcula la penalización ponderada al vuelo (pistas_usadas*PESO_PISTA + mapas_usados*PESO_MAPA + rescates_usados*PESO_RESCATE) en vez de acumularla turno a turno, para que sea consistente sin importar en qué orden se pidan pistas/mapas/rescates. Gestiona: bienvenida al enclave de inicio, /move, cronómetro, distancia Haversine, /pista, /mapa, /rescate, /estado, /repetir, comprobación de respuestas y el cierre final. Al avanzar de enclave, calcula el nuevo `paso` y la nueva `estacion_actual` con `estacionFisica(orden_inicio, paso)` (rotación módulo NUM_ESTACIONES_REGULARES), otorga el fragmento de ESE PASO y emite `siguiente_estacion_id` + `estacion_final` para los nodos siguientes."
     },
     {
       "id": "siguiente_check",
@@ -1186,7 +1278,7 @@ networks:
       "files": [
         "Nodo n8n: \"Construir mensaje siguiente\" (Code)"
       ],
-      "description": "Toma la `response` ya construida en 'Procesar estación y comandos' (vía referencia cruzada `$('Procesar estación y comandos')`) y le añade el bloque \"➡️ Próximo enclave: nombre + mapa\" usando los datos de 'Cargar siguiente estación'. Si esa próxima estación es la \"9\", en su lugar añade el aviso especial \"🧩 ¡EL CÓDICE ESTÁ COMPLETO!\" con las coordenadas finales — este aviso ya no está fijo en ninguna estación física: se dispara para quien sea que complete su 8º paso."
+      "description": "Toma la `response` ya construida en 'Procesar estación y comandos' (vía referencia cruzada `$('Procesar estación y comandos')`) y le añade el bloque \"➡️ Próximo enclave: nombre + mapa\" usando los datos de 'Cargar siguiente estación'. Si esa próxima estación es la \"9\", en su lugar añade el aviso especial \"🧩 ¡EL CÓDICE ESTÁ COMPLETO!\" con las coordenadas finales — este aviso ya no está fijo en ninguna estación física: se dispara para quien sea que complete su 8º paso. Fase 3: también lee `gymkanaConfig` vía `$('Cargar gymkana')` (ancestro de este nodo en el DAG aunque no sea su predecesor directo) para sustituir \"enclave\"/\"enclave secreto\" por `T_ENCLAVE`."
     },
     {
       "id": "hay_cambios",
@@ -1297,6 +1389,36 @@ networks:
         "Nodo n8n: \"Enviar confirmación reboot\" (Telegram sendMessage, onError: continueRegularOutput)"
       ],
       "description": "Envía el mensaje de confirmación (\"equipo borrado, escribid /start\") tras ejecutar 'Borrar equipo'."
+    },
+    {
+      "id": "listar_equipos_admin",
+      "label": "Listar equipos (admin)",
+      "type": "data",
+      "layer": "Datos",
+      "files": [
+        "Nodo n8n: \"Listar equipos (admin)\" (googleFirebaseCloudFirestore, resource: document, operación getAll, colección gymkanas/linaje-olvidado/equipos, returnAll: true)"
+      ],
+      "description": "Fase 3 (panel de organizador). Rama admin_list: trae TODOS los documentos de la colección `equipos` de esta gymkana de una sola vez (a diferencia de 'Cargar equipo', que trae un único documento por chat_id). Solo se alcanza si 'Decidir acción' ya comprobó que el chat_id es el del organizador."
+    },
+    {
+      "id": "formatear_admin",
+      "label": "Formatear resumen admin",
+      "type": "logic",
+      "layer": "Lógica principal",
+      "files": [
+        "Nodo n8n: \"Formatear resumen admin\" (Code, JavaScript)"
+      ],
+      "description": "Fase 3. Recibe la lista de equipos de 'Listar equipos (admin)' y `gymkanaConfig` (para T_ENCLAVE y los pesos de penalización). Descarta equipos en `pendiente_nombre` (sin nombre aún), ordena los finalizados primero por tiempo oficial ascendente y luego los `en_juego` por paso descendente, y arma un bloque de texto por equipo: nombre, estado (con emoji), enclave/paso, tiempo (en curso u oficial), pistas/mapas/rescates usados y penalización ponderada (`penalizacionDe`, la misma fórmula que 'Procesar estación y comandos'). El chat_id destino sale de `$('Decidir acción')`."
+    },
+    {
+      "id": "entrega_admin",
+      "label": "Entrega: panel admin",
+      "type": "delivery",
+      "layer": "Entrega",
+      "files": [
+        "Nodo n8n: \"Enviar resumen admin\" (Telegram sendMessage, parse_mode Markdown)"
+      ],
+      "description": "Envía el resumen formateado por 'Formatear resumen admin' al chat del organizador. Solo texto, sin fotos ni documentos."
     },
     {
       "id": "enviar_directa",
@@ -1449,6 +1571,36 @@ networks:
       "to": "borrar_equipo",
       "label": "reboot",
       "type": "control"
+    },
+    {
+      "from": "ruta",
+      "to": "listar_equipos_admin",
+      "label": "admin_list",
+      "type": "control"
+    },
+    {
+      "from": "listar_equipos_admin",
+      "to": "ext_fs_equipos",
+      "label": "GET ALL equipos/*",
+      "type": "data"
+    },
+    {
+      "from": "listar_equipos_admin",
+      "to": "formatear_admin",
+      "label": "",
+      "type": "control"
+    },
+    {
+      "from": "formatear_admin",
+      "to": "entrega_admin",
+      "label": "",
+      "type": "control"
+    },
+    {
+      "from": "entrega_admin",
+      "to": "ext_telegram",
+      "label": "sendMessage",
+      "type": "external"
     },
     {
       "from": "preparar_equipo",
@@ -1922,7 +2074,7 @@ networks:
         },
         {
           "node": "procesar",
-          "description": "Rama /rescate, !team.acertijo_visto → marca acertijo_visto=true, penalizacion_minutos+=3, rescates_usados+=1, imagenUrl=station.imagen_url, response=\"🆘 Rescate (+3 min): os guiamos hasta el enclave\" + ENCLAVE + acertijo. No se cobra fragmento ni se avanza de estación (siguiente_estacion_id queda vacío).",
+          "description": "Rama /rescate, !team.acertijo_visto → marca acertijo_visto=true, rescates_usados+=1 (la penalización YA NO se acumula: se recalcula al vuelo con penalizacionDe cuando hace falta), imagenUrl=station.imagen_url, response=\"🆘 Rescate (+PESO_RESCATE min): os guiamos hasta el \"+T_ENCLAVE+ acertijo. No se cobra fragmento ni se avanza de estación (siguiente_estacion_id queda vacío).",
           "files": [
             "Procesar estación y comandos"
           ]
@@ -1970,7 +2122,7 @@ networks:
         },
         {
           "node": "procesar",
-          "description": "Rama /rescate, team.acertijo_visto=true → penaliza +3 min, rescates_usados+=1, calcula respuestaCorrecta=primer valor de station.respuestas. Si team.estacion_actual<9: avanza paso/estación (igual que al responder bien), capsulaMsg=\"🆘 Rescate (+3 min)\\n\\n✅ La respuesta era: X\"+cápsula, fija siguiente_estacion_id. Si team.estacion_actual≥9: finaliza la partida (ver flujo 10).",
+          "description": "Rama /rescate, team.acertijo_visto=true → rescates_usados+=1 (penalización ponderada recalculada al vuelo), calcula respuestaCorrecta=primer valor de station.respuestas. Si team.estacion_actual<9: avanza paso/estación (igual que al responder bien), capsulaMsg=\"🆘 Rescate (+PESO_RESCATE min)\\n\\n✅ La respuesta era: X\"+cápsula, fija siguiente_estacion_id. Si team.estacion_actual≥9: finaliza la partida (ver flujo 11).",
           "files": [
             "Procesar estación y comandos"
           ]
@@ -2028,7 +2180,7 @@ networks:
         },
         {
           "node": "procesar",
-          "description": "Si pista_actual<3: incrementa pista_actual y pistas_usadas, response=\"💡 Pista N: \"+station['pista'+N]. Si ya se usaron 3: avisa y sugiere /rescate o /mapa. changed=true siempre que se entregue una pista nueva. No toca siguiente_estacion_id.",
+          "description": "Si pista_actual<3: incrementa pista_actual y pistas_usadas, response=\"💡 Pista N (+PESO_PISTA min): \"+station['pista'+N]. Si ya se usaron 3: avisa y sugiere /rescate o /mapa (con sus pesos reales respectivos). changed=true siempre que se entregue una pista nueva. No toca siguiente_estacion_id ni la penalización acumulada: pistas_usadas se traduce a minutos solo cuando penalizacionDe() la lee.",
           "files": [
             "Procesar estación y comandos"
           ]
@@ -2071,7 +2223,7 @@ networks:
         },
         {
           "node": "procesar",
-          "description": "Si esta estación no se había pedido ya: penalizacion_minutos+=3, mapas_usados+=1, response=station.mapa_url, changed=true. Si ya se había pedido: repite el enlace sin penalizar de nuevo (changed=false).",
+          "description": "Si esta estación no se había pedido ya: mapas_usados+=1 (penalización ponderada +PESO_MAPA min al recalcularse), response=\"📍 Pista de mapa (+PESO_MAPA min): \"+station.mapa_url, changed=true. Si ya se había pedido: repite el enlace sin penalizar de nuevo (changed=false).",
           "files": [
             "Procesar estación y comandos"
           ]
@@ -2123,7 +2275,7 @@ networks:
         },
         {
           "node": "procesar",
-          "description": "Construye el resumen: equipo, \"Enclave: paso de 8\" (basado en team.paso, no en la estación física), tiempo transcurrido, fragmentos del códice (fragmentosHasta(station, paso-1)), pistas/mapas usados, penalización. No modifica el equipo → changed queda false.",
+          "description": "Construye el resumen: equipo, \"T_ENCLAVE: paso de 8\" (basado en team.paso, no en la estación física, y con el término propio de esta gymkana), tiempo transcurrido, fragmentos del códice (fragmentosHasta(station, paso-1)), pistas/mapas/rescates usados y penalización ponderada (penalizacionDe(team), recalculada al vuelo). No modifica el equipo → changed queda false.",
           "files": [
             "Procesar estación y comandos"
           ]
@@ -2346,6 +2498,55 @@ networks:
           ]
         }
       ]
+    },
+    {
+      "id": "f_admin",
+      "name": "16. Panel admin (/admin, oculto — Fase 3)",
+      "steps": [
+        {
+          "node": "client",
+          "description": "El organizador (chat_id = gymkanaConfig.admin_chat_id) escribe /admin. Cualquier otro chat que escriba /admin cae en la rama de texto libre normal, sin ninguna respuesta especial.",
+          "files": []
+        },
+        {
+          "node": "decidir",
+          "description": "isAdmin = (msg.text === 'admin' || '/admin') && msg.chat_id === String(gymkanaConfig.admin_chat_id) → action='admin_list'.",
+          "files": [
+            "Decidir acción"
+          ]
+        },
+        {
+          "node": "ruta",
+          "description": "action=admin_list.",
+          "files": []
+        },
+        {
+          "node": "listar_equipos_admin",
+          "description": "Firestore getAll: TODOS los documentos de equipos de esta gymkana en una sola llamada.",
+          "files": [
+            "Listar equipos (admin)"
+          ]
+        },
+        {
+          "node": "formatear_admin",
+          "description": "Ordena (finalizados por tiempo oficial, luego en_juego por paso) y formatea nombre, enclave/paso, tiempo, pistas/mapas/rescates y penalización ponderada de cada equipo.",
+          "files": [
+            "Formatear resumen admin"
+          ]
+        },
+        {
+          "node": "entrega_admin",
+          "description": "Envía el resumen de texto al chat del organizador.",
+          "files": [
+            "Enviar resumen admin"
+          ]
+        },
+        {
+          "node": "ext_telegram",
+          "description": "sendMessage.",
+          "files": []
+        }
+      ]
     }
   ]
 }
@@ -2526,13 +2727,13 @@ network.once('afterDrawing', () => network.fit());
 const publicCommands = [
   ["/start", "Decidir acción", "Crea el equipo (si no existe) y pide el nombre. Si ya existe, avisa de que la partida sigue en curso."],
   ["(texto libre tras /start)", "Decidir acción → Procesar estación y comandos", "Se interpreta como el nombre del equipo; se le asigna un enclave de inicio ALEATORIO (1-8) y se envía su foto + nombre + mapa como punto de partida."],
-  ["/ayuda", "Decidir acción", "Muestra la lista de comandos públicos (no incluye /move ni /reboot)."],
+  ["/ayuda", "Decidir acción", "Muestra la lista de comandos públicos (no incluye /move, /reboot ni /admin), con el término del enclave (gymkanaConfig.termino_enclave) y los pesos de penalización ya sustituidos en el texto."],
   ["/destino", "Decidir acción → Procesar estación y comandos", "Pide compartir ubicación real; con ubicación adjunta, calcula la distancia Haversine al enclave actual (tolerancia 50 m)."],
-  ["/pista", "Procesar estación y comandos", "Da la siguiente pista (máx. 3 por enclave); pasadas las 3, sugiere /rescate o /mapa."],
-  ["/mapa", "Procesar estación y comandos", "Envía station.mapa_url; la primera vez penaliza +3 min y cuenta como mapa usado."],
-  ["/rescate", "Procesar estación y comandos", "Si el acertijo no se había mostrado aún: lo revela (+3 min, sin fragmento). Si ya se había mostrado: da la respuesta, cobra el fragmento de ESE PASO y avanza al siguiente enclave de su ruta (+3 min)."],
+  ["/pista", "Procesar estación y comandos", "Da la siguiente pista (máx. 3 por enclave; +peso_pista min cada una, 1 por defecto); pasadas las 3, sugiere /rescate o /mapa."],
+  ["/mapa", "Procesar estación y comandos", "Envía station.mapa_url; la primera vez penaliza +peso_mapa min (3 por defecto) y cuenta como mapa usado."],
+  ["/rescate", "Procesar estación y comandos", "Si el acertijo no se había mostrado aún: lo revela (sin fragmento). Si ya se había mostrado: da la respuesta, cobra el fragmento de ESE PASO y avanza al siguiente enclave de su ruta. Cada uso (revelar o resolver) suma +1 a rescates_usados, penalizado a +peso_rescate min (5 por defecto) en el cálculo final."],
   ["/repetir", "Procesar estación y comandos (o Decidir acción si finalizado)", "Repite el acertijo actual. Si el equipo ya terminó la gymkana, reenvía el resumen final guardado (con la guía histórica en PDF) en vez de un acertijo."],
-  ["/estado", "Decidir acción → Procesar estación y comandos", "Resumen del progreso: paso actual (1-8) de SU ruta, tiempo transcurrido, fragmentos del códice conseguidos, pistas/mapas usados, penalización."],
+  ["/estado", "Decidir acción → Procesar estación y comandos", "Resumen del progreso: paso actual (1-8) de SU ruta, tiempo transcurrido, fragmentos del códice conseguidos, pistas/mapas/rescates usados y la penalización ponderada (calculada al vuelo, no acumulada)."],
 ];
 const debugCommands = [
   ["/move 0", "Decidir acción → Procesar estación y comandos", "Sitúa al equipo justo después de registrar el nombre (esperando_inicio) en SU enclave de inicio ya asignado (o le asigna uno por round-robin, vía el contador, si aún no tenía)."],
@@ -2542,6 +2743,9 @@ const debugCommands = [
 const otherInputs = [
   ["Ubicación GPS (no en tiempo real)", "Calcula la distancia al enclave físico actual. Si es la primera vez que se confirma la llegada a SU enclave de inicio estando esperando_inicio: arranca el cronómetro. Si el acertijo aún no se había mostrado: lo revela. Si ya se había mostrado: confirma \"lugar correcto\" sin repetirlo."],
   ["Cualquier otro texto (durante en_juego)", "Se normaliza y se compara contra station.respuestas.split('|'). Si coincide: cápsula + fragmentos del paso + próximo enclave de SU ruta (nombre+mapa, calculado dinámicamente) o el aviso de código completo / cierre final en la estación 9. Si no coincide: cuenta como intento fallido y sugiere PISTA."],
+];
+const adminCommands = [
+  ["/admin", "Decidir acción → Listar equipos (admin) → Formatear resumen admin", "Solo responde si el chat_id coincide con gymkanaConfig.admin_chat_id. Trae TODOS los documentos de gymkanas/linaje-olvidado/equipos (Firestore getAll), los ordena (finalizados primero por tiempo oficial, luego en_juego por paso descendente) y envía un resumen: nombre, estado, enclave/paso, tiempo (en curso u oficial), pistas/mapas/rescates y penalización ponderada de cada equipo."],
 ];
 
 function fillTable(id, rows) {
@@ -2556,14 +2760,19 @@ function fillTable(id, rows) {
 fillTable('cmd-table-public', publicCommands);
 fillTable('cmd-table-debug', debugCommands);
 fillTable('cmd-table-other', otherInputs);
+fillTable('cmd-table-admin', adminCommands);
 
 const gymkanaFields = [
   ["id", "string", "= \"linaje-olvidado\" en este workflow. Cada gymkana clonada tendría el suyo propio."],
   ["nombre", "string", "Nombre mostrado de la gymkana (\"El Linaje Olvidado\"); se usa p.ej. en el mensaje de bienvenida tras registrar el nombre del equipo."],
   ["tolerancia_metros", "number", "Radio de tolerancia GPS para /destino y la llegada a un enclave. Fase 0: antes era 50 fijo en el código."],
-  ["penalizacion_minutos", "number", "Minutos de penalización por cada mapa/pista agotada/rescate. Fase 0: antes era 3 fijo en el código."],
+  ["peso_pista", "number", "Minutos de penalización por cada pista pedida (1 por defecto). Sustituye al antiguo penalizacion_minutos plano."],
+  ["peso_mapa", "number", "Minutos de penalización por pedir el mapa de un enclave (3 por defecto)."],
+  ["peso_rescate", "number", "Minutos de penalización por cada uso de /rescate — revelar o resolver (5 por defecto)."],
   ["max_pistas", "number", "Nº máximo de pistas por enclave antes de sugerir /rescate. Fase 0: antes era 3 fijo en el código."],
   ["num_estaciones_regulares", "number", "Nº de enclaves \"normales\" antes del enclave secreto (8 en El Linaje Olvidado). Determina la rotación por paso y en qué estación se dispara el cierre final."],
+  ["admin_chat_id", "string", "chat_id de Telegram del organizador. Único chat autorizado a usar el comando oculto /admin (Fase 3: panel de organizador)."],
+  ["termino_enclave", "string", "Palabra usada para referirse a una estación/parada de esta gymkana (\"Enclave\" por defecto). Sustituye los literales \"Enclave\"/\"ENCLAVE\" que antes estaban fijos en el código de Decidir acción, Procesar estación y comandos y Construir mensaje siguiente (Fase 3: terminología parametrizada por gymkana)."],
 ];
 const equiposFields = [
   ["id", "string", "= chat_id de Telegram, en texto. Clave de upsert (updateKey)."],
@@ -2577,7 +2786,7 @@ const equiposFields = [
   ["fin", "ISO datetime", "Momento en que se completó la gymkana."],
   ["pistas_usadas", "number", "Contador total de pistas pedidas."],
   ["mapas_usados", "number", "Contador de mapas pedidos (solo cuenta la primera vez por enclave)."],
-  ["penalizacion_minutos", "number", "Minutos de penalización acumulados (+3 por mapa, pista agotada→rescate, o rescate)."],
+  ["penalizacion_minutos", "number", "Snapshot de la penalización ponderada en el momento de finalizar (pistas_usadas*peso_pista + mapas_usados*peso_mapa + rescates_usados*peso_rescate). Ya NO se acumula turno a turno: se recalcula desde los contadores cada vez que hace falta (p.ej. en /estado)."],
   ["pista_actual", "number", "Nº de pistas ya mostradas en el enclave actual (0-3); se resetea al avanzar."],
   ["mapa_estaciones", "string", "Lista de nº de enclave separados por coma en los que ya se pidió mapa (evita re-penalizar)."],
   ["intentos", "number", "Nº de respuestas incorrectas acumuladas."],
