@@ -8,6 +8,8 @@ El organizador dispone de un comando oculto `/admin` (no aparece en `/ayuda`), r
 
 Cada gymkana completada por un equipo queda registrada (append-only, sobrevive a un `/reboot`) en `gymkanas/linaje-olvidado/eventos`, con tiempos, pistas/mapas/rescates usados, penalización y rango obtenido — pensado para análisis posterior al evento (medias, distribución de rangos, equidad del reparto round-robin, etc.), separado del estado en vivo de `equipos`.
 
+Los equipos pueden detener y reanudar su propio cronómetro con `/pausa`/`/reanudar` (p.ej. para una parada); mientras están en pausa, el resto de comandos de juego quedan bloqueados y el tiempo en pausa no cuenta para el resultado final.
+
 Documentación técnica completa (arquitectura, comandos, esquema de datos, código de los nodos clave): ver [`documentacion_gymkana.html`](./documentacion_gymkana.html) — ábrelo en cualquier navegador, incluye un diagrama interactivo del workflow.
 
 ## Estructura del proyecto
