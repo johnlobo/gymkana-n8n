@@ -15,7 +15,13 @@ Uso:
         --template-workflow-id spt1kZxCOE9LCBbz \
         --n8n-url http://172.20.0.5:5678 \
         --n8n-api-key-file ../secrets/n8n_api_key \
-        --firebase-key-file ../secrets/firebase-service-account.json
+        --firebase-key-file ../secrets/firebase-service-account.json \
+        --admin-chat-id-file ../secrets/admin_chat_id
+
+Si la definición no trae admin_chat_id, se rellena con el contenido de
+--admin-chat-id-file (por defecto ../secrets/admin_chat_id, gitignoreado) —
+así no hace falta escribir tu chat_id de Telegram en un YAML que puede
+acabar en un repositorio público.
 """
 import argparse
 import json
@@ -178,7 +184,21 @@ class Firestore:
 # --------------------------------------------------------------------------
 # Construcción de documentos a partir de la definición
 # --------------------------------------------------------------------------
-def construir_config(data):
+def leer_admin_chat_id_por_defecto(path):
+    """Solo se usa si la definición no trae admin_chat_id: pensado para no
+    tener que escribir tu propio chat_id de Telegram en un YAML que puede
+    acabar en un repositorio público (ver secrets/admin_chat_id, gitignoreado)."""
+    try:
+        with open(path, encoding="utf-8") as f:
+            return f.read().strip()
+    except FileNotFoundError:
+        return ""
+
+
+def construir_config(data, admin_chat_id_file):
+    admin_chat_id = str(data.get("admin_chat_id") or "").strip()
+    if not admin_chat_id:
+        admin_chat_id = leer_admin_chat_id_por_defecto(admin_chat_id_file)
     return {
         "id": data["id"],
         "nombre": data["nombre"],
@@ -189,7 +209,7 @@ def construir_config(data):
         "peso_rescate": data.get("peso_rescate", DEFAULT_PESO_RESCATE),
         "num_estaciones_regulares": len(data["estaciones"]),
         "termino_enclave": data.get("termino_enclave", DEFAULT_TERMINO_ENCLAVE),
-        "admin_chat_id": str(data.get("admin_chat_id", "")),
+        "admin_chat_id": admin_chat_id,
     }
 
 
@@ -314,6 +334,9 @@ def main():
     parser.add_argument("--n8n-api-key-file", default=str(Path(__file__).parent.parent / "secrets" / "n8n_api_key"))
     parser.add_argument("--firebase-key-file",
                          default=str(Path(__file__).parent.parent / "secrets" / "firebase-service-account.json"))
+    parser.add_argument("--admin-chat-id-file",
+                         default=str(Path(__file__).parent.parent / "secrets" / "admin_chat_id"),
+                         help="se usa solo si la definición no trae admin_chat_id (ver secrets/admin_chat_id)")
     args = parser.parse_args()
 
     data = cargar_definicion(args.definicion)
@@ -321,7 +344,7 @@ def main():
     fragmentos = data["fragmentos"]
     num_regulares = len(data["estaciones"])
 
-    config_doc = construir_config(data)
+    config_doc = construir_config(data, args.admin_chat_id_file)
     estacion_docs = [construir_estacion_regular(e, fragmentos) for e in sorted(data["estaciones"], key=lambda e: e["orden"])]
     estacion_final_doc = construir_estacion_final(data["estacion_final"], fragmentos, num_regulares)
 
@@ -330,6 +353,11 @@ def main():
     print(f"  tolerancia_metros={config_doc['tolerancia_metros']}  max_pistas={config_doc['max_pistas']}")
     print(f"  peso_pista={config_doc['peso_pista']}  peso_mapa={config_doc['peso_mapa']}  peso_rescate={config_doc['peso_rescate']}")
     print(f"  termino_enclave={config_doc['termino_enclave']!r}")
+    print(f"  admin_chat_id={config_doc['admin_chat_id']!r}" + (
+        " (de la definición)" if str(data.get("admin_chat_id") or "").strip()
+        else f" (de {args.admin_chat_id_file})" if config_doc["admin_chat_id"]
+        else " (vacío — /admin quedará desactivado)"
+    ))
     print()
 
     if args.dry_run:

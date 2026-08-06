@@ -33,6 +33,13 @@ proyecto) y clona el workflow de "El Linaje Olvidado"
 (`spt1kZxCOE9LCBbz`). Todo esto se puede cambiar con `--template-workflow-id`,
 `--template-gymkana-id`, `--n8n-api-key-file`, `--firebase-key-file`.
 
+Si la definición no trae `admin_chat_id` (o lo trae vacío), se usa como
+respaldo el contenido de `../secrets/admin_chat_id` (gitignoreado) —
+así puedes tener tu propio chat_id de organizador sin escribirlo en
+ningún YAML que pueda acabar en un repositorio público. Cámbialo con
+`--admin-chat-id-file`. Si la definición SÍ trae `admin_chat_id`, ese
+valor gana siempre (útil para aprovisionar una gymkana de otra persona).
+
 Si solo quieres tocar Firestore (por ejemplo, para iterar en el contenido de
 las estaciones antes de tener el bot listo), usa `--skip-n8n`.
 
@@ -112,6 +119,6 @@ campo a campo cada estación contra los datos reales en Firestore — 0
 diferencias. Los datos de esa prueba también se borraron después.
 
 **Nota:** `../content/linaje_olvidado.yaml` deja `admin_chat_id` vacío a
-propósito (el original tenía un chat_id de Telegram real) — rellénalo con
-el chat_id del organizador si vuelves a aprovisionar esta gymkana y quieres
-usar `/admin`.
+propósito (el original tenía un chat_id de Telegram real) — al
+aprovisionar, el script lo rellena automáticamente desde
+`../secrets/admin_chat_id` si ese fichero existe.
