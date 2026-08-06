@@ -7,3 +7,7 @@ n8n_data/
 
 # Capturas de pantalla sueltas usadas durante el desarrollo
 Captura de pantalla*.png
+
+# Bytecode de Python
+__pycache__/
+*.pyc

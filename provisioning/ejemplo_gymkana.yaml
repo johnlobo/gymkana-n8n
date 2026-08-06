@@ -1,0 +1,128 @@
+# Fichero de ejemplo para provision_gymkana.py.
+# Copia este fichero, cambia el contenido y ejecuta:
+#   python3 provision_gymkana.py mi_gymkana.yaml --dry-run
+# para validar antes de escribir nada.
+
+id: gymkana-ejemplo          # solo letras/números/guiones; será el documentId en Firestore
+nombre: "La Gymkana de Ejemplo"
+
+# Parámetros de juego (todos opcionales; se muestran los valores por defecto)
+tolerancia_metros: 50        # radio GPS de "llegada" a un enclave, en metros
+max_pistas: 3                # nº de pistas antes de sugerir /rescate
+peso_pista: 1                # minutos de penalización por pista
+peso_mapa: 3                 # minutos de penalización por mapa
+peso_rescate: 5               # minutos de penalización por rescate
+termino_enclave: "Enclave"   # cómo se llama una "parada" en esta gymkana
+admin_chat_id: ""            # chat_id de Telegram del organizador (para /admin); se puede añadir luego
+
+# Un fragmento del "códice" final por cada estación regular, en el orden
+# en que se entregan (por PASO, no por estación física — cada equipo
+# empieza en una estación distinta, pero todos completan la secuencia
+# 1..N en ese mismo orden). Únelos y deberían formar las coordenadas
+# finales o una pista hacia ellas.
+fragmentos:
+  - "40.4"
+  - "168"
+  - "-3.7"
+  - "038"
+
+estaciones:
+  - orden: 1
+    nombre: "Fuente de la Plaza"
+    lat: 40.4168
+    lon: -3.7038
+    acertijo: |
+      🔍 *EL PRIMER SELLO*
+      Contad los caños de la fuente. Ese número, con un cero delante, es
+      la primera pista.
+    respuestas: "04|cuatro|4"
+    pistas:
+      - "Mirad justo debajo del escudo de piedra."
+      - "Hay más de dos, menos de seis."
+      - "Son cuatro caños."
+    capsula: |
+      📜 *Folio del Códice — I*
+      La fuente que veis data de 1743 y abastecía de agua al barrio
+      viejo hasta bien entrado el siglo XX.
+    imagen_url: "https://ejemplo.org/fuente.jpg"
+    mapa_url: "https://www.google.com/maps/search/?api=1&query=Plaza+Mayor"
+
+  - orden: 2
+    nombre: "Torre del Reloj"
+    lat: 40.4170
+    lon: -3.7040
+    acertijo: |
+      🔍 *EL SEGUNDO SELLO*
+      ¿Cuántas campanas hay en la torre?
+    respuestas: "1|una"
+    pistas:
+      - "Solo suena una vez cada hora."
+      - "Mirad el vano más alto."
+      - "Hay una única campana."
+    capsula: |
+      📜 *Folio del Códice — II*
+      La torre se reconstruyó tras el incendio de 1857.
+    imagen_url: "https://ejemplo.org/torre.jpg"
+    mapa_url: "https://www.google.com/maps/search/?api=1&query=Torre+del+Reloj"
+
+  - orden: 3
+    nombre: "Puente Viejo"
+    lat: 40.4172
+    lon: -3.7042
+    acertijo: |
+      🔍 *EL TERCER SELLO*
+      ¿Cuántos arcos tiene el puente?
+    respuestas: "3|tres"
+    pistas:
+      - "Ni uno ni cinco."
+      - "Es un número impar."
+      - "Tiene tres arcos."
+    capsula: |
+      📜 *Folio del Códice — III*
+      El puente conecta los dos barrios históricos desde el siglo XVI.
+    imagen_url: "https://ejemplo.org/puente.jpg"
+    mapa_url: "https://www.google.com/maps/search/?api=1&query=Puente+Viejo"
+
+  - orden: 4
+    nombre: "Ermita del Alto"
+    lat: 40.4174
+    lon: -3.7044
+    acertijo: |
+      🔍 *EL CUARTO SELLO*
+      Leed la fecha grabada en el dintel de la puerta.
+    respuestas: "1038|mil treinta y ocho"
+    pistas:
+      - "Está en números romanos."
+      - "Empieza por MXXX."
+      - "Es el año 1038."
+    capsula: |
+      📜 *Folio del Códice — IV*
+      La ermita corona el punto más alto de la villa.
+    imagen_url: "https://ejemplo.org/ermita.jpg"
+    mapa_url: "https://www.google.com/maps/search/?api=1&query=Ermita+del+Alto"
+
+# La estación secreta a la que llegan todos los equipos al terminar,
+# usando las coordenadas que se reconstruyen a partir de 'fragmentos'.
+estacion_final:
+  nombre: "Mirador del Valle"
+  lat: 40.4180
+  lon: -3.7050
+  acertijo: |
+    🔍 *EL SELLO FINAL*
+    Habéis reunido el códice completo. ¿Qué animal corona la veleta del
+    mirador?
+  respuestas: "aguila|águila"
+  pistas:
+    - "No es un ave nocturna."
+    - "Es un ave rapaz diurna."
+    - "Es un águila."
+  capsula: |
+    📜 *Folio final del Códice*
+    Desde aquí se domina todo el valle — el mismo paisaje que dio origen
+    a esta historia.
+  imagen_url: "https://ejemplo.org/mirador.jpg"
+  imagen_final_url: "https://ejemplo.org/mirador-final.jpg"
+  mapa_url: "https://www.google.com/maps/search/?api=1&query=Mirador+del+Valle"
+  coordenadas_finales: "40.4180N, -3.7050W"
+  # secuencia_codice: se genera automáticamente a partir de 'fragmentos' si se omite
+  guia_historica_url: ""   # opcional: PDF a enviar al terminar

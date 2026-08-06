@@ -10,6 +10,8 @@ Cada gymkana completada por un equipo queda registrada (append-only, sobrevive a
 
 Los equipos pueden detener y reanudar su propio cronómetro con `/pausa`/`/reanudar` (p.ej. para una parada); mientras están en pausa, el resto de comandos de juego quedan bloqueados y el tiempo en pausa no cuenta para el resultado final.
 
+Para montar una gymkana nueva sin repetir todo esto a mano, ver [`provisioning/`](./provisioning/README.md): un script que crea sus documentos en Firestore y clona el workflow de n8n a partir de un fichero de definición YAML.
+
 Documentación técnica completa (arquitectura, comandos, esquema de datos, código de los nodos clave): ver [`documentacion_gymkana.html`](./documentacion_gymkana.html) — ábrelo en cualquier navegador, incluye un diagrama interactivo del workflow.
 
 ## Estructura del proyecto
@@ -21,6 +23,7 @@ Documentación técnica completa (arquitectura, comandos, esquema de datos, cód
 ├── documentacion_gymkana.html      # Documentación técnica interactiva (autocontenida)
 ├── El_Linaje_Olvidado_Guia_Historica.pdf  # Guía histórica que el bot entrega al terminar la gymkana
 ├── test_n8n_api.sh                 # Script de prueba de la API REST de n8n
+├── provisioning/                   # Script para montar gymkanas nuevas (Fase 2)
 ├── backup/                         # Snapshots históricos del workflow y exports de Firestore
 ├── secrets/                        # Credenciales (NO versionado, ver .gitignore)
 ├── n8n_data/                       # Datos internos de n8n (NO versionado, ver .gitignore)
