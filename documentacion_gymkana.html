@@ -1273,7 +1273,7 @@ networks:
         <ul class="warn-list">
           <li>Esta documentación se generó inspeccionando directamente el workflow en ejecución vía la API REST de n8n y el contenido real de Firestore (colecciones <span class="inline-code">equipos</span>, <span class="inline-code">estaciones</span>, <span class="inline-code">updates_telegram</span>) — no a partir de un repositorio de código fuente tradicional.</li>
           <li>Las variables de entorno <span class="inline-code">N8N_VERSION</span>, <span class="inline-code">N8N_EDITOR_DOMAIN</span> y <span class="inline-code">N8N_ENCRYPTION_KEY</span> se referencian en <span class="inline-code">docker-compose.yml</span> pero no aparecen en el <span class="inline-code">.env</span> visible del proyecto — <i>probablemente</i> se inyectan por otra vía (entorno del host, gestor de secretos). Marcado como inferencia.</li>
-          <li>El campo <span class="inline-code">equipos.fragmentos</span> existe en el esquema de guardado (columnas de los nodos Firestore) pero ya no lo escribe ninguna rama del código actual: es un campo heredado sin uso, sustituido por <span class="inline-code">estaciones.fragmentos_previos</span> + <span class="inline-code">estaciones.fragmento</span>.</li>
+          <li>Los campos <span class="inline-code">estaciones.siguiente</span> y <span class="inline-code">estaciones.fragmentos_previos</span> existen todavía en los documentos de Firestore de gymkanas antiguas, pero ninguna rama del código actual los lee ni los escribe: son campos heredados de una versión anterior del juego (antes de que "Construir mensaje siguiente" calculara el próximo enclave dinámicamente). <span class="inline-code">export_gymkana.py</span> no los exporta.</li>
         </ul>
       </div>
     </div>
