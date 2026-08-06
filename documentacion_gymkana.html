@@ -1127,6 +1127,70 @@ const response = filas.length
 return [{ json: { chat_id: ctx.msg.chat_id, response } }];
 </code></pre>
       </div>
+      <div class="panel">
+        <div class="code-panel-head">
+          <div class="code-panel-title">Nodo n8n: <span class="node-name">Preparar diploma</span> <span class="node-type">(Code, JavaScript — genera los campos para el Edit Image de abajo)</span></div>
+          <span class="code-lines">57 líneas</span>
+        </div>
+        <pre class="code-block"><code>// Genera los campos (texto + posiciones) para el certificado, a partir del
+// equipo ya guardado en Firestore (team = $json, salida de 'Guardar
+// progreso'). Rama paralela a la entrega normal: si algo falla aquí, no
+// debe afectar al resto del turno (los 3 nodos de esta rama llevan
+// onError: continueRegularOutput).
+const team = $json;
+const gymkanaConfig = $('Cargar gymkana').first().json;
+
+function stripDecoracion(s) {
+  return String(s || '')
+    .split('\n')[0]
+    .replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]/gu, '')
+    .replace(/\*/g, '')
+    .trim();
+}
+
+function fmtTiempo(totalSeg) {
+  const m = Math.floor(totalSeg / 60);
+  const s = totalSeg % 60;
+  const h = Math.floor(m / 60);
+  const mm = m % 60;
+  return h &gt; 0 ? `${h}h ${mm}m ${s}s` : `${mm}m ${s}s`;
+}
+
+const W = 1600;
+function centrarX(texto, fontSize, anchoAprox) {
+  const anchoEstimado = String(texto).length * fontSize * anchoAprox;
+  return Math.max(70, Math.round((W - anchoEstimado) / 2));
+}
+
+let nombreEquipo = String(team.nombre || 'Equipo').toUpperCase();
+let equipoFontSize = 78;
+if (nombreEquipo.length &gt; 30) nombreEquipo = nombreEquipo.slice(0, 30).trimEnd() + '…';
+if (nombreEquipo.length &gt; 22) equipoFontSize = 54;
+else if (nombreEquipo.length &gt; 15) equipoFontSize = 64;
+
+const tiempoTexto = `Tiempo oficial: ${fmtTiempo(Number(team.tiempo_oficial_segundos || 0))}`;
+const rangoTexto = stripDecoracion(team.rango_equipo);
+const gymkanaTexto = String(gymkanaConfig.nombre || '').toUpperCase();
+const fechaTexto = new Date().toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
+const tituloTexto = 'CERTIFICADO DE FINALIZACIÓN';
+const sub1Texto = 'Se certifica que el equipo';
+const sub2Texto = 'ha completado la gymkana';
+
+return [{
+  json: {
+    chat_id: team.chat_id,
+    tituloTexto, tituloPosX: centrarX(tituloTexto, 48, 0.50),
+    gymkanaTexto, gymkanaPosX: centrarX(gymkanaTexto, 30, 0.48),
+    sub1Texto, sub1PosX: centrarX(sub1Texto, 28, 0.48),
+    equipoTexto: nombreEquipo, equipoFontSize, equipoPosX: centrarX(nombreEquipo, equipoFontSize, 0.56),
+    sub2Texto, sub2PosX: centrarX(sub2Texto, 28, 0.48),
+    tiempoTexto, tiempoPosX: centrarX(tiempoTexto, 38, 0.48),
+    rangoTexto, rangoPosX: centrarX(rangoTexto, 44, 0.50),
+    fechaTexto, fechaPosX: centrarX(fechaTexto, 26, 0.46),
+  }
+}];
+</code></pre>
+      </div>
     </div>
   </section>
 
@@ -1450,6 +1514,31 @@ networks:
       "description": "Envía el mensaje de confirmación (\"equipo borrado, escribid /start\") tras ejecutar 'Borrar equipo'."
     },
     {
+      "id": "diploma_final",
+      "label": "Diploma (al finalizar)",
+      "type": "delivery",
+      "layer": "Entrega",
+      "files": [
+        "Nodo n8n: \"¿Necesita diploma?\" (IF, comprueba just_finalized)",
+        "Nodo n8n: \"Preparar diploma\" (Code, onError: continueRegularOutput)",
+        "Nodo n8n: \"Generar diploma\" (Edit Image / GraphicsMagick, operación multiStep, onError: continueRegularOutput)",
+        "Nodo n8n: \"Enviar Diploma\" (Telegram sendPhoto en modo binario, onError: continueRegularOutput)"
+      ],
+      "description": "Rama paralela (fire-and-forget, igual patrón que 'Guardar evento final') colgada de 'Guardar progreso': solo cuando `just_finalized=true`, genera un certificado personalizado — imagen tipo diploma con el nombre del equipo, el tiempo oficial y el rango obtenido — usando el nodo Edit Image de n8n (GraphicsMagick, ya incluido en la imagen de n8n, sin depender de ningún servicio externo). 'Preparar diploma' calcula los textos y las posiciones X para un centrado aproximado (GraphicsMagick no centra texto por sí solo); el array de operaciones del Edit Image es una estructura FIJA (no se puede pasar como expresión completa: el parámetro `operations` de un fixedCollection debe tener la forma `{operations: [...]}` ya resuelta en el nodo, y cada valor individual — texto, fontSize, positionX — sí puede ser una expresión `{{ $json.campo }}`). El binario resultante se envía directamente por Telegram (`binaryData: true`), sin subir la imagen a ningún sitio."
+    },
+    {
+      "id": "diploma_resumen",
+      "label": "Diploma (en /repetir)",
+      "type": "delivery",
+      "layer": "Entrega",
+      "files": [
+        "Nodo n8n: \"Preparar diploma (resumen)\" (Code, onError: continueRegularOutput)",
+        "Nodo n8n: \"Generar diploma (resumen)\" (Edit Image, onError: continueRegularOutput)",
+        "Nodo n8n: \"Enviar Diploma (resumen)\" (Telegram sendPhoto en modo binario, onError: continueRegularOutput)"
+      ],
+      "description": "Misma lógica que 'diploma_final', pero colgada en paralelo de la rama final_summary (/repetir tras ya haber terminado): el equipo se lee de `$('Decidir acción').first().json.team` en vez de `$json`. Se regenera el diploma cada vez (no se guarda como URL persistente) — es barato y determinista a partir de los mismos datos guardados."
+    },
+    {
       "id": "listar_equipos_admin",
       "label": "Listar equipos (admin)",
       "type": "data",
@@ -1750,6 +1839,30 @@ networks:
       "to": "preparar_entrega",
       "label": "",
       "type": "control"
+    },
+    {
+      "from": "guardar_progreso",
+      "to": "diploma_final",
+      "label": "paralelo, si just_finalized",
+      "type": "control"
+    },
+    {
+      "from": "diploma_final",
+      "to": "ext_telegram",
+      "label": "sendPhoto",
+      "type": "external"
+    },
+    {
+      "from": "ruta",
+      "to": "diploma_resumen",
+      "label": "paralelo, en final_summary",
+      "type": "control"
+    },
+    {
+      "from": "diploma_resumen",
+      "to": "ext_telegram",
+      "label": "sendPhoto",
+      "type": "external"
     },
     {
       "from": "preparar_entrega",
@@ -2456,6 +2569,11 @@ networks:
           "node": "ext_telegram",
           "description": "",
           "files": []
+        },
+        {
+          "node": "diploma_final",
+          "description": "En paralelo (fire-and-forget): genera y envía el diploma personalizado con GraphicsMagick, sin bloquear ni retrasar el mensaje de cierre de arriba.",
+          "files": []
         }
       ]
     },
@@ -2493,6 +2611,11 @@ networks:
         {
           "node": "ext_telegram",
           "description": "sendPhoto? + sendMessage + sendDocument?.",
+          "files": []
+        },
+        {
+          "node": "diploma_resumen",
+          "description": "En paralelo: regenera el diploma (no se guardó como URL persistente) y lo reenvía.",
           "files": []
         }
       ]

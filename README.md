@@ -12,6 +12,8 @@ Los equipos pueden detener y reanudar su propio cronómetro con `/pausa`/`/reanu
 
 Para montar una gymkana nueva sin repetir todo esto a mano, ver [`provisioning/`](./provisioning/README.md): un script que crea sus documentos en Firestore y clona el workflow de n8n a partir de un fichero de definición YAML.
 
+Al terminar la gymkana, cada equipo recibe además un certificado personalizado (imagen tipo diploma con el nombre del equipo, el tiempo oficial y el rango obtenido), generado al vuelo con el nodo "Edit Image" de n8n (GraphicsMagick) — no depende de ningún servicio externo. Se reenvía también cada vez que el equipo escribe `/repetir` tras haber terminado.
+
 Documentación técnica completa (arquitectura, comandos, esquema de datos, código de los nodos clave): ver [`documentacion_gymkana.html`](./documentacion_gymkana.html) — ábrelo en cualquier navegador, incluye un diagrama interactivo del workflow.
 
 ## Estructura del proyecto
@@ -32,7 +34,7 @@ Documentación técnica completa (arquitectura, comandos, esquema de datos, cód
 
 ### `workflow.json`
 
-Export completo y actual del workflow "Gymkana - 02 Bot principal El Linaje Olvidado" tal y como está desplegado en n8n ahora mismo (46 nodos): toda la lógica del bot (comandos, estados, entrega de mensajes/fotos/documentos). Para actualizarlo tras un cambio en el editor de n8n:
+Export completo y actual del workflow "Gymkana - 02 Bot principal El Linaje Olvidado" tal y como está desplegado en n8n ahora mismo (53 nodos): toda la lógica del bot (comandos, estados, entrega de mensajes/fotos/documentos/diplomas). Para actualizarlo tras un cambio en el editor de n8n:
 
 ```bash
 API_KEY="$(cat secrets/n8n_api_key)"
