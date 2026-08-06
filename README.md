@@ -29,7 +29,7 @@ Documentación técnica completa (arquitectura, comandos, esquema de datos, cód
 
 ### `workflow.json`
 
-Export completo y actual del workflow "Gymkana - 02 Bot principal El Linaje Olvidado" tal y como está desplegado en n8n ahora mismo (45 nodos): toda la lógica del bot (comandos, estados, entrega de mensajes/fotos/documentos). Para actualizarlo tras un cambio en el editor de n8n:
+Export completo y actual del workflow "Gymkana - 02 Bot principal El Linaje Olvidado" tal y como está desplegado en n8n ahora mismo (46 nodos): toda la lógica del bot (comandos, estados, entrega de mensajes/fotos/documentos). Para actualizarlo tras un cambio en el editor de n8n:
 
 ```bash
 API_KEY="$(cat secrets/n8n_api_key)"

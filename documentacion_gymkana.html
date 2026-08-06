@@ -395,7 +395,7 @@ div.vis-tooltip {
       <div class="panel">
         <div class="code-panel-head">
           <div class="code-panel-title">Nodo n8n: <span class="node-name">Decidir acción</span> <span class="node-type">(Code, JavaScript)</span></div>
-          <span class="code-lines">211 líneas</span>
+          <span class="code-lines">216 líneas</span>
         </div>
         <pre class="code-block"><code>
 // Leemos el mensaje directamente desde Telegram Trigger para no depender
@@ -498,7 +498,10 @@ if (isAdmin) {
   } else {
     const n = Number(moveMatch[1]);
     if (n === 0) {
-      team.orden_inicio = team.orden_inicio || ordenInicioAleatorio();
+      // Number(...) es imprescindible aquí: Firestore devuelve los enteros
+      // como texto, y la cadena "0" es truthy en JS, así que un `||` a
+      // secas nunca reasignaría un orden_inicio que se hubiera quedado a 0.
+      team.orden_inicio = Number(team.orden_inicio) || ordenInicioAleatorio();
       team.estado = 'esperando_inicio';
       team.estacion_actual = team.orden_inicio;
       team.paso = 1;
@@ -534,6 +537,8 @@ if (isAdmin) {
 /rescate — Durante el juego: obtener la solución del ${T_ENCLAVE.toLowerCase()} actual y avanzar (+${pesoRescate} min de penalización).
 /repetir — Repetir el enunciado del ${T_ENCLAVE.toLowerCase()} actual. Tras completar la gymkana: volver a ver el resumen de la ruta y el ${T_ENCLAVE.toLowerCase()} secreto.
 /destino — Comprobar, compartiendo tu ubicación, si estáis en el lugar correcto.
+/pausa — Detener el cronómetro (p.ej. para una parada). El resto de comandos de juego quedan bloqueados hasta /reanudar.
+/reanudar — Continuar tras una pausa; el tiempo en pausa no cuenta.
 /ayuda — Mostrar este mensaje.`;
 } else if (!team) {
   if (isStart) {
@@ -613,7 +618,7 @@ return [{json:{msg,team,action,response,needsStation,imagen_url:imagenUrl,just_r
       <div class="panel">
         <div class="code-panel-head">
           <div class="code-panel-title">Nodo n8n: <span class="node-name">Procesar estación y comandos</span> <span class="node-type">(Code, JavaScript)</span></div>
-          <span class="code-lines">356 líneas</span>
+          <span class="code-lines">414 líneas</span>
         </div>
         <pre class="code-block"><code>
 const ctx = $('Decidir acción').first().json;
@@ -691,6 +696,21 @@ function penalizacionDe(team) {
     + Number(team.rescates_usados || 0) * PESO_RESCATE;
 }
 
+// Tiempo total en pausa: lo ya acumulado en pausas anteriores, más la
+// pausa en curso (si la hay) hasta este instante. Se resta del tiempo
+// transcurrido en /estado y en el cierre final, para que las pausas no
+// penalicen a los equipos.
+function tiempoPausadoTotal(team) {
+  let total = Number(team.tiempo_pausado_segundos || 0);
+  if (team.pausado_en) {
+    const pStart = new Date(team.pausado_en).getTime();
+    if (Number.isFinite(pStart)) {
+      total += Math.floor((Date.now() - pStart) / 1000);
+    }
+  }
+  return total;
+}
+
 function fragmentosHasta(station, n) {
   const partes = [];
   for (let i = 1; i &lt;= n; i++) {
@@ -745,6 +765,7 @@ let imagenUrl = '';
 let capsulaMsg = '';
 let documentoUrl = '';
 let siguienteEstacionId = '';
+let justFinalized = false;
 
 const moveMatch = msg.text.match(/^\/?move\s+(\d+)$/);
 if (moveMatch &amp;&amp; Number(moveMatch[1]) &gt;= 1 &amp;&amp; Number(moveMatch[1]) &lt;= ESTACION_FINAL) {
@@ -762,6 +783,13 @@ ${station.acertijo}
 // Mensaje mostrado justo después de registrar el nombre del equipo:
 // dirige al enclave de inicio que le ha tocado a este equipo.
 if (ctx.just_registered) {
+  // 'station' ya se cargó con el enclave asignado por round-robin (ver
+  // 'Calcular orden de inicio'), pero ese cálculo vive en una rama aparte
+  // que 'Decidir acción' nunca ve: sin esto, orden_inicio/estacion_actual
+  // se quedarían para siempre en su valor de creación (0), aunque el
+  // mensaje mostrado al equipo sí fuera el correcto.
+  team.orden_inicio = Number(station.orden) || 1;
+  team.estacion_actual = team.orden_inicio;
   response = `📜 ¡Equipo registrado, ${team.nombre}!
 
 Antes de que el reloj empiece a correr, dirigíos al punto de partida:
@@ -804,6 +832,16 @@ ${station.acertijo}
 Podéis responder directamente o escribir PISTA, MAPA, REPETIR, ESTADO, DESTINO o AYUDA (para ver todos los comandos disponibles en cualquier momento).`;
   team.actualizado_en = now;
   return [{ json: { ...team, response, chat_id: msg.chat_id, changed: true, imagen_url: imagenUrl } }];
+}
+
+// En pausa: solo se admiten /reanudar, /estado y /repetir. El resto de
+// comandos de juego (pistas, mapas, rescate, ubicación, respuestas) quedan
+// bloqueados hasta reanudar, para que quede claro que el reloj está parado.
+const comandosPermitidosEnPausa = ['pausa', '/pausa', 'reanudar', '/reanudar', 'estado', '/estado', 'repetir', '/repetir'];
+if (team.pausado_en &amp;&amp; (msg.location || !comandosPermitidosEnPausa.includes(msg.text))) {
+  response = `⏸️ La partida está en pausa. Escribid /reanudar para continuar (o /estado para ver el resumen).`;
+  team.actualizado_en = now;
+  return [{ json: { ...team, response, chat_id: msg.chat_id, changed: false } }];
 }
 
 if (msg.location) {
@@ -857,7 +895,26 @@ ${station.acertijo}
   return [{ json: { ...team, response, chat_id: msg.chat_id, changed: false } }];
 }
 
-if (msg.text === 'pista' || msg.text === '/pista') {
+if (msg.text === 'pausa' || msg.text === '/pausa') {
+  if (team.pausado_en) {
+    response = '⏸️ Ya estabais en pausa. Escribid /reanudar para continuar.';
+  } else {
+    team.pausado_en = now;
+    changed = true;
+    response = '⏸️ Partida en pausa. El cronómetro se detiene aquí. Escribid /reanudar cuando queráis continuar.';
+  }
+} else if (msg.text === 'reanudar' || msg.text === '/reanudar') {
+  if (!team.pausado_en) {
+    response = 'No estabais en pausa. Si queréis seguir jugando, responded al acertijo o escribid PISTA.';
+  } else {
+    const pStart = new Date(team.pausado_en).getTime();
+    const pausaSeg = Number.isFinite(pStart) ? Math.floor((Date.now() - pStart) / 1000) : 0;
+    team.tiempo_pausado_segundos = Number(team.tiempo_pausado_segundos || 0) + pausaSeg;
+    team.pausado_en = '';
+    changed = true;
+    response = '▶️ Partida reanudada. ¡A seguir!';
+  }
+} else if (msg.text === 'pista' || msg.text === '/pista') {
   const current = Number(team.pista_actual || 0);
   if (current &gt;= MAX_PISTAS) {
     response = `Ya habéis utilizado las ${MAX_PISTAS} pistas de este ${T_ENCLAVE.toLowerCase()}. Escribid RESCATE si queréis la solución de este ${T_ENCLAVE.toLowerCase()} y avanzar (+${PESO_RESCATE} min), o MAPA si solo queréis una pista visual (+${PESO_MAPA} min).`;
@@ -905,8 +962,10 @@ ${station.acertijo}
     if (Number(team.estacion_actual) &gt;= ESTACION_FINAL) {
       team.estado = 'finalizado';
       team.fin = now;
+      justFinalized = true;
       const startMs = new Date(team.inicio).getTime();
-      const elapsed = Number.isFinite(startMs) ? Math.floor((Date.now()-startMs)/1000) : 0;
+      const rawElapsed = Number.isFinite(startMs) ? Math.floor((Date.now()-startMs)/1000) : 0;
+      const elapsed = Math.max(0, rawElapsed - tiempoPausadoTotal(team));
       response = `✅ *La respuesta era:* ${respuestaCorrecta}\n\n` + construirMensajeFinal(team, elapsed);
       imagenUrl = station.imagen_final_url || station.imagen_url || '';
       documentoUrl = station.guia_historica_url || '';
@@ -926,10 +985,12 @@ ${station.acertijo}
   }
 } else if (msg.text === 'estado' || msg.text === '/estado') {
   const startMs = new Date(team.inicio).getTime();
-  const elapsedSec = Number.isFinite(startMs) ? Math.floor((Date.now() - startMs) / 1000) : 0;
+  const rawElapsedSec = Number.isFinite(startMs) ? Math.floor((Date.now() - startMs) / 1000) : 0;
+  const elapsedSec = Math.max(0, rawElapsedSec - tiempoPausadoTotal(team));
   const fmtEstado = s =&gt; `${Math.floor(s / 60)} min ${s % 60} s`;
   const pasoActual = Math.min(pasoDe(team), NUM_ESTACIONES_REGULARES);
-  response = `📜 ESTADO DEL EQUIPO\n\nEquipo: ${team.nombre}\n${T_ENCLAVE}: ${pasoActual} de ${NUM_ESTACIONES_REGULARES}\n⏱ Tiempo transcurrido: ${fmtEstado(elapsedSec)}\nFragmentos del Códice: "${fragmentosHasta(station, pasoActual - 1)}"\nPistas: ${team.pistas_usadas || 0}\nMapas: ${team.mapas_usados || 0}\nRescates: ${team.rescates_usados || 0}\nPenalización: ${penalizacionDe(team)} min`;
+  const lineaPausa = team.pausado_en ? '\n⏸️ *EN PAUSA* — escribid /reanudar para continuar' : '';
+  response = `📜 ESTADO DEL EQUIPO\n\nEquipo: ${team.nombre}\n${T_ENCLAVE}: ${pasoActual} de ${NUM_ESTACIONES_REGULARES}\n⏱ Tiempo transcurrido: ${fmtEstado(elapsedSec)}\nFragmentos del Códice: "${fragmentosHasta(station, pasoActual - 1)}"\nPistas: ${team.pistas_usadas || 0}\nMapas: ${team.mapas_usados || 0}\nRescates: ${team.rescates_usados || 0}\nPenalización: ${penalizacionDe(team)} min${lineaPausa}`;
 } else if (msg.text === 'repetir' || msg.text === '/repetir') {
   if (!team.acertijo_visto) {
     team.acertijo_visto = true;
@@ -943,8 +1004,10 @@ ${station.acertijo}
     if (Number(team.estacion_actual) &gt;= ESTACION_FINAL) {
       team.estado = 'finalizado';
       team.fin = now;
+      justFinalized = true;
       const startMs = new Date(team.inicio).getTime();
-      const elapsed = Number.isFinite(startMs) ? Math.floor((Date.now()-startMs)/1000) : 0;
+      const rawElapsed = Number.isFinite(startMs) ? Math.floor((Date.now()-startMs)/1000) : 0;
+      const elapsed = Math.max(0, rawElapsed - tiempoPausadoTotal(team));
       response = construirMensajeFinal(team, elapsed);
       imagenUrl = station.imagen_final_url || station.imagen_url || '';
       documentoUrl = station.guia_historica_url || '';
@@ -970,7 +1033,7 @@ ${station.acertijo}
 }
 
 team.actualizado_en = now;
-return [{json:{...team,response,chat_id:msg.chat_id,changed,imagen_url:imagenUrl,capsula_msg:capsulaMsg,documento_url:documentoUrl,siguiente_estacion_id:siguienteEstacionId,estacion_final:ESTACION_FINAL}}];
+return [{json:{...team,response,chat_id:msg.chat_id,changed,imagen_url:imagenUrl,capsula_msg:capsulaMsg,documento_url:documentoUrl,siguiente_estacion_id:siguienteEstacionId,estacion_final:ESTACION_FINAL,just_finalized:justFinalized}}];
 </code></pre>
       </div>
       <div class="panel">
@@ -1183,12 +1246,10 @@ networks:
       "files": [
         "Nodo n8n: \"Buscar update ya procesado\" (Firestore get, colección gymkanas/linaje-olvidado/updates_telegram)",
         "Nodo n8n: \"¿Update duplicado?\" (IF)",
-        "Nodo n8n: \"Recuperar mensaje original\" (Code)",
         "Nodo n8n: \"Preparar registro update\" (Code)",
-        "Nodo n8n: \"Marcar update procesado\" (Firestore upsert, colección gymkanas/linaje-olvidado/updates_telegram)",
-        "Nodo n8n: \"Continuar con mensaje\" (Code)"
+        "Nodo n8n: \"Marcar update procesado\" (Firestore upsert, colección gymkanas/linaje-olvidado/updates_telegram)"
       ],
-      "description": "Subsistema anti-duplicados: busca en Firestore si `update_id` ya fue procesado. Si SÍ (documento encontrado) la ejecución termina ahí sin más acciones (Telegram reintentó una entrega ya gestionada). Si NO, recupera el mensaje normalizado, lo marca como procesado y continúa el flujo."
+      "description": "Subsistema anti-duplicados: busca en Firestore si `update_id` ya fue procesado. Si SÍ (documento encontrado) la ejecución termina ahí sin más acciones (Telegram reintentó una entrega ya gestionada). Si NO, marca el update como procesado y continúa el flujo. Simplificación: ya no hay nodos \"Recuperar mensaje original\"/\"Continuar con mensaje\" (Code) para \"restaurar\" el mensaje normalizado tras cada llamada a Firestore (que sustituye $json por su propia respuesta) — los dos únicos consumidores que lo necesitaban ('Preparar registro update' y 'Cargar equipo') referencian directamente `$('Normalizar mensaje')` por nombre."
     },
     {
       "id": "cargar_gymkana",
@@ -1208,7 +1269,7 @@ networks:
       "files": [
         "Nodo n8n: \"Cargar equipo\" (googleFirebaseCloudFirestore, operación get, colección gymkanas/linaje-olvidado/equipos, documentId = chat_id)"
       ],
-      "description": "Lee de Firestore el documento del equipo cuyo id es el chat_id de Telegram (dentro del espacio de esta gymkana). Si no existe, el equipo todavía no ha hecho /start (candidate sin campo `estado` → se trata como null en el código). Su documentId referencia explícitamente `$('Continuar con mensaje')` en vez del $json inmediato, porque 'Cargar gymkana' se ejecuta justo antes."
+      "description": "Lee de Firestore el documento del equipo cuyo id es el chat_id de Telegram (dentro del espacio de esta gymkana). Si no existe, el equipo todavía no ha hecho /start (candidate sin campo `estado` → se trata como null en el código). Su documentId referencia explícitamente `$('Normalizar mensaje')` en vez del $json inmediato, porque 'Cargar gymkana' se ejecuta justo antes y lo sustituye."
     },
     {
       "id": "decidir",
@@ -1341,8 +1402,18 @@ networks:
       "description": "Tras guardar en la rama save_send (solo la creación inicial del equipo): envía el mensaje de texto pidiendo el nombre del equipo. Antes había un envío de foto condicional aquí (\"¿Hay imagen? (registro)\" + \"Enviar Foto (registro)\"), pero quedó como código muerto tras mover el registro del nombre y /move 0 a la ruta station, así que se eliminó (limpieza del 2026-08-05)."
     },
     {
+      "id": "preparar_entrega",
+      "label": "Preparar entrega",
+      "type": "logic",
+      "layer": "Persistencia",
+      "files": [
+        "Nodo n8n: \"Preparar entrega\" (Code, 1 línea: `return [{ json: $json }];`)"
+      ],
+      "description": "Punto de convergencia (simplificación 2026-08-06) entre la rama `changed=true` (tras 'Guardar progreso') y la rama `changed=false` (sin escritura en Firestore): a partir de aquí `response`/`chat_id`/`imagen_url`/`capsula_msg`/`documento_url` están disponibles con un nombre estable, para que los nodos de Telegram que van después (que pueden ir intercalados con envíos de foto/cápsula que sustituyen $json por la respuesta de su propia llamada a la API) puedan referenciarlo por nombre sin ambigüedad. Antes de esta simplificación existían dos cadenas de entrega casi idénticas por separado (una para `changed=true`, otra para `changed=false`); se fusionaron en una porque `capsula_msg`/`documento_url` siempre están vacíos cuando `changed=false`, así que las comprobaciones de cápsula/guía histórica no hacen nada en ese caso."
+    },
+    {
       "id": "entrega_guardado",
-      "label": "Entrega: turno con cambios",
+      "label": "Entrega: mensaje + foto/cápsula/guía histórica opcionales",
       "type": "delivery",
       "layer": "Entrega",
       "files": [
@@ -1352,19 +1423,7 @@ networks:
         "Nodo n8n: \"Enviar Cápsula (guardado)\" (Telegram sendMessage, onError: continueRegularOutput)",
         "Nodo n8n: \"Enviar respuesta tras guardar\" (Telegram sendMessage)"
       ],
-      "description": "Tras 'Guardar progreso': hasta 3 envíos en cadena: (1) foto del enclave si `imagen_url` no está vacío, (2) mensaje de cápsula/folio si `capsula_msg` no está vacío (al resolver o rescatar un acertijo), (3) el mensaje principal `response` (que ya incluye, si procede, el bloque de próximo enclave montado por 'Construir mensaje siguiente'). Cualquier fallo de imagen o cápsula (`onError: continueRegularOutput`) no bloquea el resto de la cadena."
-    },
-    {
-      "id": "entrega_sin_guardar",
-      "label": "Entrega: turno sin cambios",
-      "type": "delivery",
-      "layer": "Entrega",
-      "files": [
-        "Nodo n8n: \"¿Hay imagen? (sin guardar)\" (IF)",
-        "Nodo n8n: \"Enviar Foto (sin guardar)\" (Telegram sendPhoto)",
-        "Nodo n8n: \"Enviar respuesta sin guardar\" (Telegram sendMessage)"
-      ],
-      "description": "Para acciones que no modifican el equipo (`changed=false`): /estado, confirmar que ya se está en el sitio correcto, mapa ya solicitado antes, etc. Envía foto opcional y el texto de respuesta."
+      "description": "Cadena de entrega ÚNICA (simplificación 2026-08-06: antes había una copia casi idéntica para `changed=false`), alcanzada tanto si 'Guardar progreso' escribió en Firestore como si no. Hasta 3 envíos en cadena: (1) foto del enclave si `imagen_url` no está vacío, (2) mensaje de cápsula/folio si `capsula_msg` no está vacío (al resolver o rescatar un acertijo; nunca ocurre si `changed=false`), (3) el mensaje principal `response` (que ya incluye, si procede, el bloque de próximo enclave montado por 'Construir mensaje siguiente'). Todos estos nodos referencian `$('Preparar entrega')`, no el nodo de lógica que los precede directamente. Cualquier fallo de imagen o cápsula (`onError: continueRegularOutput`) no bloquea el resto de la cadena."
     },
     {
       "id": "entrega_resumen",
@@ -1676,7 +1735,7 @@ networks:
     },
     {
       "from": "hay_cambios",
-      "to": "entrega_sin_guardar",
+      "to": "preparar_entrega",
       "label": "changed = false",
       "type": "control"
     },
@@ -1688,6 +1747,12 @@ networks:
     },
     {
       "from": "guardar_progreso",
+      "to": "preparar_entrega",
+      "label": "",
+      "type": "control"
+    },
+    {
+      "from": "preparar_entrega",
       "to": "entrega_guardado",
       "label": "",
       "type": "control"
@@ -1714,12 +1779,6 @@ networks:
       "from": "entrega_guardado",
       "to": "ext_telegram",
       "label": "sendPhoto? + sendMessage? + sendMessage",
-      "type": "external"
-    },
-    {
-      "from": "entrega_sin_guardar",
-      "to": "ext_telegram",
-      "label": "sendPhoto? + sendMessage",
       "type": "external"
     },
     {
@@ -1879,6 +1938,11 @@ networks:
           ]
         },
         {
+          "node": "preparar_entrega",
+          "description": "",
+          "files": []
+        },
+        {
           "node": "entrega_guardado",
           "description": "Envía la foto del enclave de inicio asignado y el texto \"dirigíos al punto de partida\".",
           "files": []
@@ -1923,6 +1987,11 @@ networks:
         {
           "node": "guardar_progreso",
           "description": "Persiste el nuevo estado.",
+          "files": []
+        },
+        {
+          "node": "preparar_entrega",
+          "description": "",
           "files": []
         },
         {
@@ -1988,6 +2057,11 @@ networks:
           "files": []
         },
         {
+          "node": "preparar_entrega",
+          "description": "",
+          "files": []
+        },
+        {
           "node": "entrega_guardado",
           "description": "Sin foto en este caso; envía primero el mensaje de cápsula y después el de fragmentos + próximo enclave: DOS mensajes de Telegram seguidos.",
           "files": [
@@ -2042,6 +2116,11 @@ networks:
           "files": []
         },
         {
+          "node": "preparar_entrega",
+          "description": "",
+          "files": []
+        },
+        {
           "node": "entrega_guardado",
           "description": "Mensaje de cápsula del 8º enclave + mensaje de fragmentos completos y aviso de código completo.",
           "files": []
@@ -2086,6 +2165,11 @@ networks:
         },
         {
           "node": "guardar_progreso",
+          "description": "",
+          "files": []
+        },
+        {
+          "node": "preparar_entrega",
           "description": "",
           "files": []
         },
@@ -2148,6 +2232,11 @@ networks:
           "files": []
         },
         {
+          "node": "preparar_entrega",
+          "description": "",
+          "files": []
+        },
+        {
           "node": "entrega_guardado",
           "description": "Mensaje de cápsula (con la respuesta revelada) + mensaje de fragmentos/próximo enclave.",
           "files": []
@@ -2191,6 +2280,11 @@ networks:
           "files": []
         },
         {
+          "node": "preparar_entrega",
+          "description": "",
+          "files": []
+        },
+        {
           "node": "entrega_guardado",
           "description": "Solo texto (sin imagen, sin cápsula).",
           "files": []
@@ -2230,7 +2324,7 @@ networks:
         },
         {
           "node": "hay_cambios",
-          "description": "true la primera vez, false si se repite.",
+          "description": "true la primera vez, false si se repite (en ambos casos converge en 'Preparar entrega').",
           "files": []
         },
         {
@@ -2239,8 +2333,13 @@ networks:
           "files": []
         },
         {
+          "node": "preparar_entrega",
+          "description": "",
+          "files": []
+        },
+        {
           "node": "entrega_guardado",
-          "description": "o Entrega: turno sin cambios, según el caso.",
+          "description": "Mismo destino en ambos casos: solo cambia si hubo escritura en Firestore antes.",
           "files": []
         },
         {
@@ -2287,12 +2386,17 @@ networks:
         },
         {
           "node": "hay_cambios",
-          "description": "changed=false.",
+          "description": "changed=false → salta 'Guardar progreso' directo a 'Preparar entrega'.",
           "files": []
         },
         {
-          "node": "entrega_sin_guardar",
-          "description": "Solo texto.",
+          "node": "preparar_entrega",
+          "description": "",
+          "files": []
+        },
+        {
+          "node": "entrega_guardado",
+          "description": "Solo texto (sin imagen, sin cápsula: imagen_url/capsula_msg están vacíos en la rama /estado).",
           "files": []
         },
         {
@@ -2336,6 +2440,11 @@ networks:
         {
           "node": "guardar_progreso",
           "description": "Guarda team.mensaje_final, team.imagen_final y team.documento_final para poder repetirlos luego.",
+          "files": []
+        },
+        {
+          "node": "preparar_entrega",
+          "description": "",
           "files": []
         },
         {
