@@ -10,7 +10,7 @@ Cada gymkana completada por un equipo queda registrada (append-only, sobrevive a
 
 Los equipos pueden detener y reanudar su propio cronómetro con `/pausa`/`/reanudar` (p.ej. para una parada); mientras están en pausa, el resto de comandos de juego quedan bloqueados y el tiempo en pausa no cuenta para el resultado final.
 
-Para montar una gymkana nueva sin repetir todo esto a mano, ver [`provisioning/`](./provisioning/README.md): un script que crea sus documentos en Firestore y clona el workflow de n8n a partir de un fichero de definición YAML.
+Para montar una gymkana nueva sin repetir todo esto a mano, ver [`provisioning/`](./provisioning/README.md): un script que crea sus documentos en Firestore y clona el workflow de n8n a partir de un fichero de definición YAML. Guía paso a paso, con los pasos manuales incluidos (crear el bot en Telegram, etc.): [`doc/crear_gymkana_nueva.md`](./doc/crear_gymkana_nueva.md).
 
 Al terminar la gymkana, cada equipo recibe además un certificado personalizado (imagen tipo diploma con el nombre del equipo, el tiempo oficial y el rango obtenido), generado al vuelo con el nodo "Edit Image" de n8n (GraphicsMagick) — no depende de ningún servicio externo. Se reenvía también cada vez que el equipo escribe `/repetir` tras haber terminado.
 
@@ -27,6 +27,7 @@ Documentación técnica completa (arquitectura, comandos, esquema de datos, cód
 ├── test_n8n_api.sh                 # Script de prueba de la API REST de n8n
 ├── provisioning/                   # Script para montar gymkanas nuevas (Fase 2)
 ├── content/                        # Definiciones YAML de gymkanas (para provision_gymkana.py)
+├── doc/                            # Guías paso a paso (p.ej. crear una gymkana nueva)
 ├── backup/                         # Snapshots históricos del workflow y exports de Firestore
 ├── secrets/                        # Credenciales (NO versionado, ver .gitignore)
 ├── n8n_data/                       # Datos internos de n8n (NO versionado, ver .gitignore)

@@ -1,0 +1,298 @@
+# Definición completa de "El Testimonio de Piedra" (Salamanca).
+# Formato compatible con provision_gymkana.py, tomando como referencia
+# la estructura de "El Linaje Olvidado".
+#
+# Antes de aprovisionar:
+# - Rellena admin_chat_id con el chat_id del organizador.
+# - Comprueba sobre el terreno las coordenadas y la visibilidad de los detalles.
+# - El Huerto de Calixto y Melibea debe estar abierto para resolver la estación 7.
+#
+id: testimonio-de-piedra
+nombre: El Testimonio de Piedra
+tolerancia_metros: 25
+max_pistas: 3
+peso_pista: 1
+peso_mapa: 3
+peso_rescate: 5
+termino_enclave: Testimonio
+admin_chat_id: ''
+fragmentos:
+- '40'
+- .
+- '959'
+- 119N
+- '-5'
+- .
+- '669'
+- 158W
+estaciones:
+- orden: 1
+  nombre: Plaza Mayor
+  lat: 40.965
+  lon: -5.6641
+  acertijo: |-
+    🔍 *EL PRIMER TESTIMONIO*
+
+    En uno de los grandes arcos de la Plaza Mayor permanece grabado el recuerdo de una mujer cuya historia se perdió con el tiempo.
+
+    Buscad la inscripción y decidnos: ¿en qué año ocurrió el suceso?
+  respuestas: 1838|año 1838|en 1838
+  pistas:
+  - 🏛️ No busquéis en la fachada del Ayuntamiento. Dirigíos al gran arco del Pabellón Real, próximo a la salida hacia la plaza
+    del Mercado.
+  - 👁️ Atravesad el arco y examinad sus muros y pilares, no los medallones situados sobre los soportales.
+  - 📜 La inscripción comienza con «Aquí se mató una muger…». La respuesta es el año escrito al final.
+  capsula: |-
+    📜 *CUADERNO DEL LAPIDARIO — TESTIMONIO I*
+    *La fecha sin nombre*
+
+    «La plaza estaba llena de voces, pero la piedra conservó solo una. Nadie recordó su nombre ni explicó lo sucedido. Quedaron una frase, una petición y una fecha. Desde entonces, quienes buscan el secreto de Salamanca comienzan allí donde la historia se convierte en leyenda…»
+
+    📚 *Dato histórico:* La Plaza Mayor fue construida durante el siglo XVIII y constituye uno de los grandes conjuntos barrocos españoles. Sus 88 arcos estaban destinados a albergar medallones de monarcas y personajes destacados. En uno de sus accesos permanece una inscripción fechada en 1838 que recuerda la muerte de una mujer. No se conserva una explicación documentada del episodio, circunstancia que ha alimentado distintas leyendas locales.
+  imagen_url: https://firebasestorage.googleapis.com/v0/b/gymkana-linaje-olvidado.firebasestorage.app/o/Salamanca%2Fsalamanca_estacion_01_plaza_mayor.jpg?alt=media&token=1debb25e-2717-432c-8fcc-299109d0e004
+  mapa_url: https://www.google.com/maps/search/?api=1&query=40.965000%2C-5.664100
+- orden: 2
+  nombre: Palacio de la Salina
+  lat: 40.963056
+  lon: -5.664167
+  acertijo: |-
+    🔍 *EL SEGUNDO TESTIMONIO*
+
+    En lo alto de la fachada, un antiguo linaje dejó su señal repetida cinco veces dentro de un escudo.
+
+    No busquéis animales ni coronas: ¿qué figura celeste aparece en él?
+  respuestas: estrellas|estrella|cinco estrellas|5 estrellas
+  pistas:
+  - 🛡️ Observad la parte superior de la fachada y localizad uno de sus escudos.
+  - 👆 Los emblemas se encuentran cerca de los extremos de la arquería superior.
+  - ⭐ La figura se contempla también en el cielo durante la noche.
+  capsula: |-
+    📜 *CUADERNO DEL LAPIDARIO — TESTIMONIO II*
+    *Las cinco luces*
+
+    «Cinco luces fueron grabadas sobre la piedra para marcar la casa de los Fonseca. Sin embargo, bajo aquellas estrellas se ocultaban rostros deformados, cuerpos retorcidos y seres condenados a sostener el palacio. Algunos aseguraban que eran simples adornos. Otros decían que representaban a quienes intentaron silenciar la verdad…»
+
+    📚 *Dato histórico:* El Palacio de la Salina fue construido en 1538 por encargo de Rodrigo de Messía, esposo de Mayor de Fonseca. El edificio muestra en su decoración símbolos heráldicos de esta familia. Su nombre no procede de una persona llamada Salina, sino de su utilización posterior como almacén y estanco de sal. El patio destaca por sus ménsulas decoradas con figuras humanas de expresiones dramáticas y cuerpos retorcidos.
+  imagen_url: https://firebasestorage.googleapis.com/v0/b/gymkana-linaje-olvidado.firebasestorage.app/o/Salamanca%2Fsalamanca_estacion_02_palacio_salina.jpg?alt=media&token=650891dd-7746-48fc-9e52-ce08f0a8f31d
+  mapa_url: https://www.google.com/maps/search/?api=1&query=40.963056%2C-5.664167
+- orden: 3
+  nombre: Casa de las Conchas
+  lat: 40.962931
+  lon: -5.665811
+  acertijo: |-
+    🔍 *EL TERCER TESTIMONIO*
+
+    Sobre la puerta principal de la Casa de las Conchas, dos guardianes de piedra protegen el emblema de un antiguo linaje.
+
+    Observad el interior del escudo: ¿qué flores aparecen repetidas en él?
+  respuestas: flores de lis|flor de lis|lis|flores de lys|flor de lys|lirios|lirio
+  pistas:
+  - 🚪 Situaos frente a la entrada principal y mirad por encima de la puerta.
+  - 🛡️ Buscad el gran escudo de piedra custodiado por dos leones.
+  - ⚜️ El símbolo tiene tres pétalos estilizados y recibe el nombre de flor de lis.
+  capsula: |-
+    📜 *CUADERNO DEL LAPIDARIO — TESTIMONIO III*
+    *Las flores del linaje*
+
+    «Las estrellas condujeron a los buscadores hasta una casa cubierta de conchas. Sobre su entrada, dos guardianes protegían las flores de un apellido poderoso. Pero el manuscrito advertía que los emblemas no habían sido colocados únicamente para proclamar un linaje: cada uno señalaba una parte del mensaje que Salamanca se negaba a olvidar…»
+
+    📚 *Dato histórico:* La Casa de las Conchas comenzó a construirse en 1493 como residencia de Rodrigo Maldonado de Talavera, caballero de la Orden de Santiago, profesor de Derecho y figura vinculada a los Reyes Católicos. La decoración reúne símbolos de los Maldonado y los Pimentel, las dos familias unidas por matrimonio. Sobre su puerta destaca un escudo gótico con flores de lis, mientras que más de trescientas conchas cubren los muros exteriores. Actualmente alberga la Biblioteca Pública de Salamanca.
+  imagen_url: https://firebasestorage.googleapis.com/v0/b/gymkana-linaje-olvidado.firebasestorage.app/o/Salamanca%2Fsalamanca_estacion_03_casa_conchas.jpg?alt=media&token=f9718c22-dc70-4870-8a8f-24a6a78c5350
+  mapa_url: https://www.google.com/maps/search/?api=1&query=40.962931%2C-5.665811
+- orden: 4
+  nombre: Fachada de la Universidad de Salamanca
+  lat: 40.961439
+  lon: -5.667261
+  acertijo: |-
+    🔍 *EL CUARTO TESTIMONIO*
+
+    En esta fachada se oculta el animal más famoso de Salamanca. Encontrarlo no será suficiente: observad cuidadosamente el lugar exacto donde descansa.
+
+    ¿Sobre qué objeto está posada la rana?
+  respuestas: calavera|una calavera|cráneo|craneo|un cráneo|un craneo|calavera humana
+  pistas:
+  - 🐸 Buscad la pequeña rana entre la decoración del cuerpo inferior de la fachada.
+  - 👉 Mirando de frente, se encuentra en la gran pilastra situada a la derecha de las puertas.
+  - 💀 La rana descansa sobre los restos de una cabeza humana.
+  capsula: |-
+    📜 *CUADERNO DEL LAPIDARIO — TESTIMONIO IV*
+    *La fortuna y la muerte*
+
+    «Los antiguos maestros ocultaron la advertencia entre hojas, escudos y criaturas de piedra. Muchos buscaban únicamente al pequeño animal, convencidos de que les concedería fortuna. Pocos se detenían a observar el lugar sobre el que descansaba.
+
+    La rana no anunciaba solo sabiduría. Bajo sus patas esperaba la muerte, recordando a los estudiantes que ningún conocimiento podía librarlos del paso del tiempo…»
+
+    📚 *Dato histórico:* La Universidad de Salamanca fue fundada por Alfonso IX de León alrededor de 1218 y está considerada la universidad más antigua de España en funcionamiento. Su fachada plateresca fue realizada en el siglo XVI y presenta un complejo programa decorativo distribuido en tres cuerpos. En la parte inferior aparece el medallón de los Reyes Católicos. A la derecha de la entrada, sobre una de tres calaveras, se encuentra la famosa rana. La tradición popular afirma que quien consiga localizarla tendrá suerte en sus exámenes, aunque el significado original de la figura sigue siendo discutido.
+  imagen_url: https://firebasestorage.googleapis.com/v0/b/gymkana-linaje-olvidado.firebasestorage.app/o/Salamanca%2Fsalamanca_estacion_04_universidad.jpg?alt=media&token=9b7e0245-43f2-4089-8bb6-75f3e5d26bd4
+  mapa_url: https://www.google.com/maps/search/?api=1&query=40.961439%2C-5.667261
+- orden: 5
+  nombre: Escuelas Menores
+  lat: 40.961389
+  lon: -5.668333
+  acertijo: |-
+    🔍 *EL QUINTO TESTIMONIO*
+
+    Buscad la pequeña portada de las Escuelas Menores, formada por dos arcos.
+
+    Sobre ellos, el escudo imperial está acompañado por dos aves que miran en más de una dirección.
+
+    ¿Qué animales son?
+  respuestas: águilas bicéfalas|aguilas bicefalas|águilas de dos cabezas|aguilas de dos cabezas|dos águilas|dos aguilas|águilas|aguilas
+  pistas:
+  - 🚪 No miréis la gran fachada de la rana. Buscad una portada más pequeña, formada por dos arcos.
+  - 🛡️ Elevad la mirada hacia el escudo situado sobre los accesos.
+  - 🦅 A ambos lados aparecen aves que tienen dos cabezas cada una.
+  capsula: |-
+    📜 *CUADERNO DEL LAPIDARIO — TESTIMONIO V*
+    *La doble mirada*
+
+    «Tras la calavera, el mensaje conducía a una puerta menor, destinada a quienes comenzaban el camino del conocimiento. Sobre sus arcos, dos criaturas contemplaban simultáneamente lo vivido y lo que aún estaba por suceder.
+
+    Una cabeza vigilaba el pasado. La otra aguardaba el futuro. Entre ambas protegían el sello del emperador y un fragmento del saber que nunca debía caer en una sola mirada…»
+
+    📚 *Dato histórico:* Las Escuelas Menores acogían antiguamente las enseñanzas destinadas a obtener el título de bachiller, frente a los grados superiores impartidos en las Escuelas Mayores. Su construcción comenzó en el siglo XV, aunque su portada plateresca corresponde al siglo XVI. La entrada está formada por dos arcos y una decoración heráldica en la que aparece el escudo imperial de Carlos V flanqueado por dos águilas bicéfalas. En su interior se conserva el llamado Cielo de Salamanca, parte de una pintura astronómica atribuida a Fernando Gallego que decoraba la antigua biblioteca universitaria.
+  imagen_url: https://firebasestorage.googleapis.com/v0/b/gymkana-linaje-olvidado.firebasestorage.app/o/Salamanca%2Fsalamanca_estacion_05_escuelas_menores.jpg?alt=media&token=a65ab99d-6a28-4fea-9125-9f6d8db1c454
+  mapa_url: https://www.google.com/maps/search/?api=1&query=40.961389%2C-5.668333
+- orden: 6
+  nombre: Catedral Nueva - Puerta de Ramos
+  lat: 40.961069
+  lon: -5.666542
+  acertijo: |-
+    🔍 *EL SEXTO TESTIMONIO*
+
+    En la Puerta de Ramos, un viajero del espacio comparte la piedra con una criatura fantástica.
+
+    Localizad la extraña criatura que aparece cerca del astronauta y observad lo que sostiene.
+
+    ¿Qué alimento está comiendo?
+  respuestas: helado|un helado|cono de helado|cucurucho|un cucurucho|cucurucho de helado
+  pistas:
+  - 🚀 Buscad primero al famoso astronauta de la Puerta de Ramos.
+  - 👹 Cerca aparece una criatura de piedra, conocida habitualmente como el dragón.
+  - 🍦 Sostiene un dulce frío servido dentro de un cucurucho.
+  capsula: |-
+    📜 *CUADERNO DEL LAPIDARIO — TESTIMONIO VI*
+    *La piedra imposible*
+
+    «Los guardianes de dos cabezas habían contemplado siglos enteros, pero ni siquiera ellos pudieron prever lo que aparecería en la siguiente piedra.
+
+    Un viajero descendido de las estrellas y una criatura nacida de las leyendas compartían el mismo muro. El dragón ya no custodiaba oro ni combatía caballeros: sostenía entre sus garras un objeto imposible para su tiempo.
+
+    Entonces los buscadores comprendieron que el mensaje no pertenecía únicamente al pasado. Alguien había continuado escribiéndolo generación tras generación…»
+
+    📚 *Dato histórico:* La construcción de la Catedral Nueva comenzó en 1513 y se prolongó durante más de dos siglos. En una restauración de la Puerta de Ramos realizada a comienzos de la década de 1990 se incorporaron figuras contemporáneas para dejar constancia del momento de la intervención. Entre ellas destaca el astronauta tallado por el cantero Miguel Romero. Junto a él aparecen otras figuras modernas, como un lince, un toro y una criatura conocida popularmente como el dragón del helado. No son profecías ni elementos originales del siglo XVI: forman parte de la restauración contemporánea.
+  imagen_url: https://firebasestorage.googleapis.com/v0/b/gymkana-linaje-olvidado.firebasestorage.app/o/Salamanca%2Fsalamanca_estacion_06_catedral.jpg?alt=media&token=011a043b-74d3-4171-8519-6ea38f91366b
+  mapa_url: https://www.google.com/maps/search/?api=1&query=40.961069%2C-5.666542
+- orden: 7
+  nombre: Huerto de Calixto y Melibea
+  lat: 40.959361
+  lon: -5.665819
+  acertijo: |-
+    🔍 *EL SÉPTIMO TESTIMONIO*
+
+    En el centro del jardín, un antiguo pozo aparece rodeado por promesas modernas.
+
+    Los enamorados dejan allí pequeños objetos de metal para representar que su unión permanecerá cerrada.
+
+    ¿Qué objetos cubren la estructura del pozo?
+  respuestas: candados|candado|los candados|muchos candados|candados del amor|candados de amor
+  pistas:
+  - 🌿 Entrad en el jardín y localizad el antiguo pozo de piedra.
+  - '👀 No miréis dentro del pozo: observad la estructura metálica que se eleva sobre él.'
+  - 🔒 Son pequeños objetos que se cierran con una llave o una combinación.
+  capsula: |-
+    📜 *CUADERNO DEL LAPIDARIO — TESTIMONIO VII*
+    *Las promesas cerradas*
+
+    «Los objetos imposibles de la catedral demostraron que cada generación había añadido algo al mensaje. En el jardín, los buscadores encontraron cientos de promesas cerradas con metal.
+
+    Cada candado contenía dos nombres, una fecha o una palabra. Todos pretendían vencer al tiempo.
+
+    Pero el manuscrito recordaba el destino de Calixto y Melibea: ningún cierre es suficientemente fuerte cuando el deseo, el engaño y la fortuna deciden abrirlo…»
+
+    📚 *Dato histórico:* El Huerto de Calixto y Melibea es un jardín situado junto a los restos de la antigua muralla de Salamanca. Su nombre recuerda a los protagonistas de la Tragicomedia de Calisto y Melibea, conocida habitualmente como La Celestina y atribuida a Fernando de Rojas. La tradición ha relacionado este rincón con los encuentros de los protagonistas, aunque el jardín actual fue creado en época contemporánea para evocar el ambiente literario de la obra. Con el tiempo, el pozo se ha convertido en un lugar donde numerosas parejas colocan candados como símbolo de su relación.
+  imagen_url: https://firebasestorage.googleapis.com/v0/b/gymkana-linaje-olvidado.firebasestorage.app/o/Salamanca%2Fsalamanca_estacion_07_huerto.jpg?alt=media&token=4aba27e5-5d1d-4e8d-b61e-821040c73eac
+  mapa_url: https://www.google.com/maps/search/?api=1&query=40.959361%2C-5.665819
+- orden: 8
+  nombre: Convento de San Esteban
+  lat: 40.960822
+  lon: -5.66255
+  acertijo: |-
+    🔍 *EL OCTAVO TESTIMONIO*
+
+    En el gran relieve central se representa la lapidación del santo que da nombre al convento.
+
+    Observad a los hombres que lo rodean: ¿qué objetos levantan para arrojárselos?
+  respuestas: piedras|piedra|unas piedras|las piedras|con piedras|rocas|fragmentos de roca
+  pistas:
+  - 🏛️ Buscad el gran relieve central situado sobre la entrada, dentro del arco que cubre la fachada.
+  - 👥 San Esteban aparece rodeado por varios hombres que levantan los brazos.
+  - '🪨 Su martirio fue una lapidación: los atacantes sostienen fragmentos de roca.'
+  capsula: |-
+    📜 *CUADERNO DEL LAPIDARIO — TESTIMONIO VIII*
+    *La piedra que silencia*
+
+    «El último testimonio antes del río no estaba formado por una fecha, una flor o un animal. Era una escena completa.
+
+    Los hombres levantaban piedras para silenciar una voz, sin comprender que cada golpe quedaría grabado en la fachada durante siglos. Aquello que debía destruir su memoria terminó conservándola.
+
+    Entonces los buscadores entendieron la regla del manuscrito: en Salamanca, la piedra puede ser arma, monumento y testigo.
+
+    Los ocho fragmentos ya estaban reunidos. Solo quedaba ordenarlos y seguirlos hasta el lugar donde la ciudad comenzó a cruzar el río…»
+
+    📚 *Dato histórico:* El actual Convento de San Esteban comenzó a levantarse en 1524. Su portada plateresca fue concebida como un retablo monumental bajo un gran arco, con una compleja decoración religiosa, política y heráldica. En el centro se representa el martirio de san Esteban y, sobre él, el Calvario. San Esteban es considerado el primer mártir del cristianismo y, según el relato tradicional, murió lapidado, razón por la que suele representarse rodeado de verdugos que sostienen piedras. El convento también estuvo vinculado a la Escuela de Salamanca y a pensadores como Francisco de Vitoria.
+  imagen_url: https://firebasestorage.googleapis.com/v0/b/gymkana-linaje-olvidado.firebasestorage.app/o/Salamanca%2Fsalamanca_estacion_08_san_esteban.jpg?alt=media&token=8669854c-e823-4737-9246-5a3808cb5d84
+  mapa_url: https://www.google.com/maps/search/?api=1&query=40.960822%2C-5.662550
+estacion_final:
+  nombre: El primer testigo
+  lat: 40.959119
+  lon: -5.669158
+  acertijo: |-
+    🔍 *EL DESENLACE*
+
+    Las ocho marcas os han conducido hasta una criatura de piedra más antigua que el propio puente romano.
+
+    Este guardián aparece también en uno de los episodios más conocidos del Lazarillo de Tormes.
+
+    ¿Qué animal representa?
+  respuestas: toro|un toro|el toro|toro de piedra|verraco|un verraco|verraco vetón|verraco veton|bóvido|bovido|animal bovino
+  pistas:
+  - 🗿 Buscad una escultura independiente situada junto a la entrada del Puente Romano.
+  - 📖 En el Lazarillo de Tormes, el ciego hizo que Lázaro acercara la cabeza a esta figura de piedra.
+  - 🐂 Es un animal bovino de gran tamaño, asociado a los cuernos y a la fuerza.
+  capsula: |-
+    ⚔️ *¡EL TESTIMONIO DE PIEDRA HA SIDO RECONSTRUIDO!* ⚔️
+
+    «Buscasteis una fecha y encontrasteis una vida olvidada.
+
+    Seguisteis las estrellas y las flores con las que antiguas familias trataron de conservar sus nombres.
+
+    Descubristeis que la suerte descansaba sobre una calavera, que las águilas miraban hacia dos tiempos y que cada generación continuaba grabando nuevas criaturas sobre los muros.
+
+    Visteis promesas cerradas con metal y piedras levantadas para imponer silencio.
+
+    Ahora os encontráis ante el testigo más antiguo.
+
+    El toro contemplaba estas tierras antes de que las plazas reunieran multitudes, antes de que los maestros pintaran el cielo y antes de que las torres doradas dominaran el horizonte.
+
+    No escondía oro. No protegía el nombre de una familia.
+
+    Custodiaba algo más valioso: la memoria de todos aquellos que cruzaron el río, habitaron la ciudad y dejaron una señal de su paso.
+
+    El Cuaderno del Lapidario no contenía una historia secreta.
+
+    Contenía una forma de leer Salamanca.»
+
+    🏆 *Habéis encontrado al primer testigo. La misión ha concluido.*
+
+    📚 *Dato histórico:* El verraco es una escultura zoomorfa de granito vinculada a los vetones, pueblo prerromano asentado en el occidente de la Meseta. Estas figuras se relacionan generalmente con el ganado, la protección de territorios y la delimitación de espacios, aunque su función exacta continúa siendo discutida.
+
+    El verraco de Salamanca se encuentra junto a la cabecera del Puente Romano y representa tradicionalmente un toro. Es una de las piezas más antiguas conservadas en la ciudad y quedó unido para siempre a la literatura por el episodio inicial del Lazarillo de Tormes.
+
+    El puente formaba parte de la Vía de la Plata y permitía atravesar el Tormes en la ruta entre Mérida y Astorga. Sus quince arcos más próximos a la ciudad conservan origen romano; los restantes fueron reconstruidos tras distintas crecidas.
+  imagen_url: https://firebasestorage.googleapis.com/v0/b/gymkana-linaje-olvidado.firebasestorage.app/o/Salamanca%2Fsalamanca_final_puente.jpg?alt=media&token=42c22e37-d988-47e5-8028-c5eaf08f6286
+  imagen_final_url: https://firebasestorage.googleapis.com/v0/b/gymkana-linaje-olvidado.firebasestorage.app/o/Salamanca%2Fsalamanca_final_verraco.jpg?alt=media&token=c87fa358-b0d7-48d3-9a13-81fe15ea8efd
+  mapa_url: https://www.google.com/maps/search/?api=1&query=40.959119%2C-5.669158
+  coordenadas_finales: 40.959119N, -5.669158W
+  secuencia_codice: '`40` • `.` • `959` • `119N` • `-5` • `.` • `669` • `158W`'
+  guia_historica_url: ''
