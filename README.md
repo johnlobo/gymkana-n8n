@@ -6,6 +6,8 @@ Los datos de la gymkana viven bajo `gymkanas/linaje-olvidado/...` en Firestore (
 
 El organizador dispone de un comando oculto `/admin` (no aparece en `/ayuda`), restringido al chat_id configurado en `admin_chat_id`, que muestra un resumen en vivo de todos los equipos: progreso, tiempo, pistas/mapas/rescates usados y penalización.
 
+Cada gymkana completada por un equipo queda registrada (append-only, sobrevive a un `/reboot`) en `gymkanas/linaje-olvidado/eventos`, con tiempos, pistas/mapas/rescates usados, penalización y rango obtenido — pensado para análisis posterior al evento (medias, distribución de rangos, equidad del reparto round-robin, etc.), separado del estado en vivo de `equipos`.
+
 Documentación técnica completa (arquitectura, comandos, esquema de datos, código de los nodos clave): ver [`documentacion_gymkana.html`](./documentacion_gymkana.html) — ábrelo en cualquier navegador, incluye un diagrama interactivo del workflow.
 
 ## Estructura del proyecto
