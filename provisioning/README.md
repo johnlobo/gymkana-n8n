@@ -41,7 +41,11 @@ salvo que pases `--force`.
 
 ## El fichero de definición
 
-Ver [`ejemplo_gymkana.yaml`](./ejemplo_gymkana.yaml), comentado. En resumen:
+Ver [`ejemplo_gymkana.yaml`](./ejemplo_gymkana.yaml) (contenido ficticio,
+comentado) o [`../content/linaje_olvidado.yaml`](../content/linaje_olvidado.yaml)
+(exportación completa y real de "El Linaje Olvidado", las 8 estaciones + la
+final — sirve para volver a aprovisionar esta misma gymkana desde cero). En
+resumen:
 
 - **Config del juego**: `id`, `nombre`, y los parámetros opcionales
   (`tolerancia_metros`, `max_pistas`, `peso_pista`, `peso_mapa`,
@@ -101,3 +105,13 @@ y el workflow clonado en n8n tenía las rutas de Firestore y el
 `documentId` de "Cargar gymkana" apuntando a la gymkana nueva, con
 `projectId` intacto y los `webhookId` regenerados. Los datos y el workflow
 de prueba se borraron después de verificarlo.
+
+`../content/linaje_olvidado.yaml` se validó por separado, aprovisionando
+con `--skip-n8n` bajo un id temporal (`linaje-olvidado-test`) y comparando
+campo a campo cada estación contra los datos reales en Firestore — 0
+diferencias. Los datos de esa prueba también se borraron después.
+
+**Nota:** `../content/linaje_olvidado.yaml` deja `admin_chat_id` vacío a
+propósito (el original tenía un chat_id de Telegram real) — rellénalo con
+el chat_id del organizador si vuelves a aprovisionar esta gymkana y quieres
+usar `/admin`.

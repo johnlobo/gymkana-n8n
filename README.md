@@ -26,6 +26,7 @@ Documentación técnica completa (arquitectura, comandos, esquema de datos, cód
 ├── El_Linaje_Olvidado_Guia_Historica.pdf  # Guía histórica que el bot entrega al terminar la gymkana
 ├── test_n8n_api.sh                 # Script de prueba de la API REST de n8n
 ├── provisioning/                   # Script para montar gymkanas nuevas (Fase 2)
+├── content/                        # Definiciones YAML de gymkanas (para provision_gymkana.py)
 ├── backup/                         # Snapshots históricos del workflow y exports de Firestore
 ├── secrets/                        # Credenciales (NO versionado, ver .gitignore)
 ├── n8n_data/                       # Datos internos de n8n (NO versionado, ver .gitignore)

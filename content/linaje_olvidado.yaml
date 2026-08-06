@@ -1,0 +1,234 @@
+# Definicion completa de "El Linaje Olvidado" (Santillana del Mar),
+# exportada desde Firestore (gymkanas/linaje-olvidado) el 2026-08-06.
+# Formato para provision_gymkana.py -- ver provisioning/README.md.
+#
+# Sirve para volver a aprovisionar esta MISMA gymkana desde cero (p.ej.
+# tras borrar los datos por accidente, o para clonarla como punto de
+# partida de una nueva) sin tener que reconstruir el contenido a mano.
+#
+# admin_chat_id se ha dejado vacio a proposito (era un chat_id real de
+# Telegram): rellenalo con el chat_id del organizador antes de usar /admin.
+
+id: linaje-olvidado
+nombre: El Linaje Olvidado
+tolerancia_metros: 50
+max_pistas: 3
+peso_pista: 1
+peso_mapa: 3
+peso_rescate: 5
+termino_enclave: Enclave
+admin_chat_id: ''
+fragmentos:
+- '43'
+- .
+- '389'
+- 561N
+- '-4'
+- .
+- '108'
+- 084W
+estaciones:
+- orden: 1
+  nombre: Campo de Revolgo
+  lat: 43.38848
+  lon: -4.1106
+  acertijo: |-
+    🔍 *EL PRIMER SELLO*
+    En el campo donde comienza vuestra marcha se conserva una pista larga dedicada a uno de los juegos tradicionales más arraigados de Cantabria. ¿Qué juego se practica en ella?
+  respuestas: bolos|los bolos|juego de bolos|bolo
+  pistas:
+  - 🌳 Recorred el Campo de Revolgo y buscad una instalación larga y estrecha.
+  - |-
+    🎳 Al fondo de la pista se colocan varias piezas verticales que deben ser derribadas.
+  - 🪵 El recinto recibe el nombre de bolera.
+  capsula: |-
+    📜 *CÓDICE DEL LINAJE — FOLIO I*
+    «Según la tradición, unos monjes llevaron hasta estas tierras las reliquias de Santa Juliana y alrededor del antiguo monasterio creció la villa. Pero los cronistas del linaje aseguran que la primera señal no fue grabada en un palacio, sino escondida junto a los juegos y árboles de Revolgo...»
+
+    📚 *Dato histórico:* El Campo de Revolgo acogió antaño ferias de ganado y recibimientos a enviados reales. Su bolera, la de "El Revolgo", data de 1726 y está considerada la más antigua de Cantabria — aún hoy se juegan partidas de bolo palma. Junto a ella crece una encina centenaria de 16 metros de altura.
+  imagen_url: |-
+    https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjZmtfSaqjam4lsqBXYA-QwQu_DRfT6w2RhPox37T3bbnpejizZn_wLZqD2PDILW538pdBfGa8nSJcS_MI4HUiyqzJ_I1q9_fhyphenhyphen7ge69wdfha83kdFKd9HxL1Xb_vPW_yFFDAuPDgg1whKw/s1600/2014-08-03+21.jpg
+  mapa_url: |-
+    https://www.google.com/maps/search/?api=1&query=Campo+de+Revolgo%2C+Santillana+del+Mar
+- orden: 2
+  nombre: Plaza Mayor - Torre del Merino
+  lat: 43.3891
+  lon: -4.1057
+  acertijo: |-
+    🔍 *EL SEGUNDO SELLO*
+    Situaos frente a la fachada de la Torre del Merino que mira hacia la Plaza Mayor. Bajo el tejado aparece una fila de huecos rectangulares. Contad únicamente los de esa fachada, sin incluir los del lateral. ¿Cuántos hay?
+  respuestas: 7|siete|7 huecos|siete huecos|7 ventanas|siete ventanas
+  pistas:
+  - 🏰 Colocaos frente a la pared situada sobre la entrada principal de la torre.
+  - 👆 Mirad la franja más alta, inmediatamente bajo el tejado.
+  - |-
+    🔢 Contad de izquierda a derecha solo los huecos rectangulares de la fachada frontal.
+  capsula: |-
+    📜 *CÓDICE DEL LINAJE — FOLIO II*
+    «El merino era la voz del rey en estas tierras. Desde esta torre vigilaba la plaza y sus mercados. Las viejas aperturas de la corona defensiva terminaron convertidas en huecos bajo la cubierta, pero el códice afirma que una de ellas aún contempla a quienes buscan el secreto...»
+
+    📚 *Dato histórico:* La Torre del Merino es una construcción gótica del siglo XIV que sirvió de residencia y fortaleza al Merino Mayor de las Asturias de Santillana, máximo representante del rey en la comarca. Sus muros almenados y saeteras la convierten en una de las edificaciones más antiguas de la villa.
+  imagen_url: |-
+    https://dynamic-media-cdn.tripadvisor.com/media/photo-o/27/68/b1/fb/torre-del-merino.jpg
+  mapa_url: |-
+    https://www.google.com/maps/search/?api=1&query=Torre+del+Merino%2C+Santillana+del+Mar
+- orden: 3
+  nombre: Palacio de Peredo-Barreda
+  lat: 43.389496
+  lon: -4.108931
+  acertijo: |-
+    🔍 *EL TERCER SELLO*
+    En el gran escudo de piedra del palacio dos fieras custodian las armas del linaje. ¿Sobre qué tipo de personajes mitológicos se apoyan dichas fieras?
+  respuestas: sirenas|sirena|dos sirenas|una sirena
+  pistas:
+  - 🛡️ Localizad el gran escudo esculpido en la fachada.
+  - 👁️ Fijaos en la parte inferior del escudo, bajo las patas de las fieras.
+  - |-
+    🧜 Hay un personaje mitológico sujetando cada león... es acuático, pero no del todo.
+  capsula: |-
+    📜 *CÓDICE DEL LINAJE — FOLIO III*
+    «Los nobles proclamaban su apellido en la piedra para que nadie pudiera olvidarlo. Dos fieras recibieron la orden de proteger estas armas, alzadas sobre un pedestal de sirenas que vigilaban desde las profundidades. Solo quien reconoce a las guardianas del pedestal merece recibir el siguiente fragmento...»
+
+    📚 *Dato histórico:* El palacio fue construido a comienzos del siglo XVIII por Francisco Miguel de Peredo, indiano y caballero de la Orden de Calatrava. Más tarde pasó a llamarse también Palacio de Benemejís, por herencia de sus descendientes, y hoy es propiedad de Caja Cantabria.
+  imagen_url: |-
+    https://www.santillana-del-mar.com/resources/cache/234d6dd1236bd7fa5343bda7cd2788fe-11ad57b64c651eedbb21462ac66e96e6.webp
+  mapa_url: |-
+    https://www.google.com/maps/search/?api=1&query=Palacio+de+Peredo-Barreda%2C+Santillana+del+Mar
+- orden: 4
+  nombre: Casa de los Hombrones
+  lat: 43.3904
+  lon: -4.1072
+  acertijo: |-
+    🔍 *EL CUARTO SELLO*
+    En la fachada de esta casona de Santillana del Mar hay un enorme escudo de piedra sostenido por dos soldados bigotudos. Si miras con atención la inscripción que aparece en el blasón, leerás una frase que habla de la muerte y del honor. ¿Qué dice exactamente el lema?
+  respuestas: |-
+    un buen morir es honra de la vida|un buen morir es onra de la vida|honra de la vida|onra de la vida
+  pistas:
+  - 🏛️ Elevad la mirada hacia el enorme escudo de la fachada.
+  - |-
+    📜 Buscad el texto grabado en la piedra, junto al escudo: no es decoración, es una frase completa.
+  - '🔤 La frase empieza así: «Un buen morir es...»'
+  capsula: |-
+    📜 *CÓDICE DEL LINAJE — FOLIO IV*
+    «No fueron los propietarios quienes dieron fama a esta casa, sino los dos gigantes obligados a custodiar sus armas. El códice los llama los vigilantes del honor: uno mira hacia el pasado y el otro espera a quienes aún no han llegado...»
+
+    📚 *Dato histórico:* La Casa de los Hombrones, del siglo XVII, perteneció a la familia Villa. Bajo su escudo puede leerse aún la inscripción original: «UN BUEN MORIR ES ONRA DE LA VIDA». Su fachada de sillería, con pórtico de cuatro arcos, es una de las más fotografiadas de la Calle del Cantón.
+  imagen_url: |-
+    https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Los_Villa._Santillana_del_Mar.jpg/1280px-Los_Villa._Santillana_del_Mar.jpg
+  mapa_url: |-
+    https://www.google.com/maps/search/?api=1&query=Casa+de+los+Hombrones%2C+Santillana+del+Mar
+- orden: 5
+  nombre: Colegiata de Santa Juliana
+  lat: 43.3892
+  lon: -4.1086
+  acertijo: |-
+    🔍 *EL QUINTO SELLO*
+    Antes de alcanzar la portada, dos animales de piedra vigilan el acceso al recinto sagrado. ¿Qué animales son?
+  respuestas: leones|dos leones|león|leon|2 leones
+  pistas:
+  - ⛪ No es necesario entrar en la iglesia.
+  - 👀 Observad los laterales del acceso exterior.
+  - 🦁 Son animales asociados a la fuerza y suelen representarse con melena.
+  capsula: |-
+    📜 *CÓDICE DEL LINAJE — FOLIO V*
+    «La villa tomó su nombre de Santa Juliana, cuya memoria quedó unida para siempre a este templo. Las bestias de piedra que guardan su entrada no impiden el paso: juzgan el valor de quienes se aproximan al santuario...»
+
+    📚 *Dato histórico:* Según la leyenda, Santa Juliana de Nicomedia fue martirizada con solo 18 años por negarse a casarse con un senador pagano que no quiso convertirse al cristianismo. Sus reliquias llegaron a estas tierras en el siglo IX y dieron nombre a la villa. La Colegiata, del siglo XII, es el templo románico más grande de la costa cantábrica, y su claustro conserva 42 capiteles esculpidos.
+  imagen_url: |-
+    https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/Colegiata_de_Santa_Juliana._Fachada.jpg/1280px-Colegiata_de_Santa_Juliana._Fachada.jpg
+  mapa_url: |-
+    https://www.google.com/maps/search/?api=1&query=Colegiata+de+Santa+Juliana%2C+Santillana+del+Mar
+- orden: 6
+  nombre: Convento de San Ildefonso
+  lat: 43.3885
+  lon: -4.108
+  acertijo: |-
+    🔍 *EL SEXTO SELLO*
+    Observad el acceso al exterior del convento. Este convento no tiene una torre alta y maciza como otras iglesias. En su lugar, sobre la iglesia, se eleva una estructura de piedra con vanos donde cuelgan las campanas. ¿Cuántas campanas hay en esa estructura?
+  respuestas: tres|3|3 campanas|tres campanas
+  pistas:
+  - 🔔 Elevad la mirada por encima de la fachada de la iglesia, no del acceso.
+  - |-
+    🏛️ Buscad la espadaña: una estructura de piedra con huecos, no una torre completa.
+  - 🔢 Contad únicamente las campanas visibles colgadas en los vanos.
+  capsula: |-
+    📜 *CÓDICE DEL LINAJE — FOLIO VI*
+    «Tras estos muros, generaciones de religiosas vivieron en recogimiento. Los cronistas aseguraban que las palabras pronunciadas junto al convento no desaparecían: quedaban suspendidas bajo el arco de entrada, esperando a ser escuchadas...»
+
+    📚 *Dato histórico:* El convento fue fundado en 1667 por el canónigo Alonso Gómez de Carro. Lo habitaron primero monjas dominicas hasta 2007, cuando llegaron las clarisas en busca de mayor recogimiento. En 1711 una tormenta derribó su torre del reloj, hoy sustituida por una espadaña. En su altar mayor se venera un Cristo de marfil filipino del siglo XVIII.
+  imagen_url: |-
+    https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Santillana_del_Mar_-_Convento_de_San_Ildefonso_%28MM_Clarisas%29_04.jpg/1280px-Santillana_del_Mar_-_Convento_de_San_Ildefonso_%28MM_Clarisas%29_04.jpg
+  mapa_url: |-
+    https://www.google.com/maps/search/?api=1&query=Convento+de+San+Ildefonso%2C+Santillana+del+Mar
+- orden: 7
+  nombre: Palacio de Velarde
+  lat: 43.38905
+  lon: -4.109
+  acertijo: |-
+    🔍 *EL SÉPTIMO SELLO*
+    En la parte más alta y central del Palacio de Velarde aparece una fila de pequeñas ventanas cuadradas. Contad únicamente las de ese cuerpo elevado. ¿Cuántas son?
+  respuestas: 4|cuatro|4 ventanas|cuatro ventanas|4 huecos|cuatro huecos
+  pistas:
+  - 🏛️ Alejaos unos metros para contemplar la fachada completa.
+  - 👆 Buscad el bloque central que sobresale por encima del resto del edificio.
+  - 🔢 Contad solo las pequeñas ventanas cuadradas alineadas en su parte superior.
+  capsula: |-
+    📜 *CÓDICE DEL LINAJE — FOLIO VII*
+    «El palacio de los Velarde elevó su fachada sobre la plaza como una declaración de poder. Sus pequeñas ventanas superiores fueron llamadas por el códice “los ojos del linaje”, pues desde ellas la casa parecía observar toda la villa...»
+
+    📚 *Dato histórico:* Levantado a mediados del siglo XVI por Alonso de Velarde, también se le conoce como Palacio de las Arenas. Es el único palacio renacentista visitable de Cantabria: hoy alberga un museo de más de 2.000 m² con obras de arte, documentos históricos, armas y tapices.
+  imagen_url: |-
+    https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Palacio_de_Velarde%2C_Santillana_del_Mar_pan.jpg/1280px-Palacio_de_Velarde%2C_Santillana_del_Mar_pan.jpg
+  mapa_url: |-
+    https://www.google.com/maps/search/?api=1&query=Palacio+de+Velarde%2C+Santillana+del+Mar
+- orden: 8
+  nombre: Lavadero-abrevadero de la Calle del Río
+  lat: 43.391589
+  lon: -4.1063
+  acertijo: |-
+    🔍 *EL OCTAVO SELLO*
+    Bajo el tejado del antiguo lavadero, varios guardianes de madera sostienen el frente abierto de la cubierta. Contad únicamente los pilares verticales de madera. ¿Cuántos son?
+  respuestas: 3|tres|3 pilares|tres pilares|3 postes|tres postes
+  pistas:
+  - 💧 Situaos frente al lateral abierto del lavadero.
+  - 🏚️ No contéis las vigas inclinadas del tejado ni los muros de piedra.
+  - 🪵 Contad solo los postes que bajan verticalmente desde la cubierta.
+  capsula: |-
+    📜 *CÓDICE DEL LINAJE — FOLIO VIII*
+    «El agua fue siempre la mensajera silenciosa de Santillana. Atravesó fuentes, pilones y lavaderos, escuchando las palabras de nobles, comerciantes y viajeros. Los pilares que sostienen esta cubierta guardan el último fragmento del nombre que debéis reconstruir...»
+
+    📚 *Dato histórico:* Este lavadero-abrevadero del siglo XVI estuvo en uso hasta bien entrado el siglo XX como punto de encuentro vecinal: aquí se lavaba la ropa, se recogía agua y se abrevaba al ganado. Su tejado se apoya en un muro de mampostería por un lado y, por el otro, en tres pilares de madera.
+  imagen_url: |-
+    https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Calle_del_R%C3%ADo._Abrevadero.jpg/1280px-Calle_del_R%C3%ADo._Abrevadero.jpg
+  mapa_url: |-
+    https://www.google.com/maps/search/?api=1&query=Lavadero+abrevadero+Calle+del+Rio%2C+Santillana+del+Mar
+estacion_final:
+  nombre: Enclave secreto
+  lat: 43.3895614
+  lon: -4.1080844
+  acertijo: |-
+    🔍 *EL DESENLACE*
+    Las ocho marcas del códice os han conducido hasta una fuente olvidada. En su muro se abre una pequeña hornacina que custodia el último símbolo del linaje. ¿Qué objeto aparece representado o colocado dentro de ella?
+  respuestas: jarro|un jarro|el jarro|vasija|una vasija|jarrón|jarron
+  pistas:
+  - 🏺 No busquéis el objeto en el suelo ni sobre el tejado.
+  - 🧱 Está protegido dentro de un hueco abierto en el muro.
+  - 💧 Es un recipiente con asa utilizado para contener o servir líquidos.
+  capsula: |-
+    ⚔️ *¡EL LINAJE OLVIDADO HA SIDO REVELADO!* ⚔️
+
+    «Ni las torres de los merinos, ni los escudos de los nobles, ni los muros de los conventos guardaban por sí solos el legado. El auténtico secreto permaneció oculto en el recipiente más humilde, allí donde todos podían verlo y casi nadie sabía mirar.»
+
+    El jarro representa la memoria de la villa: el agua, las historias compartidas y las huellas de quienes caminaron antes que vosotros. El linaje olvidado no pertenecía a una única familia, sino a todos aquellos que conservaron la memoria de Santillana.
+
+    🏆 *El códice queda bajo vuestra custodia. La misión ha concluido.*
+
+    📚 *Dato histórico:* La fuente está inspirada en la real Fuente de la Calle Gándara, una de las cuatro fuentes históricas del casco antiguo de Santillana del Mar. De estilo barroco y fechada entre los siglos XVI y XVII, su ornamentación representa precisamente un jarro enmarcado en una hornacina adosada al muro.
+  imagen_url: |-
+    https://firebasestorage.googleapis.com/v0/b/gymkana-linaje-olvidado.firebasestorage.app/o/estacion9.jpg?alt=media&token=602ad1b5-90bc-4dbd-9e4a-95f97c9d23f5
+  imagen_final_url: https://thumbs.dreamstime.com/b/fuente-en-santillana-28983790.jpg?w=992
+  mapa_url: https://www.google.com/maps/search/?api=1&query=43.389561,-4.108084
+  coordenadas_finales: 43.389561N, -4.108084W
+  secuencia_codice: '`43` • `.` • `389` • `561N` • `-4` • `.` • `108` • `084W`'
+  guia_historica_url: |-
+    https://firebasestorage.googleapis.com/v0/b/gymkana-linaje-olvidado.firebasestorage.app/o/guia_historica.pdf?alt=media&token=869735ef-03e8-4f6a-b399-5dfef3dc8e17
