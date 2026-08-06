@@ -24,17 +24,15 @@ así no hace falta escribir tu chat_id de Telegram en un YAML que puede
 acabar en un repositorio público.
 """
 import argparse
-import json
 import sys
-import time
 import uuid
 from pathlib import Path
 
-import jwt
 import requests
 import yaml
 
-FIRESTORE_SCOPE = "https://www.googleapis.com/auth/datastore"
+from firestore_lib import Firestore
+
 DEFAULT_TOLERANCIA_METROS = 50
 DEFAULT_MAX_PISTAS = 3
 DEFAULT_PESO_PISTA = 1
@@ -108,77 +106,6 @@ def validar_definicion(data):
         for e in errores:
             print(f"  - {e}", file=sys.stderr)
         sys.exit(1)
-
-
-# --------------------------------------------------------------------------
-# Firestore
-# --------------------------------------------------------------------------
-def firestore_access_token(service_account_path):
-    with open(service_account_path, encoding="utf-8") as f:
-        sa = json.load(f)
-    now = int(time.time())
-    payload = {
-        "iss": sa["client_email"],
-        "sub": sa["client_email"],
-        "aud": "https://oauth2.googleapis.com/token",
-        "iat": now,
-        "exp": now + 3600,
-        "scope": FIRESTORE_SCOPE,
-    }
-    token = jwt.encode(payload, sa["private_key"], algorithm="RS256")
-    resp = requests.post(
-        "https://oauth2.googleapis.com/token",
-        data={
-            "grant_type": "urn:ietf:params:oauth:grant-type:jwt-bearer",
-            "assertion": token,
-        },
-    )
-    resp.raise_for_status()
-    return resp.json()["access_token"], sa["project_id"]
-
-
-def to_firestore_value(v):
-    if v is None:
-        return {"nullValue": None}
-    if isinstance(v, bool):
-        return {"booleanValue": v}
-    if isinstance(v, int):
-        return {"integerValue": str(v)}
-    if isinstance(v, float):
-        return {"doubleValue": v}
-    if isinstance(v, str):
-        return {"stringValue": v}
-    if isinstance(v, list):
-        return {"arrayValue": {"values": [to_firestore_value(x) for x in v]}}
-    if isinstance(v, dict):
-        return {"mapValue": {"fields": {k: to_firestore_value(x) for k, x in v.items()}}}
-    raise TypeError(f"Tipo no soportado para Firestore: {type(v)}")
-
-
-class Firestore:
-    def __init__(self, service_account_path):
-        self.token, self.project_id = firestore_access_token(service_account_path)
-        self.base = (
-            f"https://firestore.googleapis.com/v1/projects/{self.project_id}"
-            "/databases/(default)/documents"
-        )
-
-    def _headers(self):
-        return {"Authorization": f"Bearer {self.token}", "Content-Type": "application/json"}
-
-    def get(self, path):
-        r = requests.get(f"{self.base}/{path}", headers=self._headers())
-        if r.status_code == 404:
-            return None
-        r.raise_for_status()
-        return r.json()
-
-    def set_document(self, path, fields):
-        """PATCH sin updateMask = sobrescribe el documento entero (crea si no existe)."""
-        body = {"fields": {k: to_firestore_value(v) for k, v in fields.items()}}
-        r = requests.patch(f"{self.base}/{path}", headers=self._headers(), json=body)
-        r.raise_for_status()
-        return r.json()
 
 
 # --------------------------------------------------------------------------

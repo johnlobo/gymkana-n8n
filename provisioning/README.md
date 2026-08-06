@@ -1,13 +1,18 @@
 # Aprovisionamiento de gymkanas nuevas (Fase 2)
 
-Script para montar una gymkana nueva a partir de un fichero de definición
-YAML, sin repetir a mano lo que se hizo para "El Linaje Olvidado": crea sus
-documentos en Firestore (config + estaciones + contador de reparto) y clona
-el workflow de n8n de una gymkana existente, apuntándolo a la nueva.
+Dos scripts simétricos para trabajar con el contenido de una gymkana como
+un fichero YAML en vez de a mano en Firestore:
 
-**Lo que NO automatiza** (requiere pasos manuales, ver el final): crear el
-bot de Telegram en @BotFather, dar de alta su token como credencial en n8n,
-y activar el workflow — Telegram no tiene una API para crear bots.
+- **`provision_gymkana.py`**: YAML → Firestore + n8n. Monta una gymkana
+  nueva (o la sobrescribe con `--force`) a partir de una definición.
+- **`export_gymkana.py`**: Firestore → YAML. Vuelca una gymkana ya
+  desplegada al mismo formato — para tener una copia de seguridad legible,
+  o como punto de partida para clonarla.
+
+**Lo que `provision_gymkana.py` NO automatiza** (requiere pasos manuales,
+ver el final): crear el bot de Telegram en @BotFather, dar de alta su
+token como credencial en n8n, y activar el workflow — Telegram no tiene
+una API para crear bots.
 
 ## Uso
 
@@ -45,6 +50,23 @@ las estaciones antes de tener el bot listo), usa `--skip-n8n`.
 
 Si la gymkana ya existe en Firestore, el script se niega a sobrescribirla
 salvo que pases `--force`.
+
+## Exportar una gymkana existente
+
+```bash
+python3 export_gymkana.py linaje-olvidado -o ../content/linaje_olvidado.yaml
+```
+
+Lee `gymkanas/<id>` y sus `estaciones` en Firestore y escribe el mismo
+formato YAML que espera `provision_gymkana.py` (`fragmentos` se
+reconstruye a partir de los `pasoN_fragmento` de la primera estación; los
+campos legacy que ya no usa el código, como `siguiente`/`fragmentos_previos`,
+no se exportan). No exporta `admin_chat_id` salvo que pases
+`--include-admin-chat-id` — por defecto se deja fuera del fichero, igual
+que hace `provision_gymkana.py` al leerlo (ver más abajo). El fichero
+generado se valida con la misma lógica que usa `provision_gymkana.py` al
+cargarlo, así que un export incompleto falla en el momento, no la próxima
+vez que alguien intente reaprovisionar.
 
 ## El fichero de definición
 
@@ -122,3 +144,14 @@ diferencias. Los datos de esa prueba también se borraron después.
 propósito (el original tenía un chat_id de Telegram real) — al
 aprovisionar, el script lo rellena automáticamente desde
 `../secrets/admin_chat_id` si ese fichero existe.
+
+`export_gymkana.py` se probó con un ciclo completo: exportó
+`linaje-olvidado` real, se reaprovisionó ese YAML bajo un id temporal
+(`--skip-n8n`), se volvió a exportar ese id temporal, y el resultado fue
+byte a byte idéntico al primer export (aparte del `id`) — confirma que
+`Firestore → YAML → Firestore → YAML` no pierde ni altera nada. Los datos
+de esa prueba se borraron después.
+
+`firestore_lib.py` es un cliente Firestore mínimo (autenticación con
+cuenta de servicio + conversión de tipos) compartido por ambos scripts,
+para no duplicar esa lógica.
