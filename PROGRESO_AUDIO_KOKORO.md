@@ -444,3 +444,25 @@ la tarea para poder retomarla si la sesión se cae. Bucket de Storage:
   Firestore). `workflow.json` re-refrescado. Documentado en
   `audio_locuciones.md` y `datos_firestore.md`. Pendiente: que el usuario
   confirme en real.
+- 2026-08-11 23:5x — **Regresión grave, autoinfligida**: el usuario reporta
+  que /move ha dejado de funcionar en Aranda. Comprobado con
+  `node --check` (por primera vez hoy, debería haber sido el primer paso
+  siempre antes de desplegar): el código de `Procesar estación y comandos`
+  tenía un `} else {` duplicado (error de índices al recortar/pegar el
+  bloque de `/repetir` en el cambio anterior — off-by-one al hacer el
+  slice de líneas). Esto rompía la sintaxis del nodo Code entero: **no
+  solo /move, todos los comandos habrían fallado** desde ese despliegue
+  (confirmado que Salamanca y la plantilla tenían el mismo bug, ya que se
+  desplegó el mismo código a las tres).
+  Corregido, verificado con `node --check` (sintaxis OK) y además con un
+  arnés de pruebas mínimo (`/tmp/test_engine.js`, 7 casos: move, repetir
+  con y sin contenido previo, estado, pista, respuesta correcta, rescate)
+  que ejecuta el código real con datos de prueba antes de tocar producción
+  — todos pasan. Backups en
+  `backup/backup_{vn3nwqbxR5Ur6Zze,tlFKrYHhqhHnvT2y,spt1kZxCOE9LCBbz}_<TS>_pre_fix_syntax_repetir.json`.
+  Desplegado el fix en los tres, HTTP 200, verificado sintaxis OK en los
+  tres tras el despliegue. `workflow.json` re-refrescado.
+  **A partir de ahora: `node --check` obligatorio antes de cualquier PUT a
+  un workflow que toque `Procesar estación y comandos` (o cualquier nodo
+  Code), y preferible pasar también por el arnés de prueba mínimo si el
+  cambio toca varias ramas.**
