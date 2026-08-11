@@ -235,3 +235,28 @@ la tarea para poder retomarla si la sesión se cae. Bucket de Storage:
   ambos bots de Telegram) y decidir con el usuario si commitear
   `content/*.yml`, `provisioning/generar_audio.py`, `firestore_lib.py`
   (scope param) y `requirements.txt` (cryptography añadido).
+- 2026-08-11 22:2x — Commiteado (commit `34640b3`, local, sin push):
+  `generar_audio.py`, YAMLs de Salamanca/Aranda, fix de `provision_gymkana.py`
+  (audio_url/acertijo_audio_url), `requirements.txt`, backups de n8n y esta
+  nota. **Único punto pendiente del plan: probar en real la entrega de audio
+  en los bots de Telegram de Salamanca y Aranda — lo hará el usuario a
+  mano.**
+- 2026-08-11 22:3x — **Bug reportado por el usuario**: al terminar de sonar
+  una locución, Telegram salta automáticamente a la siguiente (de otra
+  estación, o la cápsula tras el acertijo) sin que el usuario la pida.
+  Confirmado por búsqueda + inspección del código del nodo
+  (`Telegram.node.js` dentro del contenedor `gymkana_n8n`): es un
+  comportamiento nativo del cliente de Telegram para mensajes tipo
+  audio/voz (los encadena como playlist de la conversación), no hay
+  parámetro de la Bot API para desactivarlo. Único fix fiable: enviar el
+  mp3 como **documento** (`sendDocument`) en vez de **audio** (`sendAudio`)
+  — mismo campo `file`/`chatId`/`additionalFields`, confirmado leyendo el
+  esquema del nodo. Contrapartida: se pierde el reproductor inline con forma
+  de onda; llega como adjunto descargable.
+  Aplicado en los 6 nodos `Enviar Audio*` (3 por workflow × Salamanca +
+  Aranda), backup previo en
+  `backup/backup_{vn3nwqbxR5Ur6Zze,tlFKrYHhqhHnvT2y}_20260811_223357_pre_sendDocument.json`.
+  PUT vía API de n8n confirmado con HTTP 200 en ambos, verificado por GET
+  posterior: los 6 nodos en `sendDocument`, ambos workflows siguen
+  `active: true`. Pendiente: que el usuario confirme en Telegram que ya no
+  encadena.
