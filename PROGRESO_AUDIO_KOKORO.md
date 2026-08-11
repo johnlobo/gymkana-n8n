@@ -466,3 +466,17 @@ la tarea para poder retomarla si la sesión se cae. Bucket de Storage:
   un workflow que toque `Procesar estación y comandos` (o cualquier nodo
   Code), y preferible pasar también por el arnés de prueba mínimo si el
   cambio toca varias ramas.**
+- 2026-08-11 23:5x — El usuario preguntó si deberíamos tener "tests
+  unitarios o algo así" — sí, claramente, visto lo de arriba. Creado
+  `provisioning/test_procesar_estacion.js` (persistente en el repo, no un
+  script suelto en `/tmp`): lee el código de `Procesar estación y
+  comandos` desde `workflow.json` (o un fichero suelto si se le pasa como
+  argumento, útil para probar un cambio ANTES de desplegarlo), comprueba
+  sintaxis con `node --check`, y ejecuta el código real (con `$`/`$json`
+  mockeados) contra 12 escenarios: move, repetir (con y sin contenido
+  previo — el caso que motivó todo esto), respuesta correcta/incorrecta,
+  rescate (primera vez y ya visto), estado, pista, mapa, pausa, y
+  finalización de la gymkana. `node
+  provisioning/test_procesar_estacion.js` → 12/12 OK contra el código ya
+  corregido. Documentado en `doc/infraestructura.md` como paso obligatorio
+  antes de tocar este nodo en producción.
