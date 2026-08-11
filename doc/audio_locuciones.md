@@ -91,8 +91,13 @@ nodos nuevos, siempre con el mismo patrón:
 
 [Telegram] Enviar Audio
   └──> [Code] Preparar ID Audio         <- NUEVO
-         (id: chat_id, ultimo_audio_msg_id: $json.message_id
-          -- $json es la respuesta de Telegram al envío que acaba de pasar)
+         (id: chat_id, ultimo_audio_msg_id: $json.result.message_id
+          -- $json es la respuesta CRUDA de la Bot API al envío que acaba de
+          pasar, sin desenvolver: {ok, result: {message_id, ...}}. El nodo
+          Telegram de n8n solo desenvuelve "result" en un par de casos
+          especiales, no para sendAudio/sendDocument/deleteMessage -- usar
+          $json.message_id a secas aquí es un bug fácil de cometer, ya
+          costó una ronda de "no borra nada" sin dar ningún error visible.)
        └──> [Firestore] Guardar ID Audio   <- NUEVO
               (upsert equipos, updateKey "id", columns "id,ultimo_audio_msg_id")
             └──> (el nodo que ya seguía antes, sin cambios)

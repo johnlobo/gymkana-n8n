@@ -303,3 +303,23 @@ la tarea para poder retomarla si la sesión se cae. Bucket de Storage:
   añadidos a `doc/datos_firestore.md` (`ultimo_audio_msg_id`, y de paso
   `audio_url`/`acertijo_audio_url` que faltaban documentar de antes).
   Pendiente: que el usuario confirme en real que ya no encadena.
+- 2026-08-11 23:0x — **El usuario prueba /repetir y /rescate en Salamanca:
+  no borra nada.** Sin logs de ejecución disponibles vía API de n8n (executions
+  vacío incluso sin filtro, no hay guardado de ejecuciones habilitado).
+  Verificado directamente en Firestore: el único equipo de Salamanca
+  (chat_id=5770831482, el mismo admin_chat_id — es el propio chat de pruebas)
+  tiene `ultimo_audio_msg_id: null` pese a `actualizado_en` reciente. Bug
+  encontrado leyendo `Telegram.node.js`: para `resource=message` (sendAudio,
+  sendDocument, deleteMessage) el nodo Telegram devuelve la respuesta CRUDA
+  de la Bot API (`{ok, result: {message_id, ...}}`) sin desenvolver `result`
+  (eso solo pasa para un par de casos especiales como `chat.administrators`
+  o descarga de fichero). `Preparar ID Audio (*)` leía `$json.message_id`
+  (no existe ahí, vive en `$json.result.message_id`) — por eso
+  `ultimo_audio_msg_id` nunca se llegó a escribir, en ningún punto de envío,
+  de ningún equipo. No era un problema de rescate/repetir en particular, los
+  afecta a los 6 puntos de envío por igual.
+  Corregido `$json.message_id` → `$json.result.message_id` en los 3 nodos
+  `Preparar ID Audio (*)` de cada workflow. Backup pre-fix en
+  `backup/backup_{vn3nwqbxR5Ur6Zze,tlFKrYHhqhHnvT2y}_<TS>_pre_fix_message_id.json`.
+  Desplegado vía API, HTTP 200 en ambos, verificado por GET. Pendiente: que
+  el usuario vuelva a probar.
