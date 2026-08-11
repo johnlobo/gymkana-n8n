@@ -14,7 +14,7 @@ import requests
 FIRESTORE_SCOPE = "https://www.googleapis.com/auth/datastore"
 
 
-def access_token(service_account_path):
+def access_token(service_account_path, scope=FIRESTORE_SCOPE):
     with open(service_account_path, encoding="utf-8") as f:
         sa = json.load(f)
     now = int(time.time())
@@ -24,7 +24,7 @@ def access_token(service_account_path):
         "aud": "https://oauth2.googleapis.com/token",
         "iat": now,
         "exp": now + 3600,
-        "scope": FIRESTORE_SCOPE,
+        "scope": scope,
     }
     token = jwt.encode(payload, sa["private_key"], algorithm="RS256")
     resp = requests.post(

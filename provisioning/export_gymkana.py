@@ -28,7 +28,7 @@ from provision_gymkana import validar_definicion
 NUMEROS_EMOJI = ["", "1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣", "🔟"]
 
 CAMPOS_ESTACION = ("nombre", "lat", "lon", "acertijo", "respuestas",
-                    "capsula", "imagen_url", "mapa_url")
+                    "capsula", "imagen_url", "mapa_url", "audio_url", "acertijo_audio_url")
 CAMPOS_ESTACION_FINAL = CAMPOS_ESTACION + (
     "imagen_final_url", "coordenadas_finales", "secuencia_codice", "guia_historica_url",
 )
@@ -77,15 +77,15 @@ def exportar_estacion(doc, campos):
 
 def ordenar_campos_estacion_regular(orden_num, e):
     campos = ("orden", "nombre", "lat", "lon", "acertijo", "respuestas", "pistas",
-              "capsula", "imagen_url", "mapa_url")
+              "capsula", "imagen_url", "mapa_url", "audio_url", "acertijo_audio_url")
     e = {**e, "orden": orden_num}
     return {k: e[k] for k in campos if k in e}
 
 
 def ordenar_campos_estacion_final(e):
     campos = ("nombre", "lat", "lon", "acertijo", "respuestas", "pistas", "capsula",
-              "imagen_url", "imagen_final_url", "mapa_url", "coordenadas_finales",
-              "secuencia_codice", "guia_historica_url")
+              "imagen_url", "imagen_final_url", "mapa_url", "audio_url", "acertijo_audio_url",
+              "coordenadas_finales", "secuencia_codice", "guia_historica_url")
     return {k: e[k] for k in campos if k in e}
 
 

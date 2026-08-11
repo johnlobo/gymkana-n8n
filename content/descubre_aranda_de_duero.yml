@@ -1,0 +1,523 @@
+# Definicion de la gymkana 'Descubre Aranda de Duero' (id=descubre-aranda-duero),
+# exportada desde Firestore con export_gymkana.py.
+# Formato para provision_gymkana.py -- ver provisioning/README.md.
+#
+# admin_chat_id no se ha exportado (usa --include-admin-chat-id si lo
+# necesitas); provision_gymkana.py lo rellena solo desde
+# secrets/admin_chat_id si el YAML no lo trae.
+
+id: descubre-aranda-duero
+nombre: Descubre Aranda de Duero
+tolerancia_metros: 25
+max_pistas: 3
+peso_pista: 1
+peso_mapa: 3
+peso_rescate: 5
+termino_enclave: Parada
+fragmentos:
+- '41.'
+- '669'
+- 740N,
+- '-3.'
+- '690'
+- 100W
+estaciones:
+- orden: 1
+  nombre: Iglesia de Santa María la Real
+  lat: 41.67117
+  lon: -3.68914
+  acertijo: |-
+    ⛪ *SANTA MARÍA LA REAL*
+
+    Comenzamos ante uno de los grandes símbolos de Aranda.
+
+    Antes de conocer la historia de esta extraordinaria fachada, fijaos en las dos puertas de entrada. Entre ambas hay una figura de la Virgen.
+
+    ¿Qué sostiene en sus brazos?
+  respuestas: |-
+    niño|un niño|niño jesús|niño jesus|jesús|jesus|bebé|bebe|el niño|el niño jesús|el niño jesus
+  pistas:
+  - 👀 No busquéis en la parte superior. Mirad justo entre las dos puertas.
+  - 🗿 La figura central representa a la Virgen María.
+  - 👶 En sus brazos aparece el Niño Jesús.
+  capsula: |-
+    🏛️ *IGLESIA DE SANTA MARÍA LA REAL*
+
+    La iglesia que tenéis delante es uno de los grandes monumentos de Aranda de Duero y una de las obras más representativas del gótico tardío burgalés.
+
+    El edificio actual sustituyó a un templo anterior. De aquella construcción primitiva se conserva la torre, concebida con un marcado carácter defensivo. No era extraño en la Edad Media que un edificio religioso situado cerca de las murallas pudiera cumplir también funciones de vigilancia y protección.
+
+    Las obras del nuevo templo ya estaban en marcha en el siglo XV. El crecimiento de Aranda exigía una iglesia de mayor tamaño y prestigio, y el resultado fue un edificio gótico de amplias proporciones, organizado en varias naves y capillas.
+
+    ⭐ *La gran protagonista: la fachada*
+
+    Lo más espectacular es precisamente lo que acabáis de observar. La portada se concibió como un gigantesco retablo de piedra. Su ejecución se relaciona con Simón y Francisco de Colonia y quedó terminada a comienzos del siglo XVI.
+
+    La fachada está dedicada a la Virgen y contiene decenas de figuras, relieves, escudos y escenas religiosas. En ella aparecen episodios del Nacimiento de Jesús, la Epifanía y la Pasión de Cristo, además de santos, apóstoles y evangelistas.
+
+    En el centro, la imagen de María con el Niño que habéis localizado preside todo el conjunto.
+
+    👑 *Reyes en la piedra*
+
+    También podéis encontrar grandes escudos vinculados a la monarquía. La decoración de Santa María recuerda la estrecha relación de Aranda con la Corona en tiempos de los Reyes Católicos y sus sucesores.
+
+    🎨 *Una fachada que tuvo color*
+
+    Aunque hoy vemos fundamentalmente el tono natural de la piedra, la fachada estuvo policromada. Algunos rincones protegidos conservan todavía restos que permiten imaginar un aspecto mucho más colorido que el actual.
+
+    Si la iglesia está abierta, el interior merece una visita; sin embargo, nuestra ruta no depende de horarios ni de comprar ninguna entrada.
+  imagen_url: |-
+    https://firebasestorage.googleapis.com/v0/b/gymkana-linaje-olvidado.firebasestorage.app/o/Aranda%2Faranda_estacion_01_santa_maria.jpg?alt=media&token=b73c1ffd-5cf5-49fa-a56c-182e44d941c5
+  mapa_url: https://www.google.com/maps/search/?api=1&query=41.671170%2C-3.689140
+  audio_url: |-
+    https://firebasestorage.googleapis.com/v0/b/gymkana-linaje-olvidado.firebasestorage.app/o/Aranda%2Faranda_estacion_01_audio.mp3?alt=media&token=28c30fb6-a22f-466b-ba6c-e5bb7a22832a
+  acertijo_audio_url: |-
+    https://firebasestorage.googleapis.com/v0/b/gymkana-linaje-olvidado.firebasestorage.app/o/Aranda%2Faranda_estacion_01_acertijo_audio.mp3?alt=media&token=9e80cd84-9d24-4127-8cb2-6bede569ebb7
+- orden: 2
+  nombre: Bodegas subterráneas
+  lat: 41.6716
+  lon: -3.68877
+  acertijo: |-
+    🍷 *ARANDA BAJO TIERRA*
+
+    Ahora mismo puede que estéis caminando sobre una bodega.
+
+    Debajo del casco histórico se extiende un auténtico laberinto creado durante siglos para elaborar y conservar vino.
+
+    No es necesario entrar en ninguna bodega para continuar la ruta.
+
+    Pero antes de seguir...
+
+    ¿Queréis descubrir qué hay bajo vuestros pies?
+  respuestas: |-
+    si|sí|s|claro|por supuesto|adelante|quiero|queremos|sí queremos|si queremos|continuar|continuamos
+  pistas:
+  - 🍇 No hay ningún acertijo oculto en esta parada.
+  - |-
+    👣 Solo queremos que os detengáis un momento a pensar en lo que existe bajo estas calles.
+  - ✅ Responded SÍ para continuar.
+  capsula: |-
+    🍷 *LA CIUDAD SUBTERRÁNEA*
+
+    Esta es probablemente la característica más singular de Aranda de Duero.
+
+    Bajo buena parte del casco histórico existe una enorme red de bodegas excavadas para producir, criar y conservar vino. Las galerías suman aproximadamente *7 kilómetros* y algunas alcanzan profundidades cercanas a los *10-12 metros*.
+
+    Muchas comenzaron a excavarse durante la Edad Media y fueron ampliándose a medida que aumentaba la importancia de la viticultura.
+
+    🌡️ *¿Por qué construir una bodega bajo tierra?*
+
+    Antes de existir sistemas artificiales de refrigeración, el subsuelo proporcionaba algo esencial: estabilidad.
+
+    A varios metros de profundidad la temperatura varía mucho menos entre el invierno y el verano y la humedad se mantiene relativamente constante. Esas condiciones resultaban ideales para la fermentación y conservación del vino.
+
+    ⛏️ *Una arquitectura excavada*
+
+    Las bodegas no son simples cuevas naturales. Son auténticas construcciones realizadas mediante la excavación de naves, galerías, escaleras, nichos y conductos.
+
+    Los constructores aprovecharon las características geológicas del terreno. Se retiraban las capas más fáciles de excavar dejando por encima materiales más compactos capaces de funcionar como bóveda natural.
+
+    💨 *Las zarceras*
+
+    Si observáis con atención algunas calles del casco antiguo podéis encontrar estructuras que recuerdan a pequeñas chimeneas.
+
+    Son las *zarceras*, conductos verticales que comunican las bodegas con el exterior. Su función era fundamental: renovar el aire y ayudar a regular las condiciones interiores.
+
+    Junto a ellas existían otros elementos destinados al drenaje, ventilación y conservación.
+
+    🍇 *Del lagar a la bodega*
+
+    La elaboración tradicional comenzaba con la vendimia. La uva se llevaba a los lagares, donde era pisada o prensada para extraer el mosto.
+
+    Después comenzaba la fermentación y el vino era trasladado a recipientes almacenados en las bodegas subterráneas.
+
+    Durante siglos, buena parte de la economía local estuvo estrechamente relacionada con este ciclo.
+
+    🚪 *Una red bajo las casas*
+
+    Muchas bodegas pertenecían a propietarios diferentes y algunas galerías estaban comunicadas entre sí. Eso generó auténticos caminos subterráneos y derechos de paso entre bodegas vecinas.
+
+    La ciudad tenía, de hecho, dos niveles: la Aranda visible de casas, plazas e iglesias, y otra Aranda productiva varios metros bajo sus calles.
+
+    🏺 *Patrimonio vivo*
+
+    El conjunto de bodegas históricas está protegido como patrimonio cultural. Muchas siguen siendo privadas y varias son utilizadas por peñas y asociaciones; otras pueden visitarse.
+
+    La Bodega de las Ánimas es uno de los espacios que permite conocer directamente este mundo subterráneo.
+
+    Si tenéis tiempo durante vuestra estancia, entrar en una bodega histórica es uno de los mejores complementos posibles a esta ruta.
+
+    Cuando salgáis de Aranda recordaréis sus iglesias y plazas, pero quizá lo más sorprendente sea pensar que durante buena parte del recorrido habéis caminado sobre otra ciudad.
+  imagen_url: |-
+    https://firebasestorage.googleapis.com/v0/b/gymkana-linaje-olvidado.firebasestorage.app/o/Aranda%2Faranda_estacion_02_bodegas.jpg?alt=media&token=1adc994d-3d69-49b9-964c-01e3cb3777d3
+  mapa_url: https://www.google.com/maps/search/?api=1&query=41.671600%2C-3.688770
+  audio_url: |-
+    https://firebasestorage.googleapis.com/v0/b/gymkana-linaje-olvidado.firebasestorage.app/o/Aranda%2Faranda_estacion_02_audio.mp3?alt=media&token=604d86b8-d840-432e-a9a7-af3122d6fcfa
+  acertijo_audio_url: |-
+    https://firebasestorage.googleapis.com/v0/b/gymkana-linaje-olvidado.firebasestorage.app/o/Aranda%2Faranda_estacion_02_acertijo_audio.mp3?alt=media&token=e6dfaaa9-57d1-4ff7-b815-228cdbd2723a
+- orden: 3
+  nombre: Plaza Mayor
+  lat: 41.670296
+  lon: -3.689565
+  acertijo: |-
+    🏘️ *PLAZA MAYOR*
+
+    Habéis llegado al corazón histórico de Aranda.
+
+    Dad una vuelta con la mirada por la plaza y observad sus fachadas, los accesos y el movimiento de la ciudad.
+
+    Lo más sorprendente de este espacio es precisamente algo que no podéis ver: buena parte de la ciudad subterránea se extiende bajo las calles del casco antiguo.
+
+    ¿Continuamos la visita?
+  respuestas: si|sí|s|claro|por supuesto|adelante|continuar|continuamos|vamos|seguimos
+  pistas:
+  - 👀 No tenéis que localizar ningún detalle concreto.
+  - 🏘️ Esta es una parada de observación y contexto histórico.
+  - ✅ Responded SÍ para continuar.
+  capsula: |-
+    🏘️ *LA PLAZA MAYOR Y EL CORAZÓN DE LA VILLA*
+
+    Las plazas mayores españolas no fueron creadas únicamente para embellecer las ciudades. Durante siglos fueron escenarios de mercado, celebraciones, justicia, anuncios públicos, fiestas y vida política.
+
+    La Plaza Mayor de Aranda fue desarrollándose desde época medieval como uno de los principales espacios colectivos de la villa. El crecimiento urbano terminó convirtiéndola en un verdadero centro administrativo y comercial.
+
+    🏛️ *El Ayuntamiento*
+
+    Uno de los edificios esenciales del entorno es el Ayuntamiento. Su presencia resume el papel que las plazas mayores adquirieron como representación del poder municipal.
+
+    Desde este punto se gobernaba una villa situada en una posición estratégica: en la ruta entre el centro de Castilla y el norte peninsular y junto a varios cursos de agua.
+
+    🛍️ *Mercados y comercio*
+
+    Aranda funcionó durante siglos como centro de una extensa comarca agrícola y vitivinícola.
+
+    Campesinos, artesanos, comerciantes y transportistas acudían a la villa para vender productos, adquirir mercancías, resolver asuntos administrativos o participar en ferias y celebraciones.
+
+    Las calles que parten de la plaza mantienen todavía esa función comercial.
+
+    🍷 *Arriba y abajo*
+
+    Después de conocer las bodegas resulta más fácil imaginar el casco histórico de otra manera.
+
+    Sobre la superficie se desarrollaba la vida cotidiana: casas, tiendas, templos y mercados.
+
+    Bajo ella se almacenaba una de las principales riquezas locales: el vino.
+
+    Las bodegas subterráneas no eran un elemento aislado. Formaban parte del funcionamiento normal de la ciudad.
+
+    🗺️ *Un centro para orientarse*
+
+    La Plaza Mayor es también un buen punto para comprender las pequeñas dimensiones del casco histórico.
+
+    Santa María, San Juan, el Palacio de los Berdugo, las bodegas y los puentes están a pocos minutos caminando.
+
+    La siguiente parada nos mostrará cómo las familias poderosas trasladaban su posición social a la propia arquitectura.
+  imagen_url: |-
+    https://firebasestorage.googleapis.com/v0/b/gymkana-linaje-olvidado.firebasestorage.app/o/Aranda%2Faranda_estacion_03_plaza_mayor.jpg?alt=media&token=65c03ce1-e132-4883-9287-257db35460f1
+  mapa_url: https://www.google.com/maps/search/?api=1&query=41.670296%2C-3.689565
+  audio_url: |-
+    https://firebasestorage.googleapis.com/v0/b/gymkana-linaje-olvidado.firebasestorage.app/o/Aranda%2Faranda_estacion_03_audio.mp3?alt=media&token=8b1aa587-f6d6-4f71-8dfd-fe80e1055132
+  acertijo_audio_url: |-
+    https://firebasestorage.googleapis.com/v0/b/gymkana-linaje-olvidado.firebasestorage.app/o/Aranda%2Faranda_estacion_03_acertijo_audio.mp3?alt=media&token=6d89d987-a40b-489d-bfe2-1e7280d7dc48
+- orden: 4
+  nombre: Palacio de los Berdugo
+  lat: 41.671528
+  lon: -3.69175
+  acertijo: |-
+    🏰 *PALACIO DE LOS BERDUGO*
+
+    Hasta ahora hemos visto cómo una comunidad podía mostrar su importancia construyendo una gran iglesia.
+
+    Aquí podéis observar cómo una familia poderosa hacía algo parecido con su residencia.
+
+    Mirad la fachada unos instantes.
+
+    ¿Queréis conocer quiénes vivieron y pasaron por esta casa?
+  respuestas: si|sí|s|claro|por supuesto|adelante|continuar|continuamos|quiero|queremos
+  pistas:
+  - 🏰 No hay ningún elemento escondido que debáis encontrar.
+  - 🛡️ Observad especialmente la piedra, la entrada y los escudos de la fachada.
+  - ✅ Responded SÍ para conocer su historia.
+  capsula: |-
+    🏰 *PALACIO DE LOS BERDUGO*
+
+    El Palacio de los Berdugo es uno de los mejores ejemplos conservados de arquitectura civil histórica de Aranda.
+
+    Fue levantado a finales del siglo XV y representa un tipo de residencia muy diferente de las viviendas ordinarias de la época. Aquí la arquitectura no solo debía resultar práctica: también debía comunicar poder, riqueza y posición social.
+
+    🪨 *Una fachada para ser vista*
+
+    La sólida fachada de sillería y la gran portada convertían la vivienda en una declaración pública.
+
+    Los escudos de las familias propietarias permitían identificar a quienes controlaban la casa y recordaban a cualquiera que pasara por delante la importancia de sus habitantes.
+
+    En distintos momentos aparecen vinculados al edificio apellidos como Durango, Tamayo, Mansilla y Berdugo.
+
+    🏛️ *El patio interior*
+
+    Como muchas casas nobles castellanas, la organización de la residencia gira alrededor de un patio.
+
+    El del Palacio de los Berdugo dispone de galerías y elementos de madera y conserva un pozo en su espacio central. Era una solución que proporcionaba iluminación y ventilación a las distintas dependencias y, al mismo tiempo, generaba una zona representativa dentro de la residencia.
+
+    👑 *Reyes, nobles y viajeros*
+
+    Aranda fue durante siglos un punto importante en los desplazamientos entre Madrid y el norte de la península.
+
+    La presencia de la corte y de personajes destacados hacía necesarias residencias capaces de alojar a huéspedes de alto rango.
+
+    Uno de los episodios más conocidos asociados a este palacio se produjo en *1808*, durante la Guerra de la Independencia.
+
+    ⚔️ *Napoleón en Aranda*
+
+    Napoleón Bonaparte pasó por Aranda durante la campaña militar francesa en España y la tradición histórica local sitúa su alojamiento en este palacio.
+
+    La anécdota permite imaginar por un momento algo difícil de percibir hoy: estas calles formaban parte de grandes itinerarios políticos y militares europeos.
+
+    👀 *Una comparación interesante*
+
+    Mirad de nuevo la fachada.
+
+    Santa María utilizaba esculturas religiosas, monarquía y un espectacular programa decorativo para comunicar prestigio colectivo.
+
+    Aquí el lenguaje es mucho más sobrio: piedra, escudos y proporción.
+
+    Dos edificios muy distintos que sirven para contar dos formas diferentes de poder en la antigua Aranda.
+  imagen_url: |-
+    https://firebasestorage.googleapis.com/v0/b/gymkana-linaje-olvidado.firebasestorage.app/o/Aranda%2Faranda_estacion_04_palacio_berdugo.jpg?alt=media&token=4e7eb98e-9680-4931-ae41-03afe13010e9
+  mapa_url: https://www.google.com/maps/search/?api=1&query=41.671528%2C-3.691750
+  audio_url: |-
+    https://firebasestorage.googleapis.com/v0/b/gymkana-linaje-olvidado.firebasestorage.app/o/Aranda%2Faranda_estacion_04_audio.mp3?alt=media&token=baeafb51-0aea-43e4-b387-cfe256413761
+  acertijo_audio_url: |-
+    https://firebasestorage.googleapis.com/v0/b/gymkana-linaje-olvidado.firebasestorage.app/o/Aranda%2Faranda_estacion_04_acertijo_audio.mp3?alt=media&token=e19f94ca-16fc-4702-85b5-458327dca464
+- orden: 5
+  nombre: Iglesia de San Juan Bautista
+  lat: 41.6719
+  lon: -3.69055
+  acertijo: |-
+    ⛪ *IGLESIA DE SAN JUAN BAUTISTA*
+
+    Vamos a aprender un pequeño término de arquitectura.
+
+    Los arcos concéntricos que rodean una portada como esta reciben el nombre de *arquivoltas*.
+
+    Mirad la portada sur y contadlas.
+
+    ¿Cuántas arquivoltas tiene?
+  respuestas: 9|nueve|9 arquivoltas|nueve arquivoltas|son 9|son nueve
+  pistas:
+  - 👀 Mirad únicamente los grandes arcos que rodean la entrada.
+  - 🔢 No contéis columnas, esculturas ni otros elementos decorativos.
+  - 💡 La respuesta está entre 8 y 10.
+  capsula: |-
+    ⛪ *IGLESIA DE SAN JUAN BAUTISTA*
+
+    Ya conocéis una palabra nueva: *arquivolta*.
+
+    La portada que acabáis de observar tiene nueve y constituye uno de los elementos más llamativos de este templo.
+
+    San Juan es además esencial para comprender la evolución histórica de Aranda porque conserva elementos anteriores a Santa María y estuvo estrechamente vinculada al sistema defensivo medieval.
+
+    🛡️ *Una iglesia que también defendía*
+
+    La torre es uno de los elementos más antiguos del conjunto y se relaciona con el siglo XIII.
+
+    Su aspecto sólido no es casual. La proximidad a la antigua muralla permitía que el edificio cumpliera funciones defensivas además de religiosas.
+
+    Durante la Edad Media no siempre existía una separación clara entre arquitectura militar y religiosa.
+
+    ⛪ *El templo gótico*
+
+    La iglesia fue ampliándose y adquiriendo su configuración gótica durante los siglos siguientes.
+
+    En la portada sur, las nueve arquivoltas crean el profundo acceso que habéis contado. En el tímpano aparece representado San Juan Bautista, titular del templo.
+
+    📜 *1473: el Concilio de Aranda*
+
+    En esta iglesia tuvo lugar uno de los episodios históricos más importantes de la ciudad: el *Concilio de Aranda de 1473*.
+
+    La reunión buscó impulsar reformas en la Iglesia castellana en un periodo complejo, pocos años antes de la llegada al trono de Isabel de Castilla.
+
+    La celebración del concilio demuestra que Aranda no era únicamente un centro comercial local. Tenía suficiente importancia y capacidad para acoger reuniones de gran relevancia política y eclesiástica.
+
+    🖼️ *Museo de Arte Sacro*
+
+    Actualmente el interior alberga el Museo de Arte Sacro.
+
+    Sus colecciones reúnen pintura, escultura, orfebrería, textiles y otros objetos procedentes de iglesias de Aranda y de la Ribera del Duero.
+
+    Una curiosidad conecta esta parada con el inicio de la ruta: algunas piezas originales retiradas de Santa María para protegerlas se conservan aquí.
+
+    🏙️ *Dos iglesias, dos momentos*
+
+    San Juan y Santa María se encuentran muy próximas, pero representan etapas diferentes de la ciudad.
+
+    San Juan conserva la memoria de una Aranda medieval más defensiva.
+
+    Santa María refleja el crecimiento y la prosperidad que permitieron levantar, unas generaciones después, un templo mucho más monumental.
+  imagen_url: |-
+    https://firebasestorage.googleapis.com/v0/b/gymkana-linaje-olvidado.firebasestorage.app/o/Aranda%2Faranda_estacion_05_san_juan.jpg?alt=media&token=57d48ee0-d477-4e80-896d-3a628ca20065
+  mapa_url: https://www.google.com/maps/search/?api=1&query=41.671900%2C-3.690550
+  audio_url: |-
+    https://firebasestorage.googleapis.com/v0/b/gymkana-linaje-olvidado.firebasestorage.app/o/Aranda%2Faranda_estacion_05_audio.mp3?alt=media&token=734cc9b2-848b-4235-96ca-abe32283ac70
+  acertijo_audio_url: |-
+    https://firebasestorage.googleapis.com/v0/b/gymkana-linaje-olvidado.firebasestorage.app/o/Aranda%2Faranda_estacion_05_acertijo_audio.mp3?alt=media&token=c95bb1b8-f957-4b4f-9a18-b2bba3f7dcd6
+- orden: 6
+  nombre: Puente de las Tenerías
+  lat: 41.67183
+  lon: -3.69142
+  acertijo: |-
+    🌉 *PUENTE DE LAS TENERÍAS*
+
+    Hemos dejado atrás por un momento las grandes fachadas.
+
+    Deteneos junto al Bañuelos y observad el agua, el puente y el entorno de San Juan.
+
+    Aquí descubrimos otra parte de la historia de Aranda: la ciudad de los ríos y los antiguos oficios.
+
+    ¿Seguimos hasta nuestra última parada?
+  respuestas: si|sí|s|seguimos|adelante|claro|continuar|continuamos|vamos|por supuesto
+  pistas:
+  - 🌊 No tenéis que buscar ningún objeto concreto.
+  - |-
+    🌉 Aprovechad para observar el puente y la relación entre el casco histórico y el río.
+  - ✅ Responded SÍ para continuar hacia el final.
+  capsula: |-
+    🌉 *PUENTE DE LAS TENERÍAS Y RÍO BAÑUELOS*
+
+    El Puente de las Tenerías cruza el Bañuelos y conserva la memoria de una Aranda menos monumental pero igual de importante: la de los oficios, el agua y la vida cotidiana.
+
+    🌊 *Una ciudad entre ríos*
+
+    Aranda se encuentra estrechamente vinculada a varios cursos de agua.
+
+    El Duero es el más importante, pero dentro del espacio urbano también encontramos el Arandilla y el Bañuelos.
+
+    Durante siglos estos ríos condicionaron dónde se construía, cómo se entraba a la villa, dónde se instalaban determinadas actividades y cómo se transportaban personas y mercancías.
+
+    🧱 *Un puente medieval*
+
+    El puente es de origen medieval y permitía salvar el Bañuelos en una zona próxima al antiguo recinto urbano.
+
+    Su escala es muy distinta a la del Puente Mayor sobre el Duero, pero precisamente por eso ayuda a comprender cómo se articulaban los caminos locales alrededor de la villa.
+
+    👞 *¿Qué eran las tenerías?*
+
+    El nombre del puente conserva el recuerdo de un antiguo oficio.
+
+    Una *tenería* era un lugar destinado al curtido de pieles para transformarlas en cuero.
+
+    El proceso requería mucha agua: las pieles tenían que limpiarse, remojarse y tratarse con distintos productos antes de poder utilizarse para fabricar calzado, correas, recipientes, prendas y numerosos objetos cotidianos.
+
+    Por esa razón las tenerías solían instalarse cerca de ríos y cursos de agua.
+
+    👃 *Un oficio alejado del centro*
+
+    Además del agua, el curtido generaba residuos y olores muy intensos.
+
+    Eso explica por qué este tipo de talleres aparecía con frecuencia en zonas periféricas de las ciudades medievales, cerca del agua pero lejos de los principales espacios residenciales.
+
+    🏙️ *Mirad hacia San Juan*
+
+    Desde este entorno podéis contemplar San Juan desde una perspectiva distinta.
+
+    Hace solo unos minutos estabais observando su portada.
+
+    Ahora podéis verla integrada en el paisaje, junto al río y en relación con la antigua periferia de la villa.
+
+    🌊 *Nos falta el río principal*
+
+    Ya hemos encontrado el Bañuelos.
+
+    Nuestra última localización está relacionada con el curso de agua que terminó incorporándose al propio nombre de la ciudad: el Duero.
+
+    Reunid los fragmentos obtenidos durante el recorrido. Las coordenadas os llevarán hasta el cierre de la visita.
+  imagen_url: |-
+    https://firebasestorage.googleapis.com/v0/b/gymkana-linaje-olvidado.firebasestorage.app/o/Aranda%2Faranda_estacion_06_tenerias.jpg?alt=media&token=c4def6b8-8ad8-47bc-bfea-2bf8de668937
+  mapa_url: https://www.google.com/maps/search/?api=1&query=41.671830%2C-3.691420
+  audio_url: |-
+    https://firebasestorage.googleapis.com/v0/b/gymkana-linaje-olvidado.firebasestorage.app/o/Aranda%2Faranda_estacion_06_audio.mp3?alt=media&token=5477059f-cbb5-42bf-bf13-d26cd0c327f8
+  acertijo_audio_url: |-
+    https://firebasestorage.googleapis.com/v0/b/gymkana-linaje-olvidado.firebasestorage.app/o/Aranda%2Faranda_estacion_06_acertijo_audio.mp3?alt=media&token=0465d862-2776-4ee0-9ad3-25eb1b75da82
+estacion_final:
+  nombre: Puente Mayor y río Duero
+  lat: 41.66974
+  lon: -3.6901
+  acertijo: |-
+    🌊 *EL DUERO*
+
+    Habéis llegado al final del recorrido.
+
+    Mirad el río, el puente y la ciudad que queda detrás.
+
+    Iglesias, palacios, bodegas y calles no se entienden del todo sin el paisaje que tenéis ahora delante.
+
+    ¿Cerramos la visita?
+  respuestas: |-
+    si|sí|s|claro|cerramos|finalizar|finalizamos|terminar|terminamos|adelante|por supuesto
+  pistas:
+  - 🌊 Esta última parada no contiene ningún acertijo.
+  - 👀 Deteneos un momento a contemplar el Duero y el entorno.
+  - ✅ Responded SÍ para finalizar la visita.
+  capsula: |-
+    🏁 *FIN DE LA VISITA · ARANDA DE DUERO*
+
+    Habéis llegado al Duero, el río que terminó formando parte del nombre de la ciudad y que da identidad a toda una comarca.
+
+    🌊 *Tres ríos*
+
+    Durante el recorrido hemos cruzado o mencionado tres cursos de agua estrechamente relacionados con Aranda: el Bañuelos, el Arandilla y el Duero.
+
+    Los ríos fueron recursos imprescindibles, pero también barreras que obligaron a construir puentes y condicionaron el crecimiento urbano.
+
+    🌉 *El Puente Mayor*
+
+    Este paso sobre el Duero fue durante siglos uno de los principales accesos a la población desde el sur.
+
+    Viajeros, comerciantes, campesinos, ejércitos y mercancías debían atravesar el río para entrar en la villa.
+
+    Como ocurre con muchos puentes históricos, su aspecto actual es el resultado de sucesivas reparaciones y transformaciones. Crecidas, nuevos medios de transporte y mayores necesidades de circulación obligaron a modificarlo con el paso del tiempo.
+
+    🍷 *Duero y vino*
+
+    El río nos permite cerrar también el otro gran tema de la visita.
+
+    Aranda es una de las principales poblaciones de la Ribera del Duero, una comarca donde la viticultura ha modelado la economía, el paisaje y la cultura durante siglos.
+
+    Las bodegas medievales que habéis descubierto bajo el casco histórico son el antecedente de una tradición que continúa hoy en las bodegas y viñedos de toda la región.
+
+    🧭 *Lo que hemos recorrido*
+
+    En apenas unos minutos a pie habéis encontrado diferentes capas de la historia de Aranda:
+
+    ⛪ Santa María mostró el crecimiento y la prosperidad de la villa.
+
+    🍷 Las bodegas revelaron una segunda ciudad bajo tierra.
+
+    🏘️ La Plaza Mayor explicó la vida pública, comercial y administrativa.
+
+    🏰 El Palacio de los Berdugo mostró el poder de las familias nobles.
+
+    ⛪ San Juan nos llevó hasta la Aranda medieval y el Concilio de 1473.
+
+    🌉 Las Tenerías recordaron la importancia de los oficios y de los pequeños ríos.
+
+    🌊 Y finalmente el Duero conecta todo lo anterior con el territorio y con la cultura del vino.
+
+    La visita termina aquí, pero Aranda tiene todavía otros museos, bodegas, parques, espacios gastronómicos y rincones que merece la pena descubrir.
+
+    🍷 Y si todavía no lo habéis hecho, probablemente ha llegado el momento de conocer otra parte esencial de la Ribera del Duero: su vino y su gastronomía.
+
+    *Gracias por recorrer Aranda con nosotros.*
+  imagen_url: |-
+    https://firebasestorage.googleapis.com/v0/b/gymkana-linaje-olvidado.firebasestorage.app/o/Aranda%2Faranda_final_duero.jpg?alt=media&token=5d4f61c5-3ef4-4317-a0bc-96b2d6462b55
+  imagen_final_url: |-
+    https://firebasestorage.googleapis.com/v0/b/gymkana-linaje-olvidado.firebasestorage.app/o/Aranda%2Faranda_final_duero.jpg?alt=media&token=5d4f61c5-3ef4-4317-a0bc-96b2d6462b55
+  mapa_url: https://www.google.com/maps/search/?api=1&query=41.669740%2C-3.690100
+  audio_url: |-
+    https://firebasestorage.googleapis.com/v0/b/gymkana-linaje-olvidado.firebasestorage.app/o/Aranda%2Faranda_final_audio.mp3?alt=media&token=8f8738f1-c837-483a-b6d6-166b7ec72dfd
+  acertijo_audio_url: |-
+    https://firebasestorage.googleapis.com/v0/b/gymkana-linaje-olvidado.firebasestorage.app/o/Aranda%2Faranda_final_acertijo_audio.mp3?alt=media&token=0d07a736-eebd-4e3c-a9d3-7e86204f6ba2
+  coordenadas_finales: 41.669740N, -3.690100W
+  secuencia_codice: '`41.` • `669` • `740N,` • `-3.` • `690` • `100W`'
+  guia_historica_url: |-
+    https://firebasestorage.googleapis.com/v0/b/gymkana-linaje-olvidado.firebasestorage.app/o/Aranda%2Fguia_turistica_aranda_de_duero.pdf?alt=media&token=e2447a56-478e-4097-93ae-5171b7ae8c64

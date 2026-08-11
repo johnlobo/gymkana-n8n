@@ -51,6 +51,8 @@ estaciones:
     📚 *Dato histórico:* La Plaza Mayor fue construida durante el siglo XVIII y constituye uno de los grandes conjuntos barrocos españoles. Sus 88 arcos estaban destinados a albergar medallones de monarcas y personajes destacados. En uno de sus accesos permanece una inscripción fechada en 1838 que recuerda la muerte de una mujer. No se conserva una explicación documentada del episodio, circunstancia que ha alimentado distintas leyendas locales.
   imagen_url: https://firebasestorage.googleapis.com/v0/b/gymkana-linaje-olvidado.firebasestorage.app/o/Salamanca%2Fsalamanca_estacion_01_plaza_mayor.jpg?alt=media&token=1debb25e-2717-432c-8fcc-299109d0e004
   mapa_url: https://www.google.com/maps/search/?api=1&query=40.965000%2C-5.664100
+  audio_url: https://firebasestorage.googleapis.com/v0/b/gymkana-linaje-olvidado.firebasestorage.app/o/Salamanca%2Fsalamanca_estacion_01_audio.mp3?alt=media&token=c1df2294-1df4-49d2-a143-2c722e4a9d33
+  acertijo_audio_url: https://firebasestorage.googleapis.com/v0/b/gymkana-linaje-olvidado.firebasestorage.app/o/Salamanca%2Fsalamanca_estacion_01_acertijo_audio.mp3?alt=media&token=67c3669c-0f2a-45f0-af73-727128a5775e
 - orden: 2
   nombre: Palacio de la Salina
   lat: 40.963056
@@ -75,6 +77,8 @@ estaciones:
     📚 *Dato histórico:* El Palacio de la Salina fue construido en 1538 por encargo de Rodrigo de Messía, esposo de Mayor de Fonseca. El edificio muestra en su decoración símbolos heráldicos de esta familia. Su nombre no procede de una persona llamada Salina, sino de su utilización posterior como almacén y estanco de sal. El patio destaca por sus ménsulas decoradas con figuras humanas de expresiones dramáticas y cuerpos retorcidos.
   imagen_url: https://firebasestorage.googleapis.com/v0/b/gymkana-linaje-olvidado.firebasestorage.app/o/Salamanca%2Fsalamanca_estacion_02_palacio_salina.jpg?alt=media&token=650891dd-7746-48fc-9e52-ce08f0a8f31d
   mapa_url: https://www.google.com/maps/search/?api=1&query=40.963056%2C-5.664167
+  audio_url: https://firebasestorage.googleapis.com/v0/b/gymkana-linaje-olvidado.firebasestorage.app/o/Salamanca%2Fsalamanca_estacion_02_audio.mp3?alt=media&token=4aaebacb-014c-40d2-81ca-2e07f857fc00
+  acertijo_audio_url: https://firebasestorage.googleapis.com/v0/b/gymkana-linaje-olvidado.firebasestorage.app/o/Salamanca%2Fsalamanca_estacion_02_acertijo_audio.mp3?alt=media&token=caf161f6-5386-4e28-bee8-9e3a62334fce
 - orden: 3
   nombre: Casa de las Conchas
   lat: 40.962931
@@ -99,6 +103,8 @@ estaciones:
     📚 *Dato histórico:* La Casa de las Conchas comenzó a construirse en 1493 como residencia de Rodrigo Maldonado de Talavera, caballero de la Orden de Santiago, profesor de Derecho y figura vinculada a los Reyes Católicos. La decoración reúne símbolos de los Maldonado y los Pimentel, las dos familias unidas por matrimonio. Sobre su puerta destaca un escudo gótico con flores de lis, mientras que más de trescientas conchas cubren los muros exteriores. Actualmente alberga la Biblioteca Pública de Salamanca.
   imagen_url: https://firebasestorage.googleapis.com/v0/b/gymkana-linaje-olvidado.firebasestorage.app/o/Salamanca%2Fsalamanca_estacion_03_casa_conchas.jpg?alt=media&token=f9718c22-dc70-4870-8a8f-24a6a78c5350
   mapa_url: https://www.google.com/maps/search/?api=1&query=40.962931%2C-5.665811
+  audio_url: https://firebasestorage.googleapis.com/v0/b/gymkana-linaje-olvidado.firebasestorage.app/o/Salamanca%2Fsalamanca_estacion_03_audio.mp3?alt=media&token=ec939814-148f-434a-b77d-c698c9a07f85
+  acertijo_audio_url: https://firebasestorage.googleapis.com/v0/b/gymkana-linaje-olvidado.firebasestorage.app/o/Salamanca%2Fsalamanca_estacion_03_acertijo_audio.mp3?alt=media&token=aca4f4c8-ecdb-447b-9773-abd0b46a92b5
 - orden: 4
   nombre: Fachada de la Universidad de Salamanca
   lat: 40.961439
@@ -125,6 +131,8 @@ estaciones:
     📚 *Dato histórico:* La Universidad de Salamanca fue fundada por Alfonso IX de León alrededor de 1218 y está considerada la universidad más antigua de España en funcionamiento. Su fachada plateresca fue realizada en el siglo XVI y presenta un complejo programa decorativo distribuido en tres cuerpos. En la parte inferior aparece el medallón de los Reyes Católicos. A la derecha de la entrada, sobre una de tres calaveras, se encuentra la famosa rana. La tradición popular afirma que quien consiga localizarla tendrá suerte en sus exámenes, aunque el significado original de la figura sigue siendo discutido.
   imagen_url: https://firebasestorage.googleapis.com/v0/b/gymkana-linaje-olvidado.firebasestorage.app/o/Salamanca%2Fsalamanca_estacion_04_universidad.jpg?alt=media&token=9b7e0245-43f2-4089-8bb6-75f3e5d26bd4
   mapa_url: https://www.google.com/maps/search/?api=1&query=40.961439%2C-5.667261
+  audio_url: https://firebasestorage.googleapis.com/v0/b/gymkana-linaje-olvidado.firebasestorage.app/o/Salamanca%2Fsalamanca_estacion_04_audio.mp3?alt=media&token=b77e7382-354a-4dc5-a836-98987a588262
+  acertijo_audio_url: https://firebasestorage.googleapis.com/v0/b/gymkana-linaje-olvidado.firebasestorage.app/o/Salamanca%2Fsalamanca_estacion_04_acertijo_audio.mp3?alt=media&token=f83b7b2c-5778-4aea-816c-3b7be33d3a3c
 - orden: 5
   nombre: Escuelas Menores
   lat: 40.961389
@@ -153,6 +161,8 @@ estaciones:
     📚 *Dato histórico:* Las Escuelas Menores acogían antiguamente las enseñanzas destinadas a obtener el título de bachiller, frente a los grados superiores impartidos en las Escuelas Mayores. Su construcción comenzó en el siglo XV, aunque su portada plateresca corresponde al siglo XVI. La entrada está formada por dos arcos y una decoración heráldica en la que aparece el escudo imperial de Carlos V flanqueado por dos águilas bicéfalas. En su interior se conserva el llamado Cielo de Salamanca, parte de una pintura astronómica atribuida a Fernando Gallego que decoraba la antigua biblioteca universitaria.
   imagen_url: https://firebasestorage.googleapis.com/v0/b/gymkana-linaje-olvidado.firebasestorage.app/o/Salamanca%2Fsalamanca_estacion_05_escuelas_menores.jpg?alt=media&token=a65ab99d-6a28-4fea-9125-9f6d8db1c454
   mapa_url: https://www.google.com/maps/search/?api=1&query=40.961389%2C-5.668333
+  audio_url: https://firebasestorage.googleapis.com/v0/b/gymkana-linaje-olvidado.firebasestorage.app/o/Salamanca%2Fsalamanca_estacion_05_audio.mp3?alt=media&token=64e9ead0-a32b-4fb5-8ab5-f1ea2c058511
+  acertijo_audio_url: https://firebasestorage.googleapis.com/v0/b/gymkana-linaje-olvidado.firebasestorage.app/o/Salamanca%2Fsalamanca_estacion_05_acertijo_audio.mp3?alt=media&token=d3cacfe0-3154-4bca-b1b5-6e80b562c106
 - orden: 6
   nombre: Catedral Nueva - Puerta de Ramos
   lat: 40.961069
@@ -183,6 +193,8 @@ estaciones:
     📚 *Dato histórico:* La construcción de la Catedral Nueva comenzó en 1513 y se prolongó durante más de dos siglos. En una restauración de la Puerta de Ramos realizada a comienzos de la década de 1990 se incorporaron figuras contemporáneas para dejar constancia del momento de la intervención. Entre ellas destaca el astronauta tallado por el cantero Miguel Romero. Junto a él aparecen otras figuras modernas, como un lince, un toro y una criatura conocida popularmente como el dragón del helado. No son profecías ni elementos originales del siglo XVI: forman parte de la restauración contemporánea.
   imagen_url: https://firebasestorage.googleapis.com/v0/b/gymkana-linaje-olvidado.firebasestorage.app/o/Salamanca%2Fsalamanca_estacion_06_catedral.jpg?alt=media&token=011a043b-74d3-4171-8519-6ea38f91366b
   mapa_url: https://www.google.com/maps/search/?api=1&query=40.961069%2C-5.666542
+  audio_url: https://firebasestorage.googleapis.com/v0/b/gymkana-linaje-olvidado.firebasestorage.app/o/Salamanca%2Fsalamanca_estacion_06_audio.mp3?alt=media&token=a735234c-4710-49ce-b4ce-38b408cdb842
+  acertijo_audio_url: https://firebasestorage.googleapis.com/v0/b/gymkana-linaje-olvidado.firebasestorage.app/o/Salamanca%2Fsalamanca_estacion_06_acertijo_audio.mp3?alt=media&token=bec5b26b-79e2-43ee-8e52-b3daf88b0f76
 - orden: 7
   nombre: Huerto de Calixto y Melibea
   lat: 40.959361
@@ -213,6 +225,8 @@ estaciones:
     📚 *Dato histórico:* El Huerto de Calixto y Melibea es un jardín situado junto a los restos de la antigua muralla de Salamanca. Su nombre recuerda a los protagonistas de la Tragicomedia de Calisto y Melibea, conocida habitualmente como La Celestina y atribuida a Fernando de Rojas. La tradición ha relacionado este rincón con los encuentros de los protagonistas, aunque el jardín actual fue creado en época contemporánea para evocar el ambiente literario de la obra. Con el tiempo, el pozo se ha convertido en un lugar donde numerosas parejas colocan candados como símbolo de su relación.
   imagen_url: https://firebasestorage.googleapis.com/v0/b/gymkana-linaje-olvidado.firebasestorage.app/o/Salamanca%2Fsalamanca_estacion_07_huerto.jpg?alt=media&token=4aba27e5-5d1d-4e8d-b61e-821040c73eac
   mapa_url: https://www.google.com/maps/search/?api=1&query=40.959361%2C-5.665819
+  audio_url: https://firebasestorage.googleapis.com/v0/b/gymkana-linaje-olvidado.firebasestorage.app/o/Salamanca%2Fsalamanca_estacion_07_audio.mp3?alt=media&token=e28ad973-f800-43b2-a8fd-61481c7f985a
+  acertijo_audio_url: https://firebasestorage.googleapis.com/v0/b/gymkana-linaje-olvidado.firebasestorage.app/o/Salamanca%2Fsalamanca_estacion_07_acertijo_audio.mp3?alt=media&token=e6016e24-edeb-4beb-a081-095daff9c4c5
 - orden: 8
   nombre: Convento de San Esteban
   lat: 40.960822
@@ -243,6 +257,8 @@ estaciones:
     📚 *Dato histórico:* El actual Convento de San Esteban comenzó a levantarse en 1524. Su portada plateresca fue concebida como un retablo monumental bajo un gran arco, con una compleja decoración religiosa, política y heráldica. En el centro se representa el martirio de san Esteban y, sobre él, el Calvario. San Esteban es considerado el primer mártir del cristianismo y, según el relato tradicional, murió lapidado, razón por la que suele representarse rodeado de verdugos que sostienen piedras. El convento también estuvo vinculado a la Escuela de Salamanca y a pensadores como Francisco de Vitoria.
   imagen_url: https://firebasestorage.googleapis.com/v0/b/gymkana-linaje-olvidado.firebasestorage.app/o/Salamanca%2Fsalamanca_estacion_08_san_esteban.jpg?alt=media&token=8669854c-e823-4737-9246-5a3808cb5d84
   mapa_url: https://www.google.com/maps/search/?api=1&query=40.960822%2C-5.662550
+  audio_url: https://firebasestorage.googleapis.com/v0/b/gymkana-linaje-olvidado.firebasestorage.app/o/Salamanca%2Fsalamanca_estacion_08_audio.mp3?alt=media&token=9e188f36-03c7-4a34-9da5-9a0f0cf7e72f
+  acertijo_audio_url: https://firebasestorage.googleapis.com/v0/b/gymkana-linaje-olvidado.firebasestorage.app/o/Salamanca%2Fsalamanca_estacion_08_acertijo_audio.mp3?alt=media&token=8ca51862-bed0-4d05-9c9c-3440d70b3b37
 estacion_final:
   nombre: El primer testigo
   lat: 40.959119
@@ -293,6 +309,8 @@ estacion_final:
   imagen_url: https://firebasestorage.googleapis.com/v0/b/gymkana-linaje-olvidado.firebasestorage.app/o/Salamanca%2Fsalamanca_final_puente.jpg?alt=media&token=42c22e37-d988-47e5-8028-c5eaf08f6286
   imagen_final_url: https://firebasestorage.googleapis.com/v0/b/gymkana-linaje-olvidado.firebasestorage.app/o/Salamanca%2Fsalamanca_final_verraco.jpg?alt=media&token=c87fa358-b0d7-48d3-9a13-81fe15ea8efd
   mapa_url: https://www.google.com/maps/search/?api=1&query=40.959119%2C-5.669158
+  audio_url: https://firebasestorage.googleapis.com/v0/b/gymkana-linaje-olvidado.firebasestorage.app/o/Salamanca%2Fsalamanca_final_audio.mp3?alt=media&token=bd9029a8-6d44-4dbb-abe4-f8b853227d63
+  acertijo_audio_url: https://firebasestorage.googleapis.com/v0/b/gymkana-linaje-olvidado.firebasestorage.app/o/Salamanca%2Fsalamanca_final_acertijo_audio.mp3?alt=media&token=e17b3960-abef-4509-a623-14c59399a5d4
   coordenadas_finales: 40.959119N, -5.669158W
   secuencia_codice: '`40` • `.` • `959` • `119N` • `-5` • `.` • `669` • `158W`'
   guia_historica_url: ''

@@ -27,7 +27,12 @@
       "WebSearch",
       "WebFetch(domain:santillanadelmarturismo.com)",
       "WebFetch(domain:nominatim.openstreetmap.org)",
-      "Bash(pip3 install *)"
+      "Bash(pip3 install *)",
+      "Bash(pip3 show *)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:huggingface.co)",
+      "Bash(curl -sI https://huggingface.co)",
+      "Bash(dpkg -l)"
     ]
   }
 }

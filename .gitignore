@@ -11,3 +11,7 @@ Captura de pantalla*.png
 # Bytecode de Python
 __pycache__/
 *.pyc
+
+# venv de Kokoro TTS (en disco, no en /tmp que es tmpfs/RAM)
+.venv-kokoro/
+.pip-tmp/

@@ -160,6 +160,8 @@ def construir_estacion_regular(e, fragmentos):
         "capsula": e["capsula"],
         "imagen_url": e["imagen_url"],
         "mapa_url": e["mapa_url"],
+        "audio_url": e.get("audio_url", ""),
+        "acertijo_audio_url": e.get("acertijo_audio_url", ""),
     }
     pistas = e["pistas"]
     for i, pista in enumerate(pistas, start=1):
@@ -186,6 +188,8 @@ def construir_estacion_final(ef, fragmentos, num_regulares):
         "coordenadas_finales": ef["coordenadas_finales"],
         "secuencia_codice": ef.get("secuencia_codice") or construir_secuencia_codice(fragmentos),
         "guia_historica_url": ef.get("guia_historica_url", ""),
+        "audio_url": ef.get("audio_url", ""),
+        "acertijo_audio_url": ef.get("acertijo_audio_url", ""),
     }
     pistas = ef["pistas"]
     for i, pista in enumerate(pistas, start=1):
