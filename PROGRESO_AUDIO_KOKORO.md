@@ -323,3 +323,8 @@ la tarea para poder retomarla si la sesión se cae. Bucket de Storage:
   `backup/backup_{vn3nwqbxR5Ur6Zze,tlFKrYHhqhHnvT2y}_<TS>_pre_fix_message_id.json`.
   Desplegado vía API, HTTP 200 en ambos, verificado por GET. Pendiente: que
   el usuario vuelva a probar.
+- 2026-08-11 23:1x — **Confirmado por el usuario: funciona.** Borrado de
+  audio anterior operativo en Salamanca (probado con /repetir y /rescate);
+  misma implementación en Aranda, pendiente de que se pruebe allí pero es
+  el mismo código ya verificado. Cierra el bug de autoplay-chaining de
+  Telegram reportado hoy.
