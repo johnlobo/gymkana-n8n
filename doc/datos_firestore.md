@@ -47,6 +47,7 @@ Estructura multi-tenant: todo vive bajo `gymkanas/<id>/...`, con un documento de
 | rango_equipo | string | Texto del rango obtenido (Leyenda de la Villa / Maestros Cronistas / Guardianes del Códice / Exploradores Pacientes). |
 | imagen_final | string (URL) | Imagen enviada en el mensaje de cierre; se reutiliza al repetir el resumen. |
 | documento_final | string (URL) | URL del PDF de la guía histórica; se reutiliza al repetir el resumen (sendDocument). |
+| ultimo_audio_msg_id | string | `message_id` de Telegram del último audio (cápsula/acertijo/resumen) enviado a este equipo. Solo presente en gymkanas con el parche "borrar audio anterior" (ver [`audio_locuciones.md`](./audio_locuciones.md)); no está en el workflow plantilla. Se usa para borrar ese mensaje antes de enviar el siguiente audio y así evitar que Telegram encadene la reproducción. |
 
 ### Estados posibles de `equipos.estado`
 
@@ -72,6 +73,8 @@ Estructura multi-tenant: todo vive bajo `gymkanas/<id>/...`, con un documento de
 | mapa_url | string (URL) | Enlace de Google Maps mostrado por /mapa. |
 | imagen_final_url | string (URL) — solo estación 9 | Foto distinta usada específicamente en el mensaje de cierre de la gymkana. |
 | coordenadas_finales | string — solo estación 9 | Coordenadas ya formateadas ("43.389561N, -4.108084W") para el mensaje de cierre. |
+| audio_url | string (URL) | Locución en audio (mp3) de la `capsula`, generada con Kokoro TTS. Solo presente en gymkanas con audio ya generado (Salamanca, Aranda); no está en el workflow plantilla. Ver [`audio_locuciones.md`](./audio_locuciones.md). |
+| acertijo_audio_url | string (URL) | Locución en audio (mp3) del `acertijo`. Mismo origen y limitaciones que `audio_url`. |
 
 ## Colección `gymkanas/<id>/updates_telegram`
 

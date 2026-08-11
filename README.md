@@ -37,6 +37,7 @@ El mismo contenido, en Markdown dentro de [`doc/`](./doc/) (sin interactividad, 
 - [`doc/datos_firestore.md`](./doc/datos_firestore.md) — esquema completo de `gymkanas/<id>/...`.
 - [`doc/codigo_nodos.md`](./doc/codigo_nodos.md) — código de los nodos Code clave del workflow.
 - [`doc/infraestructura.md`](./doc/infraestructura.md) — despliegue, credenciales, `docker-compose.yml` y el detalle de `provisioning/`.
+- [`doc/audio_locuciones.md`](./doc/audio_locuciones.md) — locuciones Kokoro TTS: generación, entrega por Telegram y por qué hace falta borrar el audio anterior. Añadido manual, no está en el workflow plantilla.
 
 ## Estructura del proyecto
 

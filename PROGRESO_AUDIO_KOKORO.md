@@ -283,3 +283,23 @@ la tarea para poder retomarla si la sesión se cae. Bucket de Storage:
   inline, (b) rediseñar el flujo del juego para que ningún salto automático
   revele contenido de otra estación antes de tiempo (p.ej. no soltar el
   audio de la siguiente estación hasta que el equipo responda el acertijo).
+- 2026-08-11 22:5x — **El usuario ató cabos**: el chat de pruebas es el mismo
+  para Salamanca y Aranda, y ya tenía audios viejos de pruebas de esta tarde
+  — de ahí que "solo se le pasó uno" pero igualmente saltara a otro (Telegram
+  encadena con el siguiente audio de TODO el historial del chat, no solo con
+  mensajes consecutivos de la misma interacción). Preguntó si se pueden
+  borrar los mp3 anteriores al cargar uno nuevo — confirmado que sí
+  (`deleteMessage`, un bot puede borrar sus propios mensajes en chats
+  privados hasta 48h después). Diseñado e implementado: nuevo campo
+  `ultimo_audio_msg_id` en `equipos`, y en cada uno de los 3 puntos de envío
+  de audio (guardado/resumen/acertijo_guardado) de Salamanca y Aranda, 4
+  nodos nuevos (`¿Hay audio anterior?` → `Borrar Audio Anterior` →
+  `Enviar Audio` (ya existía) → `Preparar ID Audio` → `Guardar ID Audio`).
+  Backup pre-cambio en
+  `backup/backup_{vn3nwqbxR5Ur6Zze,tlFKrYHhqhHnvT2y}_20260811_225202_pre_borrar_audio_anterior.json`.
+  Desplegado vía API de n8n, HTTP 200 en ambos, verificado por GET: 71 nodos
+  cada uno (59 + 12), `active: true`. **Documentación completa del patrón en
+  `doc/audio_locuciones.md`** (nuevo), más los campos nuevos de Firestore
+  añadidos a `doc/datos_firestore.md` (`ultimo_audio_msg_id`, y de paso
+  `audio_url`/`acertijo_audio_url` que faltaban documentar de antes).
+  Pendiente: que el usuario confirme en real que ya no encadena.
