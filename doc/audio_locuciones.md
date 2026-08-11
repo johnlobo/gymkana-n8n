@@ -141,6 +141,20 @@ rellenarlos explícitamente en el nodo Code `Procesar estación y comandos`
 `station.acertijo_audio_url`, en cada rama donde se muestra una cápsula o
 se revela un acertijo nuevo.
 
+**`ultimo_texto` se completa en dos sitios, no solo en el motor de
+juego.** Al avanzar de estación, el motor (`Procesar estación y
+comandos`) guarda ahí la cápsula de premio -- pero las instrucciones de
+"próximo enclave / mapa / escribid /destino" las añade un nodo aparte,
+`Construir mensaje siguiente` (solo se ejecuta cuando hace falta ir a
+otro enclave), concatenándolas al `response` que ya traía. Si ese nodo no
+actualiza también `ultimo_texto` con el mismo texto combinado,
+`/repetir` se queda solo con la cápsula y pierde las instrucciones de
+cómo llegar a la siguiente parada -- exactamente lo que pasó al
+desplegar la primera versión de este cambio. Los dos nodos tienen que
+mantenerse en sync: cualquier mensaje nuevo que se añada al flujo de
+avance de estación debe decidir también si le toca sumarse a
+`ultimo_texto`.
+
 **`/repetir` no reconstruye contenido, repite literalmente lo último
 mostrado.** Primer intento (2026-08-11): hacer que `/repetir` mostrara "el
 acertijo de la estación actual" — pero si el equipo acababa de resolver una

@@ -480,3 +480,26 @@ la tarea para poder retomarla si la sesión se cae. Bucket de Storage:
   provisioning/test_procesar_estacion.js` → 12/12 OK contra el código ya
   corregido. Documentado en `doc/infraestructura.md` como paso obligatorio
   antes de tocar este nodo en producción.
+- 2026-08-12 00:0x — **Cuarto reporte sobre /repetir**: "en la cápsula me
+  saca la locución y el texto, pero no las instrucciones para ir a la
+  siguiente estación". Causa: esas instrucciones ("➡️ Próximo enclave...
+  🗺️ Mapa... /destino") no las genera `Procesar estación y comandos`
+  (donde vive el snapshot de `ultimo_texto`), las añade un nodo aparte,
+  `Construir mensaje siguiente`, que se ejecuta DESPUÉS y concatena esas
+  instrucciones al `response` -- pero nunca tocaba `ultimo_texto`, así
+  que `/repetir` se quedaba solo con la cápsula.
+  Fix: `Construir mensaje siguiente` ahora también actualiza
+  `ultimo_texto`, concatenando las mismas instrucciones que ya añade a
+  `response` (si `prev.ultimo_texto` existe). Verificado con `node
+  --check` + una prueba manual del nodo con datos de ejemplo antes de
+  desplegar (confirma cápsula + instrucciones combinadas en
+  `ultimo_texto`). Aplicado en Salamanca, Aranda y la plantilla (los tres
+  tenían el nodo byte-idéntico, confirmado por diff antes de tocar nada).
+  Backups en
+  `backup/backup_{vn3nwqbxR5Ur6Zze,tlFKrYHhqhHnvT2y,spt1kZxCOE9LCBbz}_<TS>_pre_fix_repetir_siguiente_estacion.json`.
+  Desplegado HTTP 200 en los tres, verificado sintaxis OK + re-corrido
+  `provisioning/test_procesar_estacion.js` (12/12 OK, ese nodo no lo toca
+  este cambio pero confirma que no se rompió nada de refilón).
+  `workflow.json` re-refrescado. Documentado en `audio_locuciones.md` el
+  porqué de que dos nodos distintos tengan que mantenerse en sync para
+  que `ultimo_texto` sea fiel a lo que de verdad se envió.
