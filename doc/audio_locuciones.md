@@ -141,6 +141,20 @@ rellenarlos explícitamente en el nodo Code `Procesar estación y comandos`
 `station.acertijo_audio_url`, en cada rama donde se muestra una cápsula o
 se revela un acertijo nuevo.
 
+**`/repetir` no reconstruye contenido, repite literalmente lo último
+mostrado.** Primer intento (2026-08-11): hacer que `/repetir` mostrara "el
+acertijo de la estación actual" — pero si el equipo acababa de resolver una
+estación (lo que avanza `estacion_actual` en el mismo turno que enseña la
+cápsula de premio), `/repetir` mostraba el acertijo de la estación
+SIGUIENTE, no repetía lo que el equipo acababa de ver. Cambiado a un
+modelo más simple: cada vez que se muestra contenido "repetible" (cápsula
+o acertijo, con su imagen/audio), se guarda tal cual en
+`team.ultimo_texto` / `ultima_imagen_url` / `ultimo_audio_url` (ver
+`datos_firestore.md`); `/repetir` simplemente reenvía esos tres campos,
+sin mirar para nada `station`/`estacion_actual`. Así "repetir" significa
+literalmente eso, sea lo que sea lo último — cápsula o acertijo — igual
+que lo esperaría cualquiera del verbo.
+
 **Ojo con las guardas "solo la primera vez"**: varias ramas de
 `Procesar estación y comandos` (rescate, llegada normal) ponen
 `audioAcertijoUrl` dentro de un `if (!team.acertijo_visto) { ... }` —

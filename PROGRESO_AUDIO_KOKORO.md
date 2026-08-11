@@ -417,3 +417,30 @@ la tarea para poder retomarla si la sesión se cae. Bucket de Storage:
   `backup/backup_{vn3nwqbxR5Ur6Zze,tlFKrYHhqhHnvT2y,spt1kZxCOE9LCBbz}_<TS>_pre_fix_repetir_audio.json`.
   Desplegado vía API, HTTP 200 en los tres, verificado por GET. `workflow.json`
   re-refrescado.
+- 2026-08-11 23:5x — **Tercer reporte sobre /repetir**: "repetir en la
+  cápsula de la estación 4 me ha mostrado directamente el acertijo de la
+  5". Comprobado en Firestore: el equipo YA estaba en `estacion_actual: 5`
+  cuando pidió /repetir (responder bien a la 4 avanza `estacion_actual` a
+  la 5 en el mismo turno que enseña la cápsula-premio de la 4). O sea,
+  `/repetir` mostrando el acertijo de la 5 era el comportamiento
+  correcto **según el diseño anterior** ("repite el acertijo de la
+  estación actual") — pero no lo que el usuario esperaba ("repite lo
+  último que me acabas de enseñar").
+  El usuario pidió explícitamente simplificarlo: "/repetir debe... repetir
+  la última respuesta enviada, sea cual sea... acertijo, cápsula... lo que
+  sea". Rediseñado: 3 campos nuevos en `equipos`
+  (`ultimo_texto`/`ultima_imagen_url`/`ultimo_audio_url`, añadidos a las
+  `columns` de `Guardar equipo` y `Guardar progreso`); cada punto del
+  motor que muestra cápsula o acertijo (9 salidas de la función, 4
+  `return` tempranos + el final) guarda ahí lo que acaba de mostrar
+  (`if (capsulaMsg || audioUrl || audioAcertijoUrl) {...}` — no dispara
+  en /pista, /mapa, /estado, respuesta incorrecta, pausa/reanudar, que no
+  tienen contenido "repetible"). `/repetir` pasa de reconstruir texto a
+  partir de `station` a simplemente reenviar esos 3 campos tal cual.
+  Aplicado en Salamanca, Aranda y la plantilla. Backups en
+  `backup/backup_{vn3nwqbxR5Ur6Zze,tlFKrYHhqhHnvT2y,spt1kZxCOE9LCBbz}_<TS>_pre_repetir_ultimo_contenido.json`.
+  Desplegado vía API, HTTP 200 en los tres, verificado por GET
+  (`ultimo_texto` presente en el código y en las columns de ambos nodos
+  Firestore). `workflow.json` re-refrescado. Documentado en
+  `audio_locuciones.md` y `datos_firestore.md`. Pendiente: que el usuario
+  confirme en real.

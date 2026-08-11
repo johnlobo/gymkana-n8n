@@ -48,6 +48,9 @@ Estructura multi-tenant: todo vive bajo `gymkanas/<id>/...`, con un documento de
 | imagen_final | string (URL) | Imagen enviada en el mensaje de cierre; se reutiliza al repetir el resumen. |
 | documento_final | string (URL) | URL del PDF de la guía histórica; se reutiliza al repetir el resumen (sendDocument). |
 | ultimo_audio_msg_id | string | `message_id` de Telegram del último audio (cápsula/acertijo/resumen) enviado a este equipo. Ya en el workflow plantilla (ver [`audio_locuciones.md`](./audio_locuciones.md)), pero solo se llega a escribir si la gymkana tiene audios generados (si no, la rama de audio queda inerte y el campo nunca se crea). Se usa para borrar ese mensaje antes de enviar el siguiente audio y así evitar que Telegram encadene la reproducción. |
+| ultimo_texto | string | Texto de la última cápsula o acertijo mostrado (lo que fuera lo último, no necesariamente de la estación actual). Usado por `/repetir` para reenviar literalmente lo último, en vez de reconstruir contenido a partir de `estacion_actual` — ver [`audio_locuciones.md`](./audio_locuciones.md). |
+| ultima_imagen_url | string (URL) | Imagen asociada a `ultimo_texto`. |
+| ultimo_audio_url | string (URL) | Audio (cápsula o acertijo) asociado a `ultimo_texto`. |
 
 ### Estados posibles de `equipos.estado`
 
