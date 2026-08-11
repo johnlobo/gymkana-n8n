@@ -260,3 +260,26 @@ la tarea para poder retomarla si la sesión se cae. Bucket de Storage:
   posterior: los 6 nodos en `sendDocument`, ambos workflows siguen
   `active: true`. Pendiente: que el usuario confirme en Telegram que ya no
   encadena.
+- 2026-08-11 22:4x — **El usuario confirma que sendDocument NO arregló nada**
+  (sigue con onda y sigue encadenando). Investigado más a fondo: Telegram no
+  decide por el método de la Bot API, sino que descarga e inspecciona el
+  contenido real del fichero (extrae duración, genera forma de onda) cuando
+  reconoce un MP3 válido, sea por `sendAudio` o `sendDocument` — confirmado
+  por búsqueda web (limitación conocida y sin resolver de Telegram, issue
+  abierto en tdesktop pidiendo poder desactivar el autoplay-next, sin
+  respuesta oficial). No hay lever del lado servidor/Bot-API para esto sin
+  además "disfrazar" el fichero (zip, extensión falsa) hasta el punto de que
+  Telegram no pueda parsear el audio — lo cual también le quita al jugador
+  la reproducción dentro de la propia app.
+  **Revertido a `sendAudio`** en los 6 nodos (decisión del usuario: ya que
+  sendDocument no aporta nada, mejor recuperar el reproductor con onda).
+  Backup pre-revert en
+  `backup/backup_{vn3nwqbxR5Ur6Zze,tlFKrYHhqhHnvT2y}_<TS>_pre_revert_sendAudio.json`.
+  PUT confirmado HTTP 200 en ambos, verificado por GET: los 6 nodos de vuelta
+  en `sendAudio`, ambos workflows `active: true`.
+  **El salto automático entre locuciones queda como limitación conocida y
+  sin arreglo del lado servidor.** Opciones no aplicadas, a valorar si se
+  retoma: (a) disfrazar el fichero (zip) sacrificando la reproducción
+  inline, (b) rediseñar el flujo del juego para que ningún salto automático
+  revele contenido de otra estación antes de tiempo (p.ej. no soltar el
+  audio de la siguiente estación hasta que el equipo responda el acertijo).
