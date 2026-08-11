@@ -131,5 +131,26 @@ Nombres exactos de los nodos nuevos (sufijo `guardado` / `resumen` /
 - `Preparar ID Audio (<sufijo>)` — Code
 - `Guardar ID Audio (<sufijo>)` — Firestore, `upsert`
 
+### No basta con los nodos — el motor de juego también tiene que rellenar los campos
+
+`¿Hay audio? (guardado)` y `¿Hay audio acertijo? (guardado)` leen
+`$('Preparar entrega').first().json.audio_url` /
+`.audio_acertijo_url`. Esos campos NO llegan solos desde Firestore: hay que
+rellenarlos explícitamente en el nodo Code `Procesar estación y comandos`
+(el motor de juego), a partir de `station.audio_url` /
+`station.acertijo_audio_url`, en cada rama donde se muestra una cápsula o
+se revela un acertijo nuevo.
+
+Esto se pasó por alto dos veces el 2026-08-11: al añadir los nodos a Aranda
+(se copiaron los nodos de Telegram/IF pero no este código, así que el
+acertijo nunca sonaba pese a que el nodo y el dato en Firestore estaban
+bien) y al trasplantar el subsistema a la plantilla (Santillana / Linaje
+Olvidado) — ahí ni siquiera se copió la parte de `audio_url` (cápsula).
+Salamanca es la referencia correcta: `audioAcertijoUrl` se rellena en 6
+sitios, siempre justo donde `team.acertijo_visto = true`. Antes de dar por
+completo un backport de este subsistema a una gymkana nueva, comparar su
+`Procesar estación y comandos` contra el de Salamanca (son idénticos salvo
+estas líneas de audio) en vez de asumir que los nodos ya bastan.
+
 Backups de los workflows antes/después de este cambio (y del experimento
 fallido con `sendDocument`) en `backup/backup_<workflowId>_<timestamp>_*.json`.

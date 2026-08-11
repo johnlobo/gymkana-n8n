@@ -352,3 +352,35 @@ la tarea para poder retomarla si la sesión se cae. Bucket de Storage:
   `1. Enviar Resumen de la Ruta`). `workflow.json` del repo actualizado con
   el export fresco. Documentación actualizada (`audio_locuciones.md`,
   `datos_firestore.md`) para reflejar que ya no es "solo Salamanca+Aranda".
+- 2026-08-11 23:2x — **El usuario reporta: en Aranda no suenan las
+  locuciones de los acertijos.** Firestore descartado como causa (las 7
+  estaciones tienen `acertijo_audio_url` OK). Encontrado el bug real en
+  `Procesar estación y comandos` (el motor de juego, node Code): construye
+  el ítem que llega a `Preparar entrega` y de ahí a
+  `¿Hay audio acertijo? (guardado)` / `Enviar Audio Acertijo (guardado)`,
+  pero en Aranda **nunca rellenaba el campo `audio_acertijo_url`** — ni
+  siquiera existía en el código, así que el IF daba `false` siempre, para
+  cualquier estación. No es un bug de hoy: viene de cuando se replicaron
+  los NODOS de audio de Salamanca a Aranda (sesión anterior) sin replicar
+  también el código del motor que los alimenta de datos.
+  Diff línea a línea contra Salamanca (que sí tiene el audio del acertijo
+  funcionando: se rellena en 6 puntos, todos justo donde
+  `team.acertijo_visto = true` — cada vez que se muestra un acertijo nuevo
+  por primera vez, ya sea llegada normal o distintas variantes de
+  `/rescate`) confirmó que el resto del fichero es byte a byte idéntico:
+  sin riesgo de pisar nada específico de Aranda al portar el código.
+  **Comprobado también en la plantilla** (Santillana / Linaje Olvidado,
+  `spt1kZxCOE9LCBbz`) a petición del usuario: estaba peor — ni siquiera
+  tenía el campo `audio_url` (cápsula), le faltaba todo el bloque de audio.
+  Al trasplantar el subsistema unas horas antes solo se copiaron los 18
+  nodos de envío/borrado, no el motor de juego que les da datos — el
+  backport había quedado incompleto, la rama de audio habría seguido
+  inerte aunque se generasen locuciones para esa gymkana.
+  **Fix**: sustituido el código completo de `Procesar estación y comandos`
+  en Aranda y en la plantilla por el de Salamanca (verificado byte-idéntico
+  salvo estas líneas de audio, mediante diff). Backups en
+  `backup/backup_{tlFKrYHhqhHnvT2y,spt1kZxCOE9LCBbz}_<TS>_pre_fix_audio_*_engine.json`.
+  Desplegado vía API, HTTP 200 en ambos, verificado por GET (428 líneas,
+  `audio_acertijo_url` presente en ambos). `workflow.json` del repo
+  re-refrescado. Pendiente: que el usuario confirme que ya suena el
+  acertijo en Aranda.
