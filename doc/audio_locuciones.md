@@ -141,6 +141,18 @@ rellenarlos explícitamente en el nodo Code `Procesar estación y comandos`
 `station.acertijo_audio_url`, en cada rama donde se muestra una cápsula o
 se revela un acertijo nuevo.
 
+**Ojo con las guardas "solo la primera vez"**: varias ramas de
+`Procesar estación y comandos` (rescate, llegada normal) ponen
+`audioAcertijoUrl` dentro de un `if (!team.acertijo_visto) { ... }` —
+tiene sentido para no reenviar el audio en cada mensaje mientras el
+acertijo sigue sin resolverse, pero en la rama de `/repetir` esa misma
+guarda hacía que el comando NUNCA sonara si el acertijo ya se había
+marcado visto por otro medio (p.ej. `/move`, que también marca
+`acertijo_visto = true`) — contradice el propio verbo "repetir". Fix
+aplicado 2026-08-11: en `/repetir` el audio se rellena siempre, fuera del
+`if`; la guarda se queda solo para decidir si hace falta persistir el
+cambio de estado (`changed`).
+
 Esto se pasó por alto dos veces el 2026-08-11: al añadir los nodos a Aranda
 (se copiaron los nodos de Telegram/IF pero no este código, así que el
 acertijo nunca sonaba pese a que el nodo y el dato en Firestore estaban

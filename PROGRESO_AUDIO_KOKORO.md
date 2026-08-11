@@ -384,3 +384,36 @@ la tarea para poder retomarla si la sesión se cae. Bucket de Storage:
   `audio_acertijo_url` presente en ambos). `workflow.json` del repo
   re-refrescado. Pendiente: que el usuario confirme que ya suena el
   acertijo en Aranda.
+- 2026-08-11 23:3x — **Segundo bug reportado, esta vez en /repetir**: "si
+  hago move 1 me sale el audio, pero si a continuación hago repetir ya no
+  me sale, y corta la parte de abajo de la descripción (la de fijarse bien
+  en la foto)". Confirmado por el usuario que Salamanca tiene el mismo
+  problema — no es nada de hoy, viene del diseño original de la rama
+  `repetir` en `Procesar estación y comandos` (por eso al portar el código
+  bueno de Salamanca a Aranda el bug vino incluido).
+  Investigado sin necesidad de logs de ejecución (siguen sin guardarse):
+  descartada una condición de carrera por borrado cruzado; la explicación
+  real estaba en el propio código, comparando la rama de `/move` (que sí
+  funciona) con la de `/repetir`:
+  1. `audioAcertijoUrl = station.acertijo_audio_url || ''` estaba DENTRO del
+     `if (!team.acertijo_visto)` — o sea, el audio del acertijo solo se
+     manda "la primera vez que se ve". `/move` ya marca
+     `acertijo_visto = true` al mostrar la estación, así que un `/repetir`
+     posterior entra con la guarda ya en `true` y se salta el audio por
+     completo. Contradice el propio verbo "repetir": debería sonar siempre
+     que se pida, no solo la primera vez.
+  2. La plantilla de texto de `/repetir` nunca incluyó la frase de cierre
+     "📸 Fijaos bien en la foto..." que sí tiene `/move` — de ahí la
+     sensación de "cortado", simplemente son plantillas de mensaje
+     distintas, no un borrado accidental de Telegram.
+  **Fix**: sacado `audioAcertijoUrl = station.acertijo_audio_url || ''` del
+  `if`, para que se rellene siempre que se escribe /repetir (el
+  `acertijo_visto`/`changed` de la guarda se queda igual, solo controla si
+  hace falta persistir el cambio de estado, no si se manda el audio); y
+  añadida la frase del recordatorio de la foto a la plantilla de texto de
+  `/repetir`, igual que en `/move`. Aplicado en los TRES workflows
+  (Salamanca, Aranda y la plantilla) para que quede consistente en los
+  tres. Backups en
+  `backup/backup_{vn3nwqbxR5Ur6Zze,tlFKrYHhqhHnvT2y,spt1kZxCOE9LCBbz}_<TS>_pre_fix_repetir_audio.json`.
+  Desplegado vía API, HTTP 200 en los tres, verificado por GET. `workflow.json`
+  re-refrescado.
