@@ -1,12 +1,25 @@
 # Locuciones de audio (Kokoro TTS)
 
-Estado 2026-08-11. **Esto no está en el workflow plantilla** (`workflow.json`,
-53 nodos, sin nodos de audio): es un añadido manual, nodo a nodo, aplicado
-solo a los workflows en producción de Salamanca (`vn3nwqbxR5Ur6Zze`) y Aranda
-(`tlFKrYHhqhHnvT2y`, ambos con 71 nodos). Si se monta una gymkana nueva con
-`provisioning/provision_gymkana.py` no lleva nada de esto — habría que
-replicarlo a mano siguiendo este documento, o backportearlo primero al
-template.
+Estado 2026-08-11. Ya está en el **workflow plantilla** (`spt1kZxCOE9LCBbz`,
+"El Linaje Olvidado" — el mismo bot que usa `provisioning/provision_gymkana.py`
+como `--template-workflow-id` por defecto para clonar gymkanas nuevas, no un
+fichero estático separado; `workflow.json` en la raíz del repo es solo su
+export). Toda gymkana clonada a partir de ahora lo lleva de serie: 18 nodos
+(71 en total) — los 6 de envío de audio + los 12 del anti-encadenado (ver
+más abajo). En el propio Linaje Olvidado la rama de audio queda inerte (sus
+estaciones no tienen `audio_url`/`acertijo_audio_url` — el IF `notEmpty` da
+`false` de forma segura ante un campo inexistente, confirmado leyendo
+`filter-parameter.js` del propio n8n) hasta que se generen locuciones para
+esa gymkana también.
+
+Se aplicó primero a mano en Salamanca (`vn3nwqbxR5Ur6Zze`) y Aranda
+(`tlFKrYHhqhHnvT2y`) mientras se iba puliendo (incluido el bug del
+`message_id` de más abajo), y una vez verificado se trasplantó tal cual al
+template el 2026-08-11 — mismos 18 nodos, mismas expresiones (todas
+genéricas, referencian nodos por nombre como `Preparar entrega`/`Cargar
+equipo`, no hardcodean nada de una gymkana concreta), solo cambian por
+workflow la credencial de Telegram y la ruta de la colección Firestore de
+`equipos`.
 
 ## Generación: `provisioning/generar_audio.py`
 

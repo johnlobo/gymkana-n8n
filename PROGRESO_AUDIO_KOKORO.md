@@ -328,3 +328,27 @@ la tarea para poder retomarla si la sesión se cae. Bucket de Storage:
   misma implementación en Aranda, pendiente de que se pruebe allí pero es
   el mismo código ya verificado. Cierra el bug de autoplay-chaining de
   Telegram reportado hoy.
+- 2026-08-11 23:0x-23:1x — **Backport al workflow plantilla**, a petición del
+  usuario. La plantilla real que usa `provision_gymkana.py` no es el fichero
+  `workflow.json` sino el workflow EN VIVO `spt1kZxCOE9LCBbz` ("El Linaje
+  Olvidado", `--template-workflow-id` por defecto) — y sigue activo/en
+  producción. Verificado antes de tocar nada que era seguro: sus estaciones
+  no tienen `audio_url` en Firestore (campo inexistente, no vacío), y
+  confirmado leyendo `filter-parameter.js` de `n8n-workflow` que un
+  `notEmpty` estricto sobre un campo `undefined` da `false` sin lanzar error
+  — la rama de audio queda inerte, cero riesgo para la partida en curso.
+  Trasplantados los 18 nodos (6 de audio + 12 de anti-encadenado) desde la
+  Aranda ya corregida (con el fix de `$json.result.message_id`), adaptando
+  solo credencial de Telegram (`MkDus3nd83UukKHH`) y colección Firestore
+  (`gymkanas/linaje-olvidado/equipos`) — el resto de expresiones son
+  genéricas y no necesitaron cambios. Backup pre-cambio en
+  `backup/backup_spt1kZxCOE9LCBbz_20260811_230624_pre_audio_template.json`.
+  El primer intento de PUT falló (HTTP 400, `settings` con propiedades no
+  aceptadas por el schema del API — `binaryMode`/`availableInMCP`);
+  solucionado enviando solo `{"executionOrder":"v1"}` en `settings` (n8n
+  conserva el resto server-side, confirmado por GET posterior). Desplegado
+  OK, 71 nodos, `active: true`, verificada la re-conexión de los 3 puntos de
+  entrada (`¿Hay cápsula? (guardado)`, `Enviar Cápsula (guardado)`,
+  `1. Enviar Resumen de la Ruta`). `workflow.json` del repo actualizado con
+  el export fresco. Documentación actualizada (`audio_locuciones.md`,
+  `datos_firestore.md`) para reflejar que ya no es "solo Salamanca+Aranda".
