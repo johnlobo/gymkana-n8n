@@ -503,3 +503,36 @@ la tarea para poder retomarla si la sesión se cae. Bucket de Storage:
   `workflow.json` re-refrescado. Documentado en `audio_locuciones.md` el
   porqué de que dos nodos distintos tengan que mantenerse en sync para
   que `ultimo_texto` sea fiel a lo que de verdad se envió.
+- 2026-08-12 00:2x — **Confirmado por el usuario: /repetir funciona**
+  (cápsula/acertijo + imagen + audio + instrucciones de siguiente
+  estación, tal cual se enviaron). Cierra el hilo de /repetir de esta
+  sesión.
+- 2026-08-12 00:3x — **Nueva petición: el primer equipo activo siempre
+  debe empezar en la estación 1**, el resto por el round-robin ya
+  existente. El reparto (`Calcular orden de inicio`) ya hacía eso por
+  diseño (contador arranca en 0 -> primer equipo = enclave 1), pero el
+  contador estaba "sucio" por las pruebas de hoy (Aranda en 3, Salamanca
+  en 7) y `/reboot` nunca lo decrementaba al borrar un equipo, así que se
+  iba "quemando" hueco sin que nadie llegara a jugar de verdad.
+  De paso, encontrado un bug real mientras se miraba esto: el módulo del
+  reparto estaba fijado a `% 8` (heredado de Linaje Olvidado, 8
+  estaciones) en vez de usar `num_estaciones_regulares` de cada gymkana
+  — inofensivo mientras el contador es bajo, pero rompería en Aranda (6
+  estaciones) en cuanto el contador llegara a 6 o 7 (asignaría una
+  estación inexistente). El usuario confirmó arreglarlo también.
+  **Cambios**: (1) `Calcular orden de inicio` ahora lee
+  `gymkanaConfig.num_estaciones_regulares` (vía `$('Cargar gymkana')`,
+  que ya se carga al principio de cualquier ejecución) en vez de `8`
+  fijo. (2) Nuevos 3 nodos en la rama de `/reboot`: `Cargar contador
+  inicio (reboot)` → `Decrementar contador inicio` (resta 1, suelo en 0,
+  nunca negativo) → `Guardar contador inicio (reboot)`, insertados entre
+  `Borrar equipo` y `Enviar confirmación reboot`. (3) Contadores de
+  Aranda y Salamanca reseteados a 0 en Firestore directamente (no hay
+  comando para esto, se hizo a mano).
+  Verificado con `node --check` en el código nuevo antes de desplegar.
+  Aplicado en Salamanca, Aranda y la plantilla (74 nodos cada uno, antes
+  71). Backups en
+  `backup/backup_{vn3nwqbxR5Ur6Zze,tlFKrYHhqhHnvT2y,spt1kZxCOE9LCBbz}_<TS>_pre_round_robin_fix.json`.
+  Desplegado HTTP 200 en los tres, verificado por GET. `workflow.json`
+  re-refrescado. Documentado en `datos_firestore.md` (nueva sección
+  `gymkanas/<id>/config`) y `comandos.md` (`/reboot` actualizado).

@@ -24,7 +24,7 @@ Pensados para probar la gymkana sin recorrer físicamente las estaciones.
 |---|---|---|
 | /move 0 | Decidir acción → Procesar estación y comandos | Sitúa al equipo justo después de registrar el nombre (esperando_inicio) en SU enclave de inicio ya asignado (o le asigna uno por round-robin, vía el contador, si aún no tenía). |
 | /move 1 … /move 9 | Decidir acción → Procesar estación y comandos | Teletransporta al equipo directamente a esa estación física (en_juego, acertijo sin ver) y muestra el acertijo automáticamente, como un /repetir inmediato — al margen de la rotación por paso. Arranca el cronómetro si aún no había empezado. |
-| /reboot | Decidir acción → Borrar equipo | Borra por completo el documento del equipo en Firestore. Hace falta volver a escribir /start (y se le asignará el siguiente enclave de inicio por round-robin). |
+| /reboot | Decidir acción → Borrar equipo → Decrementar contador inicio | Borra por completo el documento del equipo en Firestore. Hace falta volver a escribir /start (y se le asignará el siguiente enclave de inicio por round-robin). Decrementa en 1 el contador de round-robin (con suelo en 0) para no perder ese hueco — así rebootear un equipo de pruebas no desplaza el enclave de inicio del resto. |
 
 ## Entradas que no son comandos
 

@@ -79,6 +79,12 @@ Estructura multi-tenant: todo vive bajo `gymkanas/<id>/...`, con un documento de
 | audio_url | string (URL) | Locución en audio (mp3) de la `capsula`, generada con Kokoro TTS. Campo soportado por el workflow plantilla, pero solo tiene valor real en gymkanas con audio ya generado (Salamanca, Aranda) — el resto (p.ej. Linaje Olvidado) no tienen ni el campo, y la rama de audio del workflow queda inerte hasta que se generen. Ver [`audio_locuciones.md`](./audio_locuciones.md). |
 | acertijo_audio_url | string (URL) | Locución en audio (mp3) del `acertijo`. Mismo origen y limitaciones que `audio_url`. |
 
+## Colección `gymkanas/<id>/config`
+
+| Doc | Campo | Tipo | Descripción |
+|---|---|---|---|
+| `contador_inicio` | valor | number | Contador del reparto round-robin de enclave de inicio (ver `orden_inicio` en `equipos` arriba). Arranca en 0 -> el primer equipo cae en el enclave 1, el siguiente en el 2, etc., dando la vuelta al llegar a `num_estaciones_regulares` (nunca fijo a 8: `Calcular orden de inicio` lee el valor real de cada gymkana, fix 2026-08-12 -- antes rompía en cualquier gymkana con un nº de estaciones distinto de Linaje Olvidado). `/reboot` (borrar equipo) decrementa este contador en 1, con suelo en 0 (`Decrementar contador inicio` / `Guardar contador inicio (reboot)`), para no "quemar" el hueco de un equipo que nunca llegó a jugar de verdad. Se resetea a mano (no hay comando) antes de un evento real si se ha ensuciado por pruebas. |
+
 ## Colección `gymkanas/<id>/updates_telegram`
 
 | Campo | Tipo | Descripción |
