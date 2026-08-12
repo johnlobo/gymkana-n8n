@@ -1,13 +1,10 @@
-# Definicion completa de "El Linaje Olvidado" (Santillana del Mar),
-# exportada desde Firestore (gymkanas/linaje-olvidado) el 2026-08-06.
+# Definicion de la gymkana 'El Linaje Olvidado' (id=linaje-olvidado),
+# exportada desde Firestore con export_gymkana.py.
 # Formato para provision_gymkana.py -- ver provisioning/README.md.
 #
-# Sirve para volver a aprovisionar esta MISMA gymkana desde cero (p.ej.
-# tras borrar los datos por accidente, o para clonarla como punto de
-# partida de una nueva) sin tener que reconstruir el contenido a mano.
-#
-# admin_chat_id se ha dejado vacio a proposito (era un chat_id real de
-# Telegram): rellenalo con el chat_id del organizador antes de usar /admin.
+# admin_chat_id no se ha exportado (usa --include-admin-chat-id si lo
+# necesitas); provision_gymkana.py lo rellena solo desde
+# secrets/admin_chat_id si el YAML no lo trae.
 
 id: linaje-olvidado
 nombre: El Linaje Olvidado
@@ -17,7 +14,6 @@ peso_pista: 1
 peso_mapa: 3
 peso_rescate: 5
 termino_enclave: Enclave
-admin_chat_id: ''
 fragmentos:
 - '43'
 - .
@@ -50,6 +46,10 @@ estaciones:
     https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjZmtfSaqjam4lsqBXYA-QwQu_DRfT6w2RhPox37T3bbnpejizZn_wLZqD2PDILW538pdBfGa8nSJcS_MI4HUiyqzJ_I1q9_fhyphenhyphen7ge69wdfha83kdFKd9HxL1Xb_vPW_yFFDAuPDgg1whKw/s1600/2014-08-03+21.jpg
   mapa_url: |-
     https://www.google.com/maps/search/?api=1&query=Campo+de+Revolgo%2C+Santillana+del+Mar
+  audio_url: |-
+    https://firebasestorage.googleapis.com/v0/b/gymkana-linaje-olvidado.firebasestorage.app/o/Santillana%2Fsantillana_estacion_01_audio.mp3?alt=media&token=5060a22a-3659-4ec2-ad91-e6b21af70775
+  acertijo_audio_url: |-
+    https://firebasestorage.googleapis.com/v0/b/gymkana-linaje-olvidado.firebasestorage.app/o/Santillana%2Fsantillana_estacion_01_acertijo_audio.mp3?alt=media&token=de307a3b-49ff-41c0-97c2-a24c7f66f135
 - orden: 2
   nombre: Plaza Mayor - Torre del Merino
   lat: 43.3891
@@ -72,6 +72,10 @@ estaciones:
     https://dynamic-media-cdn.tripadvisor.com/media/photo-o/27/68/b1/fb/torre-del-merino.jpg
   mapa_url: |-
     https://www.google.com/maps/search/?api=1&query=Torre+del+Merino%2C+Santillana+del+Mar
+  audio_url: |-
+    https://firebasestorage.googleapis.com/v0/b/gymkana-linaje-olvidado.firebasestorage.app/o/Santillana%2Fsantillana_estacion_02_audio.mp3?alt=media&token=2245692c-3888-4ac1-9eb7-47834cbab7d6
+  acertijo_audio_url: |-
+    https://firebasestorage.googleapis.com/v0/b/gymkana-linaje-olvidado.firebasestorage.app/o/Santillana%2Fsantillana_estacion_02_acertijo_audio.mp3?alt=media&token=9bc4c593-fcc6-4c9a-9891-31b53b236d2f
 - orden: 3
   nombre: Palacio de Peredo-Barreda
   lat: 43.389496
@@ -94,6 +98,10 @@ estaciones:
     https://www.santillana-del-mar.com/resources/cache/234d6dd1236bd7fa5343bda7cd2788fe-11ad57b64c651eedbb21462ac66e96e6.webp
   mapa_url: |-
     https://www.google.com/maps/search/?api=1&query=Palacio+de+Peredo-Barreda%2C+Santillana+del+Mar
+  audio_url: |-
+    https://firebasestorage.googleapis.com/v0/b/gymkana-linaje-olvidado.firebasestorage.app/o/Santillana%2Fsantillana_estacion_03_audio.mp3?alt=media&token=817743db-916f-4004-8f5f-4a30525a88ed
+  acertijo_audio_url: |-
+    https://firebasestorage.googleapis.com/v0/b/gymkana-linaje-olvidado.firebasestorage.app/o/Santillana%2Fsantillana_estacion_03_acertijo_audio.mp3?alt=media&token=d9a3cb1c-cec1-48dc-836c-694b450ecb2b
 - orden: 4
   nombre: Casa de los Hombrones
   lat: 43.3904
@@ -117,6 +125,10 @@ estaciones:
     https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Los_Villa._Santillana_del_Mar.jpg/1280px-Los_Villa._Santillana_del_Mar.jpg
   mapa_url: |-
     https://www.google.com/maps/search/?api=1&query=Casa+de+los+Hombrones%2C+Santillana+del+Mar
+  audio_url: |-
+    https://firebasestorage.googleapis.com/v0/b/gymkana-linaje-olvidado.firebasestorage.app/o/Santillana%2Fsantillana_estacion_04_audio.mp3?alt=media&token=4c162818-87e4-4437-8c8c-a4d582d1debc
+  acertijo_audio_url: |-
+    https://firebasestorage.googleapis.com/v0/b/gymkana-linaje-olvidado.firebasestorage.app/o/Santillana%2Fsantillana_estacion_04_acertijo_audio.mp3?alt=media&token=1aec83db-4e6a-44e7-954c-851a191f7e52
 - orden: 5
   nombre: Colegiata de Santa Juliana
   lat: 43.3892
@@ -138,6 +150,10 @@ estaciones:
     https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/Colegiata_de_Santa_Juliana._Fachada.jpg/1280px-Colegiata_de_Santa_Juliana._Fachada.jpg
   mapa_url: |-
     https://www.google.com/maps/search/?api=1&query=Colegiata+de+Santa+Juliana%2C+Santillana+del+Mar
+  audio_url: |-
+    https://firebasestorage.googleapis.com/v0/b/gymkana-linaje-olvidado.firebasestorage.app/o/Santillana%2Fsantillana_estacion_05_audio.mp3?alt=media&token=646400ff-e6b5-4970-bbe1-1afa0271eae2
+  acertijo_audio_url: |-
+    https://firebasestorage.googleapis.com/v0/b/gymkana-linaje-olvidado.firebasestorage.app/o/Santillana%2Fsantillana_estacion_05_acertijo_audio.mp3?alt=media&token=9aad3221-1c80-419b-b79f-9ec7fb7a1cb7
 - orden: 6
   nombre: Convento de San Ildefonso
   lat: 43.3885
@@ -160,6 +176,10 @@ estaciones:
     https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Santillana_del_Mar_-_Convento_de_San_Ildefonso_%28MM_Clarisas%29_04.jpg/1280px-Santillana_del_Mar_-_Convento_de_San_Ildefonso_%28MM_Clarisas%29_04.jpg
   mapa_url: |-
     https://www.google.com/maps/search/?api=1&query=Convento+de+San+Ildefonso%2C+Santillana+del+Mar
+  audio_url: |-
+    https://firebasestorage.googleapis.com/v0/b/gymkana-linaje-olvidado.firebasestorage.app/o/Santillana%2Fsantillana_estacion_06_audio.mp3?alt=media&token=6cef7625-213e-4bf4-90d9-6fe7d4f71756
+  acertijo_audio_url: |-
+    https://firebasestorage.googleapis.com/v0/b/gymkana-linaje-olvidado.firebasestorage.app/o/Santillana%2Fsantillana_estacion_06_acertijo_audio.mp3?alt=media&token=8853f602-3151-49ad-8d52-c031f8053b5f
 - orden: 7
   nombre: Palacio de Velarde
   lat: 43.38905
@@ -181,6 +201,10 @@ estaciones:
     https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Palacio_de_Velarde%2C_Santillana_del_Mar_pan.jpg/1280px-Palacio_de_Velarde%2C_Santillana_del_Mar_pan.jpg
   mapa_url: |-
     https://www.google.com/maps/search/?api=1&query=Palacio+de+Velarde%2C+Santillana+del+Mar
+  audio_url: |-
+    https://firebasestorage.googleapis.com/v0/b/gymkana-linaje-olvidado.firebasestorage.app/o/Santillana%2Fsantillana_estacion_07_audio.mp3?alt=media&token=c34e6275-4f5b-4bf6-99e2-b7d5a4cdd4bd
+  acertijo_audio_url: |-
+    https://firebasestorage.googleapis.com/v0/b/gymkana-linaje-olvidado.firebasestorage.app/o/Santillana%2Fsantillana_estacion_07_acertijo_audio.mp3?alt=media&token=3428e274-a8d5-472d-aa96-8d0ac4a99895
 - orden: 8
   nombre: Lavadero-abrevadero de la Calle del Río
   lat: 43.391589
@@ -202,6 +226,10 @@ estaciones:
     https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Calle_del_R%C3%ADo._Abrevadero.jpg/1280px-Calle_del_R%C3%ADo._Abrevadero.jpg
   mapa_url: |-
     https://www.google.com/maps/search/?api=1&query=Lavadero+abrevadero+Calle+del+Rio%2C+Santillana+del+Mar
+  audio_url: |-
+    https://firebasestorage.googleapis.com/v0/b/gymkana-linaje-olvidado.firebasestorage.app/o/Santillana%2Fsantillana_estacion_08_audio.mp3?alt=media&token=904e64c3-4475-44ab-947d-338ff2a82d49
+  acertijo_audio_url: |-
+    https://firebasestorage.googleapis.com/v0/b/gymkana-linaje-olvidado.firebasestorage.app/o/Santillana%2Fsantillana_estacion_08_acertijo_audio.mp3?alt=media&token=9714197f-2fed-425e-8538-f8826233cc9b
 estacion_final:
   nombre: Enclave secreto
   lat: 43.3895614
@@ -228,6 +256,10 @@ estacion_final:
     https://firebasestorage.googleapis.com/v0/b/gymkana-linaje-olvidado.firebasestorage.app/o/Santillana%2Festacion9.jpg?alt=media&token=602ad1b5-90bc-4dbd-9e4a-95f97c9d23f5
   imagen_final_url: https://thumbs.dreamstime.com/b/fuente-en-santillana-28983790.jpg?w=992
   mapa_url: https://www.google.com/maps/search/?api=1&query=43.389561,-4.108084
+  audio_url: |-
+    https://firebasestorage.googleapis.com/v0/b/gymkana-linaje-olvidado.firebasestorage.app/o/Santillana%2Fsantillana_final_audio.mp3?alt=media&token=5f803d00-5012-4a42-8005-56d826f27bae
+  acertijo_audio_url: |-
+    https://firebasestorage.googleapis.com/v0/b/gymkana-linaje-olvidado.firebasestorage.app/o/Santillana%2Fsantillana_final_acertijo_audio.mp3?alt=media&token=fc42e152-812c-47fd-93d0-644c9d83c6b4
   coordenadas_finales: 43.389561N, -4.108084W
   secuencia_codice: '`43` • `.` • `389` • `561N` • `-4` • `.` • `108` • `084W`'
   guia_historica_url: |-

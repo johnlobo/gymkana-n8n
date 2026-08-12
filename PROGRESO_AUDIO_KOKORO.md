@@ -536,3 +536,19 @@ la tarea para poder retomarla si la sesión se cae. Bucket de Storage:
   Desplegado HTTP 200 en los tres, verificado por GET. `workflow.json`
   re-refrescado. Documentado en `datos_firestore.md` (nueva sección
   `gymkanas/<id>/config`) y `comandos.md` (`/reboot` actualizado).
+- 2026-08-12 00:1x-00:2x — **Generadas las locuciones de Santillana (El
+  Linaje Olvidado)**, a peticion del usuario ("de paso"). Antes de lanzar
+  nada se comprobo que no habia partidas reales en curso ahora mismo: de
+  los 5 equipos en Firestore, 4 llevan sin tocarse desde 2026-08-05 (una
+  semana, casi seguro pruebas abandonadas de cuando se monto esta
+  gymkana de referencia) y el unico actualizado hoy es el propio chat de
+  pruebas del admin -- no habia senal de un evento real en marcha, y
+  ademas la rama de audio ya estaba verificada como inerte hasta que
+  hubiera datos (ver entrada del backport a la plantilla). 9 estaciones
+  (8 regulares + secreta), carpeta Santillana/ prefijo santillana, mismo
+  venv/proceso que Aranda. Completado en ~4 min sin avisos de memoria.
+  content/linaje_olvidado.yaml re-exportado (18 URLs confirmadas). Igual
+  que con Aranda/Salamanca, el workflow YA tenia el codigo necesario
+  (motor + nodos de audio + anti-encadenado) desde el backport a la
+  plantilla de esta tarde -- no hizo falta tocar el workflow, solo
+  generar los datos.
